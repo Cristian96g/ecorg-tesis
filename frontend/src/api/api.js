@@ -45,7 +45,7 @@ function emitNotificationsUpdated() {
 
 export function getFriendlyApiError(err, fallback = "Ocurrió un error inesperado.") {
   if (!err?.response) {
-    return "No pudimos conectar con el servidor. Verificá que el backend esté corriendo en localhost:4000.";
+    return "No pudimos conectar con el servidor. Verificá la URL del backend y la configuración de CORS.";
   }
 
   const data = err.response.data;
@@ -315,3 +315,4 @@ export const NotificationsAPI = {
     return data;
   },
 };
+

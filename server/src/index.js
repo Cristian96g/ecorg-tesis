@@ -26,8 +26,17 @@ console.log("MONGO_URI:", process.env.MONGO_URI);
 
 const app = express();
 
+const allowedOrigins = (process.env.CORS_ORIGIN || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const corsOrigins = allowedOrigins.length
+  ? allowedOrigins
+  : ["http://localhost:5173", "http://localhost:5174"];
+
 app.use(cors({
-  origin: ["http://localhost:5173", "http://localhost:5174"],
+  origin: corsOrigins,
   credentials: true,
 }));
 app.use(morgan("dev"));
