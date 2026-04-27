@@ -1,9 +1,15 @@
 import axios from "axios";
 
-const BASE_URL =
-  import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, "") ||
-  import.meta.env.VITE_API_URL?.replace(/\/+$/, "") ||
-  "http://localhost:4000";
+// const BASE_URL =
+//   import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, "") ||
+//   import.meta.env.VITE_API_URL?.replace(/\/+$/, "") ||
+//   "http://localhost:4000";
+
+const BASE_URL = import.meta.env.VITE_API_URL?.replace(/\/+$/, "");
+
+if (!BASE_URL) {
+  throw new Error("VITE_API_URL no está definida");
+}
 
 const TOKEN_KEY = "ecorg_token";
 
