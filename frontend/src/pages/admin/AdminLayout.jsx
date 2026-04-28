@@ -7,7 +7,6 @@ import {
   FiLogOut,
   FiMapPin,
   FiMenu,
-  FiSettings,
   FiUsers,
   FiX,
 } from "react-icons/fi";
@@ -90,9 +89,6 @@ export default function AdminLayout() {
           </NavLink>
           <NavLink to="/admin/usuarios" className={link} onClick={handleNavClick}>
             <FiUsers /> Usuarios
-          </NavLink>
-          <NavLink to="/admin/ajustes" className={link} onClick={handleNavClick}>
-            <FiSettings /> Ajustes
           </NavLink>
 
           <button

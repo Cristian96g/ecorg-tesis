@@ -14,9 +14,9 @@ const MATERIAL_ALIASES = {
 
 const MATERIAL_OPTIONS = [
   { value: "", label: "Todos los materiales" },
-  { value: "plastico", label: "PlÃ¡stico" },
+  { value: "plastico", label: "Plástico" },
   { value: "vidrio", label: "Vidrio" },
-  { value: "papel", label: "Papel / CartÃ³n" },
+  { value: "papel", label: "Papel / Cartón" },
   { value: "pilas", label: "Pilas" },
   { value: "aceite", label: "Aceite usado" },
 ];
@@ -28,9 +28,9 @@ const STATUS_OPTIONS = [
 ];
 
 const LEGEND_ITEMS = [
-  { color: "#E6F8EE", label: "PlÃ¡stico" },
+  { color: "#E6F8EE", label: "Plástico" },
   { color: "#EAF4FF", label: "Vidrio" },
-  { color: "#FFF6E6", label: "Papel / CartÃ³n" },
+  { color: "#FFF6E6", label: "Papel / Cartón" },
   { color: "#FCE9EF", label: "Pilas" },
   { color: "#EEF6FF", label: "Aceite usado" },
   { color: "#66a939", label: "Mixto / general" },
@@ -91,10 +91,10 @@ function FilterPanel({
             Filtrar puntos
           </p>
           <h2 className="mt-2 text-xl font-semibold text-[#203014]">
-            EncontrÃ¡ el punto adecuado
+            Encontrá el punto adecuado
           </h2>
           <p className="mt-2 text-sm leading-6 text-slate-600">
-            CombinÃ¡ bÃºsqueda, barrio, material y estado para ubicar opciones Ãºtiles segÃºn tu necesidad.
+            Combiná búsqueda, barrio, material y estado para ubicar opciones útiles según tu necesidad.
           </p>
         </div>
         <span className="rounded-full bg-[#eef6e4] px-3 py-1 text-xs font-semibold text-[#4f7a2f]">
@@ -109,7 +109,7 @@ function FilterPanel({
           <input
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="Nombre o direcciÃ³n..."
+            placeholder="Nombre o dirección..."
             className="w-full rounded-2xl border border-[#d9e7ca] bg-white py-3 pl-10 pr-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#66a939]/25"
           />
         </div>
@@ -219,7 +219,7 @@ export default function Map() {
       <SectionHero
         eyebrow="Puntos verdes"
         title="Mapa de puntos verdes"
-        description="EncontrÃ¡ lugares de reciclaje segÃºn material, barrio y estado. UsÃ¡ los filtros para ubicar opciones cercanas y decidir mejor dÃ³nde llevar tus residuos."
+        description="Encontrá lugares de reciclaje según material, barrio y estado. Usá los filtros para ubicar opciones cercanas y decidir mejor dónde llevar tus residuos."
         className="mb-6"
         actions={(
           <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
@@ -285,10 +285,10 @@ export default function Map() {
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#4f7a2f]">
-                    VisualizaciÃ³n
+                    Visualización
                   </p>
                   <h2 className="mt-1 text-lg font-semibold text-[#203014]">
-                    ExplorÃ¡ puntos verdes sobre el mapa
+                    Explorá puntos verdes sobre el mapa
                   </h2>
                 </div>
                 <div className="inline-flex items-center gap-2 rounded-full bg-[#eef6e4] px-3 py-1 text-xs font-semibold text-[#4f7a2f]">
@@ -332,10 +332,10 @@ export default function Map() {
                           <FiMapPin className="h-6 w-6" />
                         </div>
                         <h3 className="mt-4 text-xl font-semibold text-[#203014]">
-                          No encontramos puntos para esta bÃºsqueda
+                          No encontramos puntos para esta búsqueda
                         </h3>
                         <p className="mt-3 text-sm leading-6 text-slate-600">
-                          ProbÃ¡ cambiar el material, el barrio o el estado del punto para ampliar los resultados.
+                          Probá cambiar el material, el barrio o el estado del punto para ampliar los resultados.
                         </p>
                         {hasFilters ? (
                           <button

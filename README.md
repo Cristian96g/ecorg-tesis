@@ -166,21 +166,19 @@ ecorg/
 
 ## Variables de entorno
 
-## Frontend
+### Frontend
 
 Archivo sugerido: `frontend/.env`
 
 ```env
-VITE_API_BASE_URL=http://localhost:4000
+VITE_API_URL=http://localhost:4000
 VITE_GOOGLE_MAPS_API_KEY=TU_API_KEY_DE_GOOGLE_MAPS
 ```
 
-### Variables
-
-- `VITE_API_BASE_URL`: URL base del backend.
+- `VITE_API_URL`: URL base del backend.
 - `VITE_GOOGLE_MAPS_API_KEY`: API key para mapa público y autocompletado de direcciones.
 
-## Backend
+### Backend
 
 Archivo sugerido: `server/.env`
 
@@ -188,38 +186,37 @@ Archivo sugerido: `server/.env`
 PORT=4000
 MONGO_URI=mongodb://127.0.0.1:27017/ecorg
 JWT_SECRET=CAMBIAR_ESTE_SECRETO
+CORS_ORIGIN=http://localhost:5173,http://localhost:5174
 ```
-
-### Variables
 
 - `PORT`: puerto del servidor Express.
 - `MONGO_URI`: cadena de conexión a MongoDB local o Atlas.
 - `JWT_SECRET`: clave para firma de tokens JWT.
-- `CORS_ORIGIN`: hoy no se consume desde variable; el servidor tiene orígenes locales configurados en código (`http://localhost:5173` y `http://localhost:5174`).
+- `CORS_ORIGIN`: lista de orígenes permitidos separada por comas.
 
 ## Instalación paso a paso
 
-## 1. Clonar o abrir el proyecto
+### 1. Abrir el proyecto
 
 ```bash
 cd ecorg
 ```
 
-## 2. Instalar frontend
+### 2. Instalar frontend
 
 ```bash
 cd frontend
 npm install
 ```
 
-## 3. Instalar backend
+### 3. Instalar backend
 
 ```bash
 cd ../server
 npm install
 ```
 
-## 4. Configurar variables de entorno
+### 4. Configurar variables de entorno
 
 Crear:
 
@@ -228,14 +225,14 @@ Crear:
 
 usando los ejemplos anteriores.
 
-## 5. Ejecutar backend
+### 5. Ejecutar backend
 
 ```bash
 cd server
 npm run dev
 ```
 
-## 6. Ejecutar frontend
+### 6. Ejecutar frontend
 
 En otra terminal:
 
@@ -246,7 +243,7 @@ npm run dev
 
 ## Comandos de desarrollo
 
-## Frontend
+### Frontend
 
 ```bash
 cd frontend
@@ -256,7 +253,7 @@ npm run preview
 npm run lint
 ```
 
-## Backend
+### Backend
 
 ```bash
 cd server
@@ -300,12 +297,12 @@ Password: Admin123
 
 ## Endpoints principales
 
-## Auth
+### Auth
 
 - `POST /api/auth/register`
 - `POST /api/auth/login`
 
-## Usuarios
+### Usuarios
 
 - `GET /api/users/me`
 - `PUT /api/users/me`
@@ -315,7 +312,7 @@ Password: Admin123
 - `DELETE /api/users/:id`
 - `PUT /api/users/:id/role`
 
-## Reportes
+### Reportes
 
 - `GET /api/reports`
 - `GET /api/reports/:id`
@@ -325,7 +322,7 @@ Password: Admin123
 - `PUT /api/reports/:id/moderation`
 - `PUT /api/reports/:id/estado`
 
-## Puntos verdes
+### Puntos verdes
 
 - `GET /api/points`
 - `GET /api/points/:id`
@@ -333,20 +330,27 @@ Password: Admin123
 - `PUT /api/points/:id`
 - `DELETE /api/points/:id`
 
-## Barrios
+### Barrios
 
 - `GET /api/barrios`
 - `POST /api/barrios`
 - `PUT /api/barrios/:id`
 - `DELETE /api/barrios/:id`
 
-## Gamificación
+### Gamificación
 
 - `GET /api/eco-actions/me`
 - `GET /api/eco-actions`
 - `POST /api/eco-actions`
 - `PUT /api/eco-actions/:id/approve`
 - `PUT /api/eco-actions/:id/reject`
+
+### Notificaciones
+
+- `GET /api/notifications/me`
+- `PUT /api/notifications/:id/read`
+- `PUT /api/notifications/read-all`
+- `DELETE /api/notifications/:id`
 
 ## Roles del sistema
 

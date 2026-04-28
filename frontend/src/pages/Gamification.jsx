@@ -24,8 +24,8 @@ const LEVELS = [
   { label: "Eco principiante", min: 0, max: 99 },
   { label: "Vecino consciente", min: 100, max: 299 },
   { label: "Reciclador activo", min: 300, max: 599 },
-  { label: "GuardiÃ¡n ambiental", min: 600, max: 999 },
-  { label: "Eco hÃ©roe", min: 1000, max: Infinity },
+  { label: "Guardián ambiental", min: 600, max: 999 },
+  { label: "Eco héroe", min: 1000, max: Infinity },
 ];
 
 const EXPLAINER_CARDS = [
@@ -37,12 +37,12 @@ const EXPLAINER_CARDS = [
   },
   {
     title: "Reciclaje validado",
-    description: "Las acciones de reciclaje confirmadas por administraciÃ³n tambiÃ©n cuentan dentro del sistema.",
+    description: "Las acciones de reciclaje confirmadas por administración también cuentan dentro del sistema.",
     points: "+15 puntos",
     icon: FiActivity,
   },
   {
-    title: "EducaciÃ³n ambiental",
+    title: "Educación ambiental",
     description: "Las actividades educativas pueden integrarse al progreso del usuario en futuras iteraciones.",
     points: "+5 puntos",
     icon: FiBookOpen,
@@ -53,31 +53,31 @@ const BADGE_CATALOG = [
   {
     key: "primer_reporte",
     name: "Primer reporte aprobado",
-    description: "ObtenÃ© la validaciÃ³n de tu primer reporte ambiental dentro de EcoRG.",
+    description: "Obtené la validación de tu primer reporte ambiental dentro de EcoRG.",
     icon: "ðŸ“£",
   },
   {
     key: "cinco_reportes",
     name: "Vecino comprometido",
-    description: "AlcanzÃ¡ cinco reportes aprobados y consolidÃ¡ tu participaciÃ³n ciudadana.",
+    description: "Alcanzá cinco reportes aprobados y consolidá tu participación ciudadana.",
     icon: "ðŸŒ¿",
   },
   {
     key: "primer_reciclaje",
-    name: "Primera acciÃ³n de reciclaje",
-    description: "RegistrÃ¡ una acciÃ³n de reciclaje validada por el equipo.",
-    icon: "â™»ï¸",
+    name: "Primera acción de reciclaje",
+    description: "Registrá una acción de reciclaje validada por el equipo.",
+    icon: "♻️",
   },
   {
     key: "cien_puntos",
     name: "100 puntos verdes",
-    description: "SuperÃ¡ los 100 puntos acumulando acciones ambientales reales.",
+    description: "Superá los 100 puntos acumulando acciones ambientales reales.",
     icon: "ðŸ’¯",
   },
   {
     key: "eco_heroe",
-    name: "Eco hÃ©roe",
-    description: "LlegÃ¡ al nivel mÃ¡s alto disponible en esta versiÃ³n de EcoRG.",
+    name: "Eco héroe",
+    description: "Llegá al nivel más alto disponible en esta versión de EcoRG.",
     icon: "ðŸ…",
   },
 ];
@@ -86,7 +86,7 @@ const TABS = [
   { key: "resumen", label: "Resumen" },
   { key: "logros", label: "Logros" },
   { key: "historial", label: "Historial" },
-  { key: "como", label: "CÃ³mo sumar puntos" },
+  { key: "como", label: "Cómo sumar puntos" },
 ];
 
 function formatDate(value) {
@@ -101,11 +101,11 @@ function getActionTypeLabel(type) {
   const labels = {
     reporte: "Reporte ambiental",
     reciclaje: "Reciclaje validado",
-    educacion: "AcciÃ³n educativa",
+    educacion: "Acción educativa",
     punto_sugerido: "Sugerencia de punto verde",
   };
 
-  return labels[type] || "AcciÃ³n ambiental";
+  return labels[type] || "Acción ambiental";
 }
 
 function getStatusMeta(status) {
@@ -215,7 +215,7 @@ function BadgeCard({ badge, earned }) {
           </div>
           <p className="mt-2 text-sm leading-6 text-slate-600">{badge.description}</p>
           <p className="mt-3 text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
-            {earned?.earnedAt ? `Obtenido el ${formatDate(earned.earnedAt)}` : "TodavÃ­a no alcanzado"}
+            {earned?.earnedAt ? `Obtenido el ${formatDate(earned.earnedAt)}` : "Todavía no alcanzado"}
           </p>
         </div>
       </div>
@@ -328,8 +328,8 @@ export default function Gamification() {
     return (
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <LoadingState
-          title="Validando sesiÃ³n"
-          description="Estamos preparando tu panel de gamificaciÃ³n."
+          title="Validando sesión"
+          description="Estamos preparando tu panel de gamificación."
         />
       </div>
     );
@@ -339,9 +339,9 @@ export default function Gamification() {
     return (
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <SectionHero
-          eyebrow="GamificaciÃ³n"
-          title="SumÃ¡ puntos participando en acciones ambientales"
-          description="IniciÃ¡ sesiÃ³n para ver tus puntos, tu nivel actual y el historial de acciones validadas dentro de EcoRG."
+          eyebrow="Gamificación"
+          title="Sumá puntos participando en acciones ambientales"
+          description="Iniciá sesión para ver tus puntos, tu nivel actual y el historial de acciones validadas dentro de EcoRG."
           actions={(
             <Link
               to="/login?next=/gamificacion"
@@ -358,9 +358,9 @@ export default function Gamification() {
   return (
     <div className="mx-auto max-w-7xl overflow-x-hidden px-4 py-8 sm:px-6 lg:px-8">
       <SectionHero
-        eyebrow="GamificaciÃ³n"
-        title="SumÃ¡ puntos participando en acciones ambientales"
-        description="EntendÃ© rÃ¡pido tu progreso, tus logros y las acciones que te ayudan a avanzar dentro de EcoRG."
+        eyebrow="Gamificación"
+        title="Sumá puntos participando en acciones ambientales"
+        description="Entendé rápido tu progreso, tus logros y las acciones que te ayudan a avanzar dentro de EcoRG."
       >
         <div className="grid min-w-0 gap-4 xl:grid-cols-[1.15fr_0.85fr]">
           <div className="min-w-0 rounded-[28px] border border-[#dce8ce] bg-white p-5 shadow-[0_16px_40px_rgba(59,89,34,0.08)]">
@@ -375,7 +375,7 @@ export default function Gamification() {
               <div className="min-w-0 break-words rounded-2xl bg-[#f5faee] px-4 py-3 text-sm text-slate-600">
                 {progress.nextLevel
                   ? `Te faltan ${progress.remaining} puntos para ${progress.nextLevel.label}.`
-                  : "Ya alcanzaste el nivel mÃ¡s alto disponible."}
+                  : "Ya alcanzaste el nivel más alto disponible."}
               </div>
             </div>
 
@@ -398,7 +398,7 @@ export default function Gamification() {
             <MiniStat
               label="Usuario"
               value={safeProfile?.nombre || "Cuenta EcoRG"}
-              helper="Tu progreso estÃ¡ asociado a tu cuenta actual."
+              helper="Tu progreso está asociado a tu cuenta actual."
             />
             <MiniStat
               label="Acciones"
@@ -408,12 +408,12 @@ export default function Gamification() {
             <MiniStat
               label="Logros"
               value={earnedBadges.length.toLocaleString("es-AR")}
-              helper="Insignias obtenidas automÃ¡ticamente."
+              helper="Insignias obtenidas automáticamente."
             />
             <MiniStat
               label="Meta actual"
               value={progress.nextLevel ? progress.nextLevel.label : "Completada"}
-              helper="PrÃ³ximo nivel o tope alcanzado."
+              helper="Próximo nivel o tope alcanzado."
             />
           </div>
         </div>
@@ -536,15 +536,15 @@ export default function Gamification() {
                   />
                 ) : error ? (
                   <div className="rounded-[28px] border border-[#f0d7dc] bg-[#fff8f8] px-6 py-12 text-center">
-                    <h3 className="text-xl font-semibold text-[#203014]">No pudimos cargar la gamificaciÃ³n</h3>
+                    <h3 className="text-xl font-semibold text-[#203014]">No pudimos cargar la gamificación</h3>
                     <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-slate-600">
                       {error}
                     </p>
                   </div>
                 ) : actions.length === 0 ? (
                   <EmptyState
-                    title="TodavÃ­a no hay acciones registradas"
-                    description="Cuando una acciÃ³n ambiental sea registrada o validada, va a aparecer acÃ¡ con su estado y puntaje."
+                    title="Todavía no hay acciones registradas"
+                    description="Cuando una acción ambiental sea registrada o validada, va a aparecer acá con su estado y puntaje."
                   />
                 ) : (
                   <div className="space-y-4">
@@ -568,7 +568,7 @@ export default function Gamification() {
                                 </span>
                               </div>
                               <p className="mt-2 text-sm leading-6 text-slate-600">
-                                {action.description || "Sin descripciÃ³n adicional."}
+                                {action.description || "Sin descripción adicional."}
                               </p>
                               <div className="mt-3 flex flex-wrap items-center gap-3 text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
                                 <span>{formatDate(action.createdAt)}</span>
@@ -595,7 +595,7 @@ export default function Gamification() {
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#4f7a2f]">
-                    CÃ³mo sumar puntos
+                    Cómo sumar puntos
                   </p>
                   <h2 className="mt-2 text-2xl font-semibold text-[#203014]">
                     Acciones que hacen crecer tu progreso

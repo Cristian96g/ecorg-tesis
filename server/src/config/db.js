@@ -1,11 +1,17 @@
 import mongoose from "mongoose";
 
 export default async function connectDB() {
+  const mongoUri = process.env.MONGO_URI?.trim();
+
+  if (!mongoUri) {
+    throw new Error("Falta MONGO_URI en las variables de entorno del servidor.");
+  }
+
   try {
-    await mongoose.connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/ecorg");
-    console.log("âœ… MongoDB conectado");
+    await mongoose.connect(mongoUri);
+    console.log("MongoDB conectado");
   } catch (error) {
-    console.error("âŒ Error en MongoDB:", error.message);
+    console.error("Error en MongoDB:", error.message);
     process.exit(1);
   }
 }

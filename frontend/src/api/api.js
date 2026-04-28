@@ -1,14 +1,11 @@
 import axios from "axios";
 
-// const BASE_URL =
-//   import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, "") ||
-//   import.meta.env.VITE_API_URL?.replace(/\/+$/, "") ||
-//   "http://localhost:4000";
-
-const BASE_URL = import.meta.env.VITE_API_URL?.replace(/\/+$/, "");
+const envBaseUrl = import.meta.env.VITE_API_URL?.trim();
+const devFallbackUrl = import.meta.env.DEV ? "http://localhost:4000" : "";
+const BASE_URL = (envBaseUrl || devFallbackUrl).replace(/\/+$/, "");
 
 if (!BASE_URL) {
-  throw new Error("VITE_API_URL no está definida");
+  throw new Error("VITE_API_URL no está definida para este entorno.");
 }
 
 const TOKEN_KEY = "ecorg_token";
@@ -315,4 +312,3 @@ export const NotificationsAPI = {
     return data;
   },
 };
-

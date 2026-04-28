@@ -11,14 +11,14 @@ export default function AdminAjustes() {
     <div className="space-y-6">
       <AdminSectionHero
         title="Ajustes"
-        description="ConfigurÃ¡ la base operativa del sistema y centralizÃ¡ decisiones de branding, permisos y despliegue futuro."
+        description="Configuración general del sistema. Esta pantalla queda preparada para futuras opciones administrativas reales."
       />
 
       <div className="grid gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader
-            title="ConfiguraciÃ³n general"
-            subtitle="Espacio previsto para branding institucional, parÃ¡metros globales y mantenimiento."
+            title="Configuración general"
+            subtitle="Espacio reservado para branding institucional, parámetros globales y mantenimiento futuro."
           />
           <CardBody>
             <div className="flex items-start gap-4 rounded-3xl border border-dashed border-[#d7e5c5] bg-[#fbfdf8] p-5">
@@ -27,11 +27,11 @@ export default function AdminAjustes() {
               </div>
               <div>
                 <h3 className="text-base font-semibold text-[#24341a]">
-                  MÃ³dulo en preparaciÃ³n
+                  Módulo informativo
                 </h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">
-                  Esta secciÃ³n queda lista para sumar reglas de branding, preferencias
-                  del panel y configuraciones generales sin mezclarlo con la gestiÃ³n diaria.
+                  En esta versión no hay configuraciones operativas para editar desde el panel.
+                  Se mantiene la estructura lista para sumar opciones reales en una etapa futura.
                 </p>
               </div>
             </div>
@@ -41,7 +41,7 @@ export default function AdminAjustes() {
         <Card>
           <CardHeader
             title="Seguridad y permisos"
-            subtitle="Referencia visual para el manejo de accesos administrativos."
+            subtitle="Referencia visual sobre cómo se gestionan hoy los accesos administrativos."
           />
           <CardBody>
             <div className="flex items-start gap-4 rounded-3xl border border-dashed border-[#d7e5c5] bg-[#fbfdf8] p-5">
@@ -50,11 +50,11 @@ export default function AdminAjustes() {
               </div>
               <div>
                 <h3 className="text-base font-semibold text-[#24341a]">
-                  Gobierno del sistema
+                  Gestión centralizada
                 </h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">
                   Los permisos sensibles ya se controlan desde roles y rutas protegidas.
-                  Este bloque sirve como base para futuras polÃ­ticas de acceso y auditorÃ­a.
+                  Este bloque deja documentado ese criterio sin prometer acciones que todavía no existen.
                 </p>
               </div>
             </div>
@@ -64,4 +64,3 @@ export default function AdminAjustes() {
     </div>
   );
 }
-

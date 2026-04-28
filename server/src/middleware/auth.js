@@ -1,8 +1,15 @@
 import jwt from "jsonwebtoken";
 
+function getJwtSecret() {
+  const secret = process.env.JWT_SECRET?.trim();
+  if (!secret) {
+    throw new Error("Falta JWT_SECRET en las variables de entorno del servidor.");
+  }
+  return secret;
+}
+
 export function signToken(payload) {
-  const secret = process.env.JWT_SECRET || "dev-secret-change-me";
-  return jwt.sign(payload, secret, {
+  return jwt.sign(payload, getJwtSecret(), {
     expiresIn: process.env.JWT_EXPIRES || "7d",
   });
 }
@@ -16,15 +23,14 @@ export function verifyJWT(req, res, next) {
   }
 
   try {
-    const secret = process.env.JWT_SECRET || "dev-secret-change-me";
-    const decoded = jwt.verify(token, secret);
+    const decoded = jwt.verify(token, getJwtSecret());
     req.user = decoded;
     next();
   } catch (error) {
     if (error?.name === "TokenExpiredError") {
-      return res.status(401).json({ error: "SesiÃ³n vencida" });
+      return res.status(401).json({ error: "Sesión vencida" });
     }
-    return res.status(401).json({ error: "Token invÃ¡lido" });
+    return res.status(401).json({ error: "Token inválido" });
   }
 }
 
@@ -41,4 +47,3 @@ export function requireRole(role) {
     next();
   };
 }
-

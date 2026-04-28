@@ -17,12 +17,19 @@ import dns from "node:dns";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const envPath = path.resolve(__dirname, ".env");
 
+dotenv.config({ path: envPath });
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
-console.log("DNS usados:", dns.getServers());
 
-dotenv.config({ path: path.resolve(__dirname, ".env") });
-console.log("MONGO_URI:", process.env.MONGO_URI);
+const requiredEnvVars = ["MONGO_URI", "JWT_SECRET"];
+const missingEnvVars = requiredEnvVars.filter((name) => !process.env[name]?.trim());
+
+if (missingEnvVars.length > 0) {
+  console.error(`Faltan variables de entorno obligatorias: ${missingEnvVars.join(", ")}`);
+  process.exit(1);
+}
+
 
 const app = express();
 
@@ -46,7 +53,6 @@ app.use("/uploads", express.static(path.resolve(__dirname, "../uploads")));
 
 app.get("/", (req, res) => res.json({ ok: true, name: "EcoRG API" }));
 
-/// rutas
 app.use("/api/auth", authRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/reports", reportsRoutes);
@@ -55,20 +61,20 @@ app.use("/api/barrios", barriosRoutes);
 app.use("/api/eco-actions", ecoActionsRoutes);
 app.use("/api/notifications", notificationsRoutes);
 
-// Middleware de errores
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 4000;
-// app.listen(PORT, () =>
-//   console.log(`âœ… API corriendo en http://localhost:${PORT}`)
-// );
 
 async function startServer() {
-  await connectDB();
-
-  app.listen(PORT, () =>
-    console.log(`âœ… API corriendo en http://localhost:${PORT}`)
-  );
+  try {
+    await connectDB();
+    app.listen(PORT, () => {
+      console.log(`API corriendo en puerto ${PORT}`);
+    });
+  } catch (error) {
+    console.error("No se pudo iniciar el servidor:", error.message);
+    process.exit(1);
+  }
 }
 
 startServer();
