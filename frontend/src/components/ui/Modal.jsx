@@ -101,25 +101,48 @@ export default function Modal({ open, onClose, title, children, size = "md", loc
           initial={shouldReduceMotion ? false : "hidden"}
           animate={shouldReduceMotion ? undefined : "visible"}
           exit={shouldReduceMotion ? undefined : "exit"}
-          className={`relative z-10 flex max-h-[95vh] w-full flex-col overflow-hidden rounded-[24px] bg-white shadow-[0_28px_70px_rgba(15,23,42,0.24)] transition-all duration-200 sm:rounded-[28px] ${
+          className={`relative z-10 flex max-h-[92vh] w-full flex-col overflow-hidden rounded-[24px] bg-white shadow-[0_28px_70px_rgba(15,23,42,0.24)] transition-all duration-200 sm:max-h-[95vh] sm:rounded-[28px] ${
             SIZE_CLASSES[size] || SIZE_CLASSES.md
           } ${visible ? "scale-100 opacity-100" : "scale-95 opacity-0"}`}
         >
-          <div className="flex items-center justify-between gap-4 border-b border-[#e8efdf] px-4 py-4 sm:px-6">
-            <h2 className="text-lg font-semibold text-[#203014] sm:text-xl">{title}</h2>
+          <MotionDiv
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 8 }}
+            animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+            transition={shouldReduceMotion ? undefined : { duration: 0.28, delay: 0.04 }}
+            className="flex items-center justify-between gap-4 border-b border-[#e8efdf] px-4 py-4 sm:px-6"
+          >
+            <h2 className="min-w-0 break-words text-lg font-semibold text-[#203014] sm:text-xl">
+              {title}
+            </h2>
             <MotionButton
               {...(shouldReduceMotion ? {} : buttonMotion)}
               type="button"
               onClick={onClose}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition hover:bg-slate-50"
+              aria-label="Cerrar modal"
+              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#66a939]/30"
             >
-              <FiX className="h-5 w-5" />
+              <motion.span
+                whileHover={shouldReduceMotion ? undefined : { rotate: 90, scale: 1.06 }}
+                transition={
+                  shouldReduceMotion
+                    ? undefined
+                    : { type: "spring", stiffness: 320, damping: 22 }
+                }
+                className="inline-flex"
+              >
+                <FiX className="h-5 w-5" />
+              </motion.span>
             </MotionButton>
-          </div>
+          </MotionDiv>
 
-          <div className="overflow-y-auto px-4 py-4 sm:px-6 sm:py-6">
+          <MotionDiv
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
+            animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+            transition={shouldReduceMotion ? undefined : { duration: 0.3, delay: 0.08 }}
+            className="overflow-y-auto px-4 py-4 sm:px-6 sm:py-6"
+          >
             {children}
-          </div>
+          </MotionDiv>
         </MotionDiv>
       </div>
     </AnimatePresence>

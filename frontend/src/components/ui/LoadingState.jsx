@@ -5,6 +5,7 @@ export default function LoadingState({
   description = "Estamos preparando la información para vos.",
   compact = false,
   className = "",
+  action = null,
 }) {
   return (
     <div
@@ -17,6 +18,7 @@ export default function LoadingState({
       <p className="mt-2 max-w-md text-sm leading-6 text-slate-600">
         {description}
       </p>
+      {action ? <div className="mt-5 flex justify-center">{action}</div> : null}
     </div>
   );
 }

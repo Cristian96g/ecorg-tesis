@@ -27,6 +27,8 @@ const userSchema = new mongoose.Schema(
     direccion: { type: String, trim: true, set: normalizeSpaces },
     barrio: { type: String, trim: true, set: normalizeSpaces },
     avatarUrl: String,
+    resetPasswordToken: { type: String, select: false },
+    resetPasswordExpires: { type: Date, select: false },
     points: { type: Number, default: 0, min: 0 },
     level: { type: String, default: "Eco principiante" },
     badges: [

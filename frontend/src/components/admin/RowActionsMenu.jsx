@@ -49,7 +49,17 @@ export default function RowActionsMenu({ items = [], align = "right" }) {
         onClick={() => setOpen((value) => !value)}
         className="inline-flex h-9 w-9 items-center justify-center rounded-2xl border border-[#d7e5c5] bg-white text-slate-600 shadow-sm transition hover:bg-[#f6faf1] hover:text-[#3c6724] focus:outline-none focus:ring-2 focus:ring-[#66a939]/25"
       >
-        <FiMoreHorizontal className="h-4 w-4" />
+        <motion.span
+          whileHover={shouldReduceMotion ? undefined : { rotate: 12, scale: 1.06 }}
+          transition={
+            shouldReduceMotion
+              ? undefined
+              : { type: "spring", stiffness: 340, damping: 22 }
+          }
+          className="inline-flex"
+        >
+          <FiMoreHorizontal className="h-4 w-4" />
+        </motion.span>
       </MotionButton>
 
       <AnimatePresence>

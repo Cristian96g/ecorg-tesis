@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   FiActivity,
@@ -12,7 +12,9 @@ import {
 import { Link } from "react-router-dom";
 import { EcoActionsAPI, UsersAPI, getFriendlyApiError } from "../api/api";
 import LoadingState from "../components/ui/LoadingState";
-import { buttonMotion, hoverLift } from "../components/ui/motion";
+import AnimatedNumber from "../components/ui/AnimatedNumber";
+import { Reveal, StaggerGroup } from "../components/ui/Reveal";
+import { buttonMotion, cardGlowMotion, hoverLift } from "../components/ui/motion";
 import SectionHero from "../components/ui/SectionHero";
 import { useAuth } from "../state/auth";
 import { notifyError } from "../utils/feedback";
@@ -54,13 +56,13 @@ const BADGE_CATALOG = [
     key: "primer_reporte",
     name: "Primer reporte aprobado",
     description: "Obtené la validación de tu primer reporte ambiental dentro de EcoRG.",
-    icon: "ðŸ“£",
+    icon: "📣",
   },
   {
     key: "cinco_reportes",
     name: "Vecino comprometido",
     description: "Alcanzá cinco reportes aprobados y consolidá tu participación ciudadana.",
-    icon: "ðŸŒ¿",
+    icon: "🌿",
   },
   {
     key: "primer_reciclaje",
@@ -72,13 +74,13 @@ const BADGE_CATALOG = [
     key: "cien_puntos",
     name: "100 puntos verdes",
     description: "Superá los 100 puntos acumulando acciones ambientales reales.",
-    icon: "ðŸ’¯",
+    icon: "💯",
   },
   {
     key: "eco_heroe",
     name: "Eco héroe",
     description: "Llegá al nivel más alto disponible en esta versión de EcoRG.",
-    icon: "ðŸ…",
+    icon: "🏅",
   },
 ];
 
@@ -169,14 +171,21 @@ function getProgress(points = 0) {
 
 function MiniStat({ label, value, helper }) {
   const shouldReduceMotion = useReducedMotion();
+  const numericValue = typeof value === "number" ? value : Number.NaN;
 
   return (
     <MotionArticle
-      {...(shouldReduceMotion ? {} : hoverLift)}
+      {...(shouldReduceMotion ? {} : cardGlowMotion)}
       className="rounded-2xl border border-[#deead4] bg-[#fbfdf8] px-4 py-4"
     >
       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#4f7a2f]">{label}</p>
-      <p className="mt-2 text-2xl font-semibold text-[#203014]">{value}</p>
+      <p className="mt-2 text-2xl font-semibold text-[#203014]">
+        {Number.isFinite(numericValue) ? (
+          <AnimatedNumber value={numericValue} />
+        ) : (
+          value
+        )}
+      </p>
       <p className="mt-1 text-sm leading-6 text-slate-600">{helper}</p>
     </MotionArticle>
   );
@@ -223,11 +232,15 @@ function BadgeCard({ badge, earned }) {
   );
 }
 
-function TabButton({ active, children, onClick }) {
+function TabButton({ active, children, onClick, id, panelId }) {
   return (
     <MotionButton
       {...buttonMotion}
       type="button"
+      id={id}
+      role="tab"
+      aria-selected={active}
+      aria-controls={panelId}
       onClick={onClick}
       className={`whitespace-nowrap rounded-2xl px-4 py-2.5 text-sm font-semibold transition ${
         active
@@ -254,6 +267,7 @@ function EmptyState({ title, description }) {
 
 export default function Gamification() {
   const { user, ready } = useAuth();
+  const shouldReduceMotion = useReducedMotion();
   const [profile, setProfile] = useState(null);
   const [actions, setActions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -363,11 +377,16 @@ export default function Gamification() {
         description="Entendé rápido tu progreso, tus logros y las acciones que te ayudan a avanzar dentro de EcoRG."
       >
         <div className="grid min-w-0 gap-4 xl:grid-cols-[1.15fr_0.85fr]">
-          <div className="min-w-0 rounded-[28px] border border-[#dce8ce] bg-white p-5 shadow-[0_16px_40px_rgba(59,89,34,0.08)]">
+          <motion.div
+            {...(shouldReduceMotion ? {} : cardGlowMotion)}
+            className="min-w-0 rounded-[28px] border border-[#dce8ce] bg-white p-5 shadow-[0_16px_40px_rgba(59,89,34,0.08)]"
+          >
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#4f7a2f]">Tu progreso</p>
-                <h2 className="mt-2 text-3xl font-semibold text-[#203014]">{points.toLocaleString("es-AR")} pts</h2>
+                <h2 className="mt-2 text-3xl font-semibold text-[#203014]">
+                  <AnimatedNumber value={points} /> pts
+                </h2>
                 <p className="mt-2 text-sm text-slate-600">
                   Nivel actual: <span className="font-semibold text-[#35561a]">{level}</span>
                 </p>
@@ -392,9 +411,9 @@ export default function Gamification() {
                 <span>{progress.nextLevel ? progress.nextLevel.min : "1000+ pts"}</span>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="flex min-w-0 snap-x snap-mandatory gap-3 overflow-x-auto pb-2 sm:grid sm:grid-cols-2 sm:gap-4 sm:overflow-visible sm:pb-0 xl:grid-cols-2">
+          <StaggerGroup className="flex min-w-0 snap-x snap-mandatory gap-3 overflow-x-auto pb-2 sm:grid sm:grid-cols-2 sm:gap-4 sm:overflow-visible sm:pb-0 xl:grid-cols-2">
             <MiniStat
               label="Usuario"
               value={safeProfile?.nombre || "Cuenta EcoRG"}
@@ -415,16 +434,18 @@ export default function Gamification() {
               value={progress.nextLevel ? progress.nextLevel.label : "Completada"}
               helper="Próximo nivel o tope alcanzado."
             />
-          </div>
+          </StaggerGroup>
         </div>
       </SectionHero>
 
-      <section className="mt-8 min-w-0 rounded-[30px] border border-[#dce8ce] bg-white p-4 shadow-[0_16px_40px_rgba(59,89,34,0.08)] sm:p-6">
-        <div className="flex min-w-0 gap-2 overflow-x-auto pb-1">
+      <Reveal className="mt-8 min-w-0 rounded-[30px] border border-[#dce8ce] bg-white p-4 shadow-[0_16px_40px_rgba(59,89,34,0.08)] sm:p-6">
+        <div className="flex min-w-0 gap-2 overflow-x-auto pb-1" role="tablist" aria-label="Secciones de gamificación">
           {TABS.map((tab) => (
             <TabButton
               key={tab.key}
               active={activeTab === tab.key}
+              id={`gamification-tab-${tab.key}`}
+              panelId={`gamification-panel-${tab.key}`}
               onClick={() => setActiveTab(tab.key)}
             >
               {tab.label}
@@ -434,7 +455,7 @@ export default function Gamification() {
 
         <div className="mt-6">
           {activeTab === "resumen" && (
-            <div className="grid min-w-0 gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+            <div id="gamification-panel-resumen" role="tabpanel" aria-labelledby="gamification-tab-resumen" className="grid min-w-0 gap-6 xl:grid-cols-[1.1fr_0.9fr]">
               <div className="min-w-0 rounded-[28px] border border-[#dce8ce] bg-[#fbfdf8] p-5">
                 <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#4f7a2f]">
                   Niveles disponibles
@@ -489,7 +510,7 @@ export default function Gamification() {
           )}
 
           {activeTab === "logros" && (
-            <div>
+            <div id="gamification-panel-logros" role="tabpanel" aria-labelledby="gamification-tab-logros">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#4f7a2f]">
@@ -515,7 +536,7 @@ export default function Gamification() {
           )}
 
           {activeTab === "historial" && (
-            <div>
+            <div id="gamification-panel-historial" role="tabpanel" aria-labelledby="gamification-tab-historial">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#4f7a2f]">
@@ -591,7 +612,7 @@ export default function Gamification() {
           )}
 
           {activeTab === "como" && (
-            <div>
+            <div id="gamification-panel-como" role="tabpanel" aria-labelledby="gamification-tab-como">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#4f7a2f]">
@@ -628,7 +649,8 @@ export default function Gamification() {
             </div>
           )}
         </div>
-      </section>
+      </Reveal>
     </div>
   );
 }
+

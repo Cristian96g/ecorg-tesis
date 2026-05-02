@@ -1,11 +1,18 @@
-import { useEffect, useMemo, useState } from "react";
+﻿import { useEffect, useMemo, useState } from "react";
 import { FiBookOpen, FiFilter, FiMapPin, FiRotateCcw, FiSearch } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { PointsAPI } from "../api/api";
+import { PointsAPI, getFriendlyApiError } from "../api/api";
 import MapGoogle from "../components/MapGoogle";
 import LoadingState from "../components/ui/LoadingState";
 import SectionHero from "../components/ui/SectionHero";
 import { notifyError } from "../utils/feedback";
+import { motion, useReducedMotion } from "framer-motion";
+import { Reveal } from "../components/ui/Reveal";
+import { buttonMotion, cardGlowMotion, fadeUpVariants } from "../components/ui/motion";
+
+const MotionDiv = motion.div;
+const MotionButton = motion.button;
+const MotionLink = motion(Link);
 
 const MATERIAL_ALIASES = {
   papel: ["papel", "papel_carton"],
@@ -83,8 +90,17 @@ function FilterPanel({
   hasFilters,
   resultCount,
 }) {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
-    <div className="space-y-5 rounded-[28px] border border-[#dce8ce] bg-white p-5 shadow-[0_16px_40px_rgba(59,89,34,0.08)]">
+    <MotionDiv
+      initial={shouldReduceMotion ? false : "hidden"}
+      whileInView={shouldReduceMotion ? undefined : "visible"}
+      viewport={{ once: true, amount: 0.18 }}
+      variants={shouldReduceMotion ? undefined : fadeUpVariants}
+      {...(shouldReduceMotion ? {} : cardGlowMotion)}
+      className="space-y-5 rounded-[28px] border border-[#dce8ce] bg-white p-5 shadow-[0_16px_40px_rgba(59,89,34,0.08)]"
+    >
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#4f7a2f]">
@@ -127,22 +143,30 @@ function FilterPanel({
       </div>
 
       {hasFilters ? (
-        <button
+        <MotionButton
           type="button"
           onClick={onClear}
+          {...(shouldReduceMotion ? {} : buttonMotion)}
           className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-[#d9e7ca] bg-[#fbfdf8] px-4 py-3 text-sm font-semibold text-[#35561a] transition hover:bg-[#f4f9ee]"
         >
           <FiRotateCcw className="h-4 w-4" />
           Limpiar filtros
-        </button>
+        </MotionButton>
       ) : null}
-    </div>
+    </MotionDiv>
   );
 }
 
 function Legend() {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
-    <div className="w-full max-w-[220px] rounded-[22px] border border-white/70 bg-white/92 p-3 shadow-[0_18px_36px_rgba(31,49,18,0.14)] backdrop-blur sm:max-w-[280px] sm:p-4">
+    <MotionDiv
+      initial={shouldReduceMotion ? false : "hidden"}
+      animate={shouldReduceMotion ? undefined : "visible"}
+      variants={shouldReduceMotion ? undefined : fadeUpVariants}
+      className="w-full max-w-[220px] rounded-[22px] border border-white/70 bg-white/92 p-3 shadow-[0_18px_36px_rgba(31,49,18,0.14)] backdrop-blur sm:max-w-[280px] sm:p-4"
+    >
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#4f7a2f]">
         Leyenda
       </p>
@@ -157,7 +181,7 @@ function Legend() {
           </div>
         ))}
       </div>
-    </div>
+    </MotionDiv>
   );
 }
 
@@ -180,8 +204,12 @@ export default function Map() {
         setPoints(Array.isArray(data) ? data : []);
       } catch (loadError) {
         console.error("MAP_POINTS_LOAD_ERROR", loadError);
-        setError("No pudimos cargar los puntos verdes en este momento.");
-        notifyError("No se pudieron cargar los puntos verdes.");
+        const message = getFriendlyApiError(
+          loadError,
+          "No pudimos cargar los puntos verdes en este momento."
+        );
+        setError(message);
+        notifyError(message);
       } finally {
         setLoading(false);
       }
@@ -223,18 +251,20 @@ export default function Map() {
         className="mb-6"
         actions={(
           <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-            <Link
+            <MotionLink
               to="/reportes"
+              {...buttonMotion}
               className="inline-flex items-center justify-center rounded-2xl bg-[#66a939] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#5a9732]"
             >
               Reportar problema
-            </Link>
-            <Link
+            </MotionLink>
+            <MotionLink
               to="/educacion"
+              {...buttonMotion}
               className="inline-flex items-center justify-center rounded-2xl border border-[#cfe1b7] bg-white px-5 py-3 text-sm font-semibold text-[#4c7d26] transition hover:border-[#66a939] hover:text-[#33561a]"
             >
               Aprender a reciclar
-            </Link>
+            </MotionLink>
           </div>
         )}
       >
@@ -251,17 +281,20 @@ export default function Map() {
       <div className="grid gap-6 xl:grid-cols-[340px_1fr]">
         <aside className="xl:sticky xl:top-24 xl:self-start">
           <div className="xl:hidden">
-            <button
+            <MotionButton
               type="button"
               onClick={() => setFiltersOpen((current) => !current)}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-[#dce8ce] bg-white px-4 py-3 text-sm font-semibold text-[#35561a] shadow-sm transition hover:bg-[#f7fbf1]"
+              aria-expanded={filtersOpen}
+              aria-controls="map-filters-panel"
+              {...buttonMotion}
+              className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-2xl border border-[#dce8ce] bg-white px-4 py-3 text-sm font-semibold text-[#35561a] shadow-sm transition hover:bg-[#f7fbf1]"
             >
               <FiFilter className="h-4 w-4" />
               {filtersOpen ? "Ocultar filtros" : "Mostrar filtros"}
-            </button>
+            </MotionButton>
           </div>
 
-          <div className={`${filtersOpen ? "mt-4 block" : "mt-0 hidden"} xl:mt-0 xl:block`}>
+          <div id="map-filters-panel" className={`${filtersOpen ? "mt-4 block" : "mt-0 hidden"} xl:mt-0 xl:block`}>
             <FilterPanel
               q={q}
               setQ={setQ}
@@ -280,7 +313,7 @@ export default function Map() {
         </aside>
 
         <section className="space-y-4">
-          <div className="overflow-hidden rounded-[30px] border border-[#dce8ce] bg-white shadow-[0_18px_50px_-28px_rgba(15,130,55,0.35)]">
+          <Reveal className="overflow-hidden rounded-[30px] border border-[#dce8ce] bg-white shadow-[0_18px_50px_-28px_rgba(15,130,55,0.35)]">
             <div className="border-b border-[#edf3ed] bg-gradient-to-r from-[#f3f9f1] via-white to-[#f8fcf7] px-5 py-4">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
@@ -338,14 +371,15 @@ export default function Map() {
                           Probá cambiar el material, el barrio o el estado del punto para ampliar los resultados.
                         </p>
                         {hasFilters ? (
-                          <button
+                          <MotionButton
                             type="button"
                             onClick={clearFilters}
+                            {...buttonMotion}
                             className="mt-5 inline-flex items-center justify-center gap-2 rounded-2xl border border-[#d9e7ca] bg-[#fbfdf8] px-4 py-3 text-sm font-semibold text-[#35561a] transition hover:bg-[#f4f9ee]"
                           >
                             <FiRotateCcw className="h-4 w-4" />
                             Limpiar filtros
-                          </button>
+                          </MotionButton>
                         ) : null}
                       </div>
                     </div>
@@ -353,9 +387,10 @@ export default function Map() {
                 </>
               ) : null}
             </div>
-          </div>
+          </Reveal>
         </section>
       </div>
     </div>
   );
 }
+

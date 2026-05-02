@@ -1,6 +1,12 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { FiGrid } from "react-icons/fi";
-import { buttonMotion, fadeUpVariants, hoverLift } from "./motion";
+import {
+  buttonMotion,
+  cardGlowMotion,
+  fadeUpVariants,
+  heroContainerVariants,
+  heroItemVariants,
+} from "./motion";
 
 const MotionSection = motion.section;
 const MotionDiv = motion.div;
@@ -22,32 +28,48 @@ export function AdminSectionHero({
       initial={shouldReduceMotion ? false : "hidden"}
       whileInView={shouldReduceMotion ? undefined : "visible"}
       viewport={{ once: true, amount: 0.2 }}
-      variants={fadeUpVariants}
+      variants={shouldReduceMotion ? undefined : heroContainerVariants}
       className={`rounded-[28px] border border-[#dbe7cf] bg-[linear-gradient(135deg,#fbfdf8_0%,#f2f8eb_100%)] px-5 py-5 shadow-[0_16px_40px_rgba(59,89,34,0.08)] sm:px-7 sm:py-6 ${className}`}
     >
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div className="max-w-3xl">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#5d8a38]">
+          <MotionSpan
+            variants={shouldReduceMotion ? undefined : heroItemVariants}
+            className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#5d8a38]"
+          >
             {eyebrow}
-          </p>
-          <h1 className="mt-3 text-2xl font-semibold tracking-tight text-[#24341a] sm:text-[2rem]">
+          </MotionSpan>
+          <MotionDiv
+            variants={shouldReduceMotion ? undefined : heroItemVariants}
+            className="mt-3 text-2xl font-semibold tracking-tight text-[#24341a] sm:text-[2rem]"
+          >
             {title}
-          </h1>
+          </MotionDiv>
           {description ? (
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-[0.95rem]">
+            <MotionDiv
+              variants={shouldReduceMotion ? undefined : heroItemVariants}
+              className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:text-[0.95rem]"
+            >
               {description}
-            </p>
+            </MotionDiv>
           ) : null}
         </div>
 
         {action ? (
-          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:justify-end">
+          <MotionDiv
+            variants={shouldReduceMotion ? undefined : heroItemVariants}
+            className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:justify-end"
+          >
             {action}
-          </div>
+          </MotionDiv>
         ) : null}
       </div>
 
-      {children ? <div className="mt-5">{children}</div> : null}
+      {children ? (
+        <MotionDiv variants={shouldReduceMotion ? undefined : fadeUpVariants} className="mt-5">
+          {children}
+        </MotionDiv>
+      ) : null}
     </MotionSection>
   );
 }
@@ -57,7 +79,7 @@ export function Card({ className = "", children }) {
 
   return (
     <MotionDiv
-      {...(shouldReduceMotion ? {} : hoverLift)}
+      {...(shouldReduceMotion ? {} : cardGlowMotion)}
       className={`rounded-[28px] border border-[#dbe7cf] bg-white shadow-[0_18px_45px_rgba(59,89,34,0.08)] ${className}`}
     >
       {children}
@@ -75,7 +97,7 @@ export function CardHeader({ title, subtitle = "", action = null }) {
       <div>
         <h3 className="text-[15px] font-semibold text-[#24341a]">{title}</h3>
         {subtitle ? (
-          <p className="mt-1 text-sm text-slate-500">{subtitle}</p>
+          <p className="mt-1 text-sm leading-6 text-slate-500">{subtitle}</p>
         ) : null}
       </div>
       {action}
@@ -86,7 +108,7 @@ export function CardHeader({ title, subtitle = "", action = null }) {
 export function FilterBar({ children, className = "" }) {
   return (
     <div
-      className={`rounded-3xl border border-[#e4edd8] bg-[#f8fbf4] p-3 sm:p-4 ${className}`}
+      className={`rounded-3xl border border-[#e4edd8] bg-[#f8fbf4] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.55)] sm:p-4 ${className}`}
     >
       {children}
     </div>
@@ -136,14 +158,14 @@ export function Button({
   ...props
 }) {
   const base =
-    "inline-flex justify-center items-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-[#66a939]/30 disabled:cursor-not-allowed disabled:opacity-60";
+    "inline-flex min-h-[44px] items-center justify-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-[#66a939]/30 disabled:cursor-not-allowed disabled:opacity-60";
   const styles = {
     primary:
       "bg-[#66a939] text-white shadow-[0_14px_30px_rgba(76,126,40,0.22)] hover:bg-[#578f31]",
     ghost:
-      "border border-[#d7e5c5] bg-white text-slate-700 hover:border-[#c7dbaf] hover:bg-[#f6faf1]",
+      "border border-[#d7e5c5] bg-white text-slate-700 shadow-sm hover:border-[#c7dbaf] hover:bg-[#f6faf1]",
     danger:
-      "border border-rose-200 bg-rose-50 text-rose-700 hover:bg-rose-100",
+      "border border-rose-200 bg-rose-50 text-rose-700 shadow-sm hover:bg-rose-100",
   };
 
   return (
@@ -179,7 +201,7 @@ export function Input({ className = "", ...props }) {
   return (
     <input
       {...props}
-      className={`w-full rounded-2xl border border-[#d7e5c5] bg-white px-3.5 py-2.5 text-sm text-slate-700 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-[#66a939] focus:ring-2 focus:ring-[#66a939]/20 ${className}`}
+      className={`w-full rounded-2xl border border-[#d7e5c5] bg-white px-3.5 py-3 text-sm text-slate-700 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-[#66a939] focus:ring-2 focus:ring-[#66a939]/20 ${className}`}
     />
   );
 }
@@ -188,7 +210,7 @@ export function Select({ className = "", ...props }) {
   return (
     <select
       {...props}
-      className={`w-full appearance-none rounded-2xl border border-[#d7e5c5] bg-white px-3.5 py-2.5 pr-9 text-sm text-slate-700 shadow-sm outline-none transition focus:border-[#66a939] focus:ring-2 focus:ring-[#66a939]/20 ${className}`}
+      className={`w-full appearance-none rounded-2xl border border-[#d7e5c5] bg-white px-3.5 py-3 pr-9 text-sm text-slate-700 shadow-sm outline-none transition focus:border-[#66a939] focus:ring-2 focus:ring-[#66a939]/20 ${className}`}
       style={{
         backgroundImage:
           "url(\"data:image/svg+xml,%3Csvg fill='%235b6b58' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 7.5l4.5 4.5 4.5-4.5'/%3E%3C/svg%3E\")",

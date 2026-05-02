@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+﻿import { useCallback, useEffect, useMemo, useState } from "react";
 import { FiEdit2, FiLoader, FiPlus, FiTrash2 } from "react-icons/fi";
 import { toast } from "react-toastify";
 import Modal from "../../components/ui/Modal";
@@ -169,7 +169,65 @@ export default function AdminBarrios() {
             </div>
           </FilterBar>
 
-          <div className="overflow-x-auto rounded-[24px] border border-[#edf3e6]">
+          <div className="space-y-4 md:hidden">
+            {loading && (
+              <div className="rounded-[24px] border border-[#edf3e6] bg-white px-4 py-6 text-center text-sm text-gray-500">
+                Cargando barrios...
+              </div>
+            )}
+
+            {!loading &&
+              paginatedRows.map((barrio) => (
+                <article key={barrio._id} className="rounded-[24px] border border-[#edf3e6] bg-white p-4 shadow-sm">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-[#2d3d33]">{barrio.nombre}</p>
+                      <p className="mt-1 text-sm text-slate-500">{barrio.ciudad || "—"} · {barrio.provincia || "—"}</p>
+                    </div>
+                    {barrio.activo ? (
+                      <span className="inline-flex rounded-full bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">
+                        Activo
+                      </span>
+                    ) : (
+                      <span className="inline-flex rounded-full bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600">
+                        Inactivo
+                      </span>
+                    )}
+                  </div>
+                  <div className="mt-4 flex items-center gap-2">
+                    <Button
+                      variant="ghost"
+                      className="min-h-[44px] flex-1 px-3 py-2"
+                      onClick={() => {
+                        setEditing(barrio);
+                        setOpenForm(true);
+                      }}
+                    >
+                      <FiEdit2 className="h-4 w-4" /> Editar
+                    </Button>
+                    <RowActionsMenu
+                      items={[
+                        {
+                          label: "Eliminar",
+                          icon: FiTrash2,
+                          tone: "danger",
+                          onClick: () => setToDelete(barrio),
+                        },
+                      ]}
+                    />
+                  </div>
+                </article>
+              ))}
+
+            {!loading && rows.length === 0 && (
+              <EmptyState
+                title="No encontramos barrios"
+                description="Probá con otra búsqueda o limpiá los filtros para volver a ver todo el catálogo."
+              />
+            )}
+          </div>
+
+          <div className="hidden overflow-x-auto rounded-[24px] border border-[#edf3e6] md:block">
             <table className="min-w-full text-sm">
               <thead className="bg-[#f8fbf4] text-slate-700">
                 <tr>
@@ -390,7 +448,7 @@ function BarrioPanel({ barrio, onClose, onCreate, onUpdate }) {
         </Select>
       </label>
 
-      <div className="flex items-center justify-end gap-2">
+      <div className="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-end">
         <Button variant="ghost" onClick={onClose} disabled={saving}>
           Cancelar
         </Button>
@@ -418,7 +476,7 @@ function ConfirmDeleteBarrio({ barrio, loading, onCancel, onConfirm }) {
         <span className="font-medium">{barrio?.nombre}</span>? Esta acción no se puede deshacer.
       </p>
 
-      <div className="mt-5 flex justify-end gap-2">
+      <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
         <Button variant="ghost" onClick={onCancel} disabled={loading}>
           Cancelar
         </Button>
@@ -429,3 +487,4 @@ function ConfirmDeleteBarrio({ barrio, loading, onCancel, onConfirm }) {
     </Modal>
   );
 }
+

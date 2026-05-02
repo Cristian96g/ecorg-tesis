@@ -16,6 +16,7 @@ const Perfil = lazy(() => import("./pages/Profile"));
 const Notifications = lazy(() => import("./pages/Notifications"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const AuthPage = lazy(() => import("./pages/Auth"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 
 const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
 const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
@@ -123,6 +124,7 @@ export default function AppRoutes() {
         <Route path="/educacion" element={<Educacion />} />
         <Route path="/login" element={<AuthPage mode="login" />} />
         <Route path="/registrarse" element={<AuthPage mode="register" />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route
           path="/perfil"

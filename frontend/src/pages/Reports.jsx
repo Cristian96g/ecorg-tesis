@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   FiAlertCircle,
   FiEye,
@@ -12,13 +13,18 @@ import { toast } from "react-toastify";
 import AddressAutocomplete from "../components/AddressAutocomplete";
 import ImageFileField from "../components/ImageFileField";
 import Modal from "../components/ui/Modal";
+import { Reveal, StaggerGroup } from "../components/ui/Reveal";
 import SectionHero from "../components/ui/SectionHero";
+import { buttonMotion, fadeUpVariants, hoverLift } from "../components/ui/motion";
 import { ReportsAPI, getAssetUrl, getFriendlyApiError, getToken } from "../api/api";
+
+const MotionArticle = motion.article;
+const MotionButton = motion.button;
 
 const ESTADOS = [
   { value: "", label: "Todos" },
   { value: "abierto", label: "Abierto" },
-  { value: "en_revision", label: "En revision" },
+  { value: "en_revision", label: "En revisión" },
   { value: "resuelto", label: "Resuelto" },
 ];
 
@@ -29,7 +35,7 @@ const SEVERIDADES = [
   { value: "alta", label: "Alta" },
 ];
 
-const WEEKDAYS = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
+const WEEKDAYS = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
 const PLACEHOLDER_LABEL = "Sin imagen";
 
 function fmtFecha(iso) {
@@ -54,12 +60,12 @@ function getEstadoMeta(state) {
     abierto: {
       label: "Abierto",
       className: "bg-rose-100 text-rose-700",
-      title: "El reporte fue recibido y esta esperando atencion.",
+      title: "El reporte fue recibido y está esperando atención.",
     },
     en_revision: {
-      label: "En revision",
+      label: "En revisión",
       className: "bg-amber-100 text-amber-700",
-      title: "El reporte esta siendo evaluado por el equipo.",
+      title: "El reporte está siendo evaluado por el equipo.",
     },
     resuelto: {
       label: "Resuelto",
@@ -105,7 +111,7 @@ function getDetailReport(report) {
 function openMap(report) {
   const mapUrl = getMapUrl(report);
   if (!mapUrl) {
-    toast.error("Este reporte no tiene ubicacion disponible.");
+    toast.error("Este reporte no tiene ubicación disponible.");
     return;
   }
 
@@ -122,35 +128,36 @@ function validateReportForm(form) {
   const hasValidCoords = isFiniteCoordinate(form.lat) && isFiniteCoordinate(form.lng);
 
   if (!titulo) {
-    errors.titulo = "Ingresa un titulo para identificar el reporte.";
+    errors.titulo = "Ingresá un título para identificar el reporte.";
   } else if (titulo.length < 6) {
-    errors.titulo = "El titulo necesita al menos 6 caracteres.";
+    errors.titulo = "El título necesita al menos 6 caracteres.";
   }
 
   if (!direccion) {
-    errors.direccion = "Ingresa una direccion o selecciona una sugerencia.";
+    errors.direccion = "Ingresá una dirección o seleccioná una sugerencia.";
   } else if (direccion.length < 5) {
-    errors.direccion = "La direccion es demasiado corta.";
+    errors.direccion = "La dirección es demasiado corta.";
   }
 
   if (!descripcion) {
-    errors.descripcion = "Agrega una descripcion breve del problema.";
+    errors.descripcion = "Agregá una descripción breve del problema.";
   } else if (descripcion.length < 12) {
-    errors.descripcion = "La descripcion necesita un poco mas de detalle.";
+    errors.descripcion = "La descripción necesita un poco más de detalle.";
   }
 
   if (barrio && barrio.length < 3) {
-    errors.barrio = "Si completas el barrio, usa al menos 3 caracteres.";
+    errors.barrio = "Si completás el barrio, usá al menos 3 caracteres.";
   }
 
   if (hasAnyCoord && !hasValidCoords) {
-    errors.ubicacion = "La ubicacion seleccionada no es valida. Vuelve a elegir la direccion.";
+    errors.ubicacion = "La ubicación seleccionada no es válida. Volvé a elegir la dirección.";
   }
 
   return errors;
 }
 
 export default function Reports() {
+  const shouldReduceMotion = useReducedMotion();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -219,6 +226,23 @@ export default function Reports() {
     || (items.length === 0
       ? "No hay reportes para mostrar."
       : "No se encontraron resultados con estos filtros.");
+  const emptyAction = error ? (
+    <button
+      type="button"
+      onClick={() => window.location.reload()}
+      className="rounded-2xl border border-gray-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-gray-50"
+    >
+      Volver a intentar
+    </button>
+  ) : hasFilters ? (
+    <button
+      type="button"
+      onClick={clearFilters}
+      className="rounded-2xl border border-gray-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-gray-50"
+    >
+      Limpiar filtros
+    </button>
+  ) : null;
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-10 md:px-8">
@@ -260,10 +284,10 @@ export default function Reports() {
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
         <aside className="md:col-span-4">
-          <div className="space-y-4 rounded-3xl border border-[#dce8dd] bg-white/95 p-5 shadow-[0_18px_50px_-28px_rgba(15,130,55,0.35)] backdrop-blur md:sticky md:top-24">
+          <Reveal className="space-y-4 rounded-3xl border border-[#dce8dd] bg-white/95 p-5 shadow-[0_18px_50px_-28px_rgba(15,130,55,0.35)] backdrop-blur md:sticky md:top-24">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#66a939]">Filtrar reportes</p>
-              <p className="mt-1 text-sm text-gray-500">Ajusta la busqueda por barrio, estado o severidad.</p>
+              <p className="mt-1 text-sm text-gray-500">Ajustá la búsqueda por barrio, estado o severidad.</p>
             </div>
 
             <label className="block">
@@ -273,7 +297,7 @@ export default function Reports() {
                 <input
                   value={q}
                   onChange={(e) => setQ(e.target.value)}
-                  placeholder="Titulo o direccion..."
+                  placeholder="Título o dirección..."
                   className="w-full rounded-2xl border border-gray-200 bg-slate-50/70 py-3 pl-10 pr-3 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0f8237]/30"
                 />
               </div>
@@ -297,15 +321,15 @@ export default function Reports() {
                 Limpiar filtros
               </button>
             )}
-          </div>
+          </Reveal>
         </aside>
 
         <section className="section md:col-span-8 !py-0">
-          <div className="overflow-hidden rounded-3xl border border-[#dce8dd] bg-white shadow-[0_18px_50px_-30px_rgba(15,130,55,0.35)]">
+          <Reveal className="overflow-hidden rounded-3xl border border-[#dce8dd] bg-white shadow-[0_18px_50px_-30px_rgba(15,130,55,0.35)]">
             <div className="border-b border-[#edf3ed] bg-gradient-to-r from-[#f3f9f1] via-white to-[#f8fcf7] px-5 py-4">
               <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h2 className="text-base font-semibold text-[#2d3d33]">Listado publico</h2>
+                  <h2 className="text-base font-semibold text-[#2d3d33]">Listado público</h2>
                   <p className="text-sm text-slate-500">Reportes aprobados listos para consulta ciudadana.</p>
                 </div>
                 <span className="inline-flex w-fit items-center rounded-full bg-[#0f8237]/10 px-3 py-1 text-xs font-semibold text-[#0f8237]">
@@ -314,11 +338,16 @@ export default function Reports() {
               </div>
             </div>
 
-            <div className="space-y-4 p-4 md:hidden">
+            <StaggerGroup className="space-y-4 p-4 md:hidden">
               {loading && <div className="rounded-2xl border border-slate-100 bg-white px-4 py-6 text-center text-sm text-slate-500">Cargando reportes...</div>}
 
               {!loading && rows.map((report) => (
-                <article key={report._id} className="rounded-[24px] border border-[#e8efe2] bg-white p-4 shadow-sm">
+                <MotionArticle
+                  key={report._id}
+                  variants={fadeUpVariants}
+                  {...(shouldReduceMotion ? {} : hoverLift)}
+                  className="rounded-[24px] border border-[#e8efe2] bg-white p-4 shadow-sm"
+                >
                   <div className="flex items-start gap-3">
                     <ReportThumb report={report} />
                     <div className="min-w-0 flex-1">
@@ -328,9 +357,11 @@ export default function Reports() {
                           {report.severidad || "-"}
                         </span>
                       </div>
-                      <h3 className="mt-3 font-semibold text-[#2d3d33]">{report.titulo || "Reporte comunitario"}</h3>
+                      <h3 className="mt-3 line-clamp-2 text-base font-semibold text-[#2d3d33]">
+                        {report.titulo || "Reporte comunitario"}
+                      </h3>
                       <p className="mt-1 text-sm text-slate-500">{report.barrio || "-"} · {fmtFecha(report.createdAt)}</p>
-                      <p className="mt-1 text-sm text-slate-600">{report.direccion || "-"}</p>
+                      <p className="mt-1 line-clamp-2 text-sm text-slate-600">{report.direccion || "-"}</p>
                     </div>
                   </div>
                   <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -341,25 +372,17 @@ export default function Reports() {
                       Ver detalle
                     </ActionButton>
                   </div>
-                </article>
+                </MotionArticle>
               ))}
 
               {!loading && rows.length === 0 && (
                 <EmptyStatePanel
-                  title={items.length === 0 ? "Todavia no hay reportes visibles" : "No encontramos coincidencias"}
+                  title={items.length === 0 ? "Todavía no hay reportes visibles" : "No encontramos coincidencias"}
                   message={emptyMessage}
-                  action={hasFilters ? (
-                    <button
-                      type="button"
-                      onClick={clearFilters}
-                      className="rounded-2xl border border-gray-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-gray-50"
-                    >
-                      Limpiar filtros
-                    </button>
-                  ) : null}
+                  action={emptyAction}
                 />
               )}
-            </div>
+            </StaggerGroup>
 
             <div className="hidden overflow-x-auto md:block">
               <table className="min-w-full text-sm">
@@ -367,7 +390,7 @@ export default function Reports() {
                   <tr className="text-left">
                     <Th>Imagen</Th>
                     <Th>Barrio</Th>
-                    <Th>Direccion</Th>
+                    <Th>Dirección</Th>
                     <Th>Severidad</Th>
                     <Th>Estado</Th>
                     <Th>Fecha</Th>
@@ -410,17 +433,9 @@ export default function Reports() {
                     <tr>
                       <Td colSpan={7} className="px-0 py-0">
                         <EmptyStatePanel
-                          title={items.length === 0 ? "Todavia no hay reportes visibles" : "No encontramos coincidencias"}
+                          title={items.length === 0 ? "Todavía no hay reportes visibles" : "No encontramos coincidencias"}
                           message={emptyMessage}
-                          action={hasFilters ? (
-                            <button
-                              type="button"
-                              onClick={clearFilters}
-                              className="rounded-2xl border border-gray-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-gray-50"
-                            >
-                              Limpiar filtros
-                            </button>
-                          ) : null}
+                          action={emptyAction}
                         />
                       </Td>
                     </tr>
@@ -428,7 +443,7 @@ export default function Reports() {
                 </tbody>
               </table>
             </div>
-          </div>
+          </Reveal>
         </section>
       </div>
 
@@ -488,17 +503,23 @@ function StatusBadge({ state }) {
 
 function ActionButton({ icon, children, disabled = false, onClick }) {
   const IconComponent = icon;
+  const shouldReduceMotion = useReducedMotion();
 
   return (
-    <button
+    <MotionButton
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-medium text-slate-700 transition hover:-translate-y-0.5 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+      initial={shouldReduceMotion ? false : "hidden"}
+      whileInView={shouldReduceMotion ? undefined : "visible"}
+      viewport={{ once: true, amount: 0.18 }}
+      variants={shouldReduceMotion ? undefined : fadeUpVariants}
+      {...(shouldReduceMotion ? {} : buttonMotion)}
+      className="inline-flex min-h-[40px] items-center justify-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-medium text-slate-700 transition hover:-translate-y-0.5 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
     >
       {IconComponent ? <IconComponent className="h-4 w-4" /> : null}
       {children}
-    </button>
+    </MotionButton>
   );
 }
 
@@ -547,8 +568,8 @@ function CreateReportPanel({ onClose, onCreated }) {
     const validation = validateReportForm(form);
     if (Object.keys(validation).length > 0) {
       setErrors(validation);
-      setSubmitError("Revisa los campos marcados para poder enviar el reporte.");
-      toast.warn("Revisa los campos obligatorios.");
+      setSubmitError("Revisá los campos marcados para poder enviar el reporte.");
+      toast.warn("Revisá los campos obligatorios.");
       return;
     }
 
@@ -557,12 +578,12 @@ function CreateReportPanel({ onClose, onCreated }) {
       setSubmitError("");
       const created = await ReportsAPI.create(form);
       onCreated?.(created);
-      toast.success("Reporte enviado. Quedo pendiente de revision.");
+      toast.success("Reporte enviado. Quedó pendiente de revisión.");
       onClose();
     } catch (error) {
       console.error(error);
       const message = error?.response?.status === 401
-        ? "Necesitas iniciar sesion para crear un reporte."
+        ? "Necesitás iniciar sesión para crear un reporte."
         : getFriendlyApiError(error, "No se pudo crear el reporte.");
       setSubmitError(message);
       toast.error(message);
@@ -575,118 +596,118 @@ function CreateReportPanel({ onClose, onCreated }) {
 
   return (
     <Modal open onClose={onClose} title="Nuevo reporte" size="lg">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#66a939]">Nuevo reporte</p>
-        <p className="mb-5 mt-2 text-sm text-gray-500">Completá los datos y, si podés, agregá una imagen para facilitar la revisión.</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#66a939]">Nuevo reporte</p>
+      <p className="mb-5 mt-2 text-sm text-gray-500">Completá los datos y, si podés, agregá una imagen para facilitar la revisión.</p>
 
-        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-          {submitError ? (
-            <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-              {submitError}
+      <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+        {submitError ? (
+          <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+            {submitError}
+          </div>
+        ) : null}
+
+        <Field label="Título">
+          <input
+            value={form.titulo}
+            onChange={(e) => setField("titulo", e.target.value)}
+            className={`w-full rounded-2xl border px-3 py-3 focus:outline-none focus:ring-2 focus:ring-[#0f8237]/30 ${errors.titulo ? "border-rose-300 bg-rose-50/40" : "border-gray-200"}`}
+            placeholder="Ej: Residuos acumulados en la esquina"
+          />
+          {errors.titulo ? <FieldError message={errors.titulo} /> : null}
+        </Field>
+
+        <Field label="Barrio">
+          <input
+            value={form.barrio}
+            onChange={(e) => setField("barrio", e.target.value)}
+            className={`w-full rounded-2xl border px-3 py-3 ${errors.barrio ? "border-rose-300 bg-rose-50/40" : "border-gray-200"}`}
+            placeholder="Ej: Centro"
+          />
+          {errors.barrio ? <FieldError message={errors.barrio} /> : null}
+        </Field>
+
+        <Field label="Dirección">
+          <AddressAutocomplete
+            value={form.direccion}
+            onChange={(text) => {
+              setField("direccion", text);
+              setField("lat", "");
+              setField("lng", "");
+            }}
+            onSelect={(item) => {
+              setField("direccion", item.label);
+              setField("lat", item.lat);
+              setField("lng", item.lon);
+            }}
+            city="Rio Gallegos"
+            countryCodes="ar"
+          />
+          {hasSelectedCoordinates ? (
+            <div className="mt-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-700">
+              Ubicación lista para mapa: lat {Number(form.lat).toFixed(5)}, lng {Number(form.lng).toFixed(5)}
             </div>
-          ) : null}
+          ) : (
+            <div className="mt-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600">
+              Si seleccionás una sugerencia, el reporte quedará vinculado a una ubicación precisa.
+            </div>
+          )}
+          {errors.direccion ? <FieldError message={errors.direccion} /> : null}
+          {errors.ubicacion ? <FieldError message={errors.ubicacion} /> : null}
+        </Field>
 
-          <Field label="Titulo">
-            <input
-              value={form.titulo}
-              onChange={(e) => setField("titulo", e.target.value)}
-              className={`w-full rounded-2xl border px-3 py-3 focus:outline-none focus:ring-2 focus:ring-[#0f8237]/30 ${errors.titulo ? "border-rose-300 bg-rose-50/40" : "border-gray-200"}`}
-              placeholder="Ej: Residuos acumulados en la esquina"
-            />
-            {errors.titulo ? <FieldError message={errors.titulo} /> : null}
-          </Field>
+        <Field label="Severidad">
+          <select
+            value={form.severidad}
+            onChange={(e) => setField("severidad", e.target.value)}
+            className="w-full rounded-2xl border border-gray-200 px-3 py-3"
+          >
+            <option value="baja">Baja</option>
+            <option value="media">Media</option>
+            <option value="alta">Alta</option>
+          </select>
+        </Field>
 
-          <Field label="Barrio">
-            <input
-              value={form.barrio}
-              onChange={(e) => setField("barrio", e.target.value)}
-              className={`w-full rounded-2xl border px-3 py-3 ${errors.barrio ? "border-rose-300 bg-rose-50/40" : "border-gray-200"}`}
-              placeholder="Ej: Centro"
-            />
-            {errors.barrio ? <FieldError message={errors.barrio} /> : null}
-          </Field>
+        <Field label="Descripción">
+          <textarea
+            rows={4}
+            value={form.descripcion}
+            onChange={(e) => setField("descripcion", e.target.value)}
+            className={`w-full rounded-2xl border px-3 py-3 ${errors.descripcion ? "border-rose-300 bg-rose-50/40" : "border-gray-200"}`}
+            placeholder="Contanos qué está pasando y cualquier detalle útil."
+          />
+          {errors.descripcion ? <FieldError message={errors.descripcion} /> : null}
+        </Field>
 
-          <Field label="Direccion">
-            <AddressAutocomplete
-              value={form.direccion}
-              onChange={(text) => {
-                setField("direccion", text);
-                setField("lat", "");
-                setField("lng", "");
-              }}
-              onSelect={(item) => {
-                setField("direccion", item.label);
-                setField("lat", item.lat);
-                setField("lng", item.lon);
-              }}
-              city="Rio Gallegos"
-              countryCodes="ar"
-            />
-            {hasSelectedCoordinates ? (
-              <div className="mt-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-700">
-                Ubicacion lista para mapa: lat {Number(form.lat).toFixed(5)}, lng {Number(form.lng).toFixed(5)}
-              </div>
-            ) : (
-              <div className="mt-2 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600">
-                Si seleccionas una sugerencia, el reporte quedara vinculado a una ubicacion precisa.
-              </div>
-            )}
-            {errors.direccion ? <FieldError message={errors.direccion} /> : null}
-            {errors.ubicacion ? <FieldError message={errors.ubicacion} /> : null}
-          </Field>
+        <Field label="Foto opcional">
+          <ImageFileField
+            value={form.fotos}
+            onChange={(file) => setField("fotos", file)}
+            label="Imagen del reporte"
+            helperText="Subí una imagen clara del problema para facilitar la revisión."
+          />
+        </Field>
 
-          <Field label="Severidad">
-            <select
-              value={form.severidad}
-              onChange={(e) => setField("severidad", e.target.value)}
-              className="w-full rounded-2xl border border-gray-200 px-3 py-3"
-            >
-              <option value="baja">Baja</option>
-              <option value="media">Media</option>
-              <option value="alta">Alta</option>
-            </select>
-          </Field>
+        <div className="rounded-2xl bg-slate-50 p-4 text-sm text-slate-600">
+          Estado inicial: pendiente de revisión. Una vez aprobado, el equipo podrá trabajarlo como abierto, en revisión o resuelto.
+        </div>
+        <div className="rounded-2xl border border-[#d6e8cf] bg-[#f5fbf2] p-4 text-sm text-slate-600">
+          Los puntos se suman solo cuando el reporte es validado por un administrador.
+        </div>
 
-          <Field label="Descripcion">
-            <textarea
-              rows={4}
-              value={form.descripcion}
-              onChange={(e) => setField("descripcion", e.target.value)}
-              className={`w-full rounded-2xl border px-3 py-3 ${errors.descripcion ? "border-rose-300 bg-rose-50/40" : "border-gray-200"}`}
-              placeholder="Contanos que esta pasando y cualquier detalle util."
-            />
-            {errors.descripcion ? <FieldError message={errors.descripcion} /> : null}
-          </Field>
-
-          <Field label="Foto opcional">
-            <ImageFileField
-              value={form.fotos}
-              onChange={(file) => setField("fotos", file)}
-              label="Imagen del reporte"
-              helperText="Subi una imagen clara del problema para facilitar la revision."
-            />
-          </Field>
-
-          <div className="rounded-2xl bg-slate-50 p-4 text-sm text-slate-600">
-            Estado inicial: pendiente de revision. Una vez aprobado, el equipo podra trabajarlo como abierto, en revision o resuelto.
-          </div>
-          <div className="rounded-2xl border border-[#d6e8cf] bg-[#f5fbf2] p-4 text-sm text-slate-600">
-            Los puntos se suman solo cuando el reporte es validado por un administrador.
-          </div>
-
-          <div className="flex flex-col-reverse gap-2 pt-2 sm:flex-row sm:items-center sm:justify-end">
-            <button type="button" onClick={onClose} className="min-h-[44px] rounded-2xl border border-gray-200 px-4 py-2.5 font-medium hover:bg-gray-50 sm:w-auto">
-              Cancelar
-            </button>
-            <button
-              type="button"
-              onClick={submit}
-              disabled={saving}
-              className="min-h-[44px] rounded-2xl bg-[#0f8237] px-4 py-2.5 font-medium text-white transition hover:bg-[#0d6f2f] disabled:opacity-60 sm:w-auto"
-            >
-              {saving ? "Enviando..." : "Enviar reporte"}
-            </button>
-          </div>
-        </form>
+        <div className="flex flex-col-reverse gap-2 pt-2 sm:flex-row sm:items-center sm:justify-end">
+          <button type="button" onClick={onClose} className="min-h-[44px] rounded-2xl border border-gray-200 px-4 py-2.5 font-medium hover:bg-gray-50 sm:w-auto">
+            Cancelar
+          </button>
+          <button
+            type="button"
+            onClick={submit}
+            disabled={saving}
+            className="min-h-[44px] rounded-2xl bg-[#0f8237] px-4 py-2.5 font-medium text-white transition hover:bg-[#0d6f2f] disabled:opacity-60 sm:w-auto"
+          >
+            {saving ? "Enviando..." : "Enviar reporte"}
+          </button>
+        </div>
+      </form>
     </Modal>
   );
 }
@@ -709,59 +730,59 @@ function ReportDetailDialog({ report, onClose }) {
 
   return (
     <Modal open={!!report} onClose={onClose} title="Detalle del reporte" size="lg">
-        <div className="grid gap-0 md:grid-cols-[320px,1fr]">
-          <div className="bg-slate-100">
-            {imageUrl ? (
-              <img src={imageUrl} alt={report.titulo || "Reporte"} className="h-full min-h-[220px] w-full object-cover" />
-            ) : (
-              <div className="flex h-full min-h-[220px] items-center justify-center text-slate-400">
-                <div className="text-center">
-                  <FiImage className="mx-auto h-8 w-8" />
-                  <p className="mt-2 text-sm">{PLACEHOLDER_LABEL}</p>
-                </div>
+      <div className="grid gap-0 md:grid-cols-[320px,1fr]">
+        <div className="bg-slate-100">
+          {imageUrl ? (
+            <img src={imageUrl} alt={report.titulo || "Reporte"} className="h-full min-h-[220px] w-full object-cover" />
+          ) : (
+            <div className="flex h-full min-h-[220px] items-center justify-center text-slate-400">
+              <div className="text-center">
+                <FiImage className="mx-auto h-8 w-8" />
+                <p className="mt-2 text-sm">{PLACEHOLDER_LABEL}</p>
               </div>
-            )}
+            </div>
+          )}
+        </div>
+
+        <div className="p-5 sm:p-6">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#66a939]">Detalle del reporte</p>
+              <h3 className="mt-2 text-xl font-semibold text-[#2d3d33]">{report.titulo || "Reporte comunitario"}</h3>
+              <p className="mt-1 text-sm text-gray-500">{report.code || report._id}</p>
+            </div>
           </div>
 
-          <div className="p-5 sm:p-6">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#66a939]">Detalle del reporte</p>
-                <h3 className="mt-2 text-xl font-semibold text-[#2d3d33]">{report.titulo || "Reporte comunitario"}</h3>
-                <p className="mt-1 text-sm text-gray-500">{report.code || report._id}</p>
-              </div>
-            </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <StatusBadge state={report.estado} />
+            <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${getSeverityMeta(report.severidad)}`}>
+              {report.severidad || "Sin severidad"}
+            </span>
+          </div>
 
-            <div className="mt-4 flex flex-wrap gap-2">
-              <StatusBadge state={report.estado} />
-              <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${getSeverityMeta(report.severidad)}`}>
-                {report.severidad || "Sin severidad"}
-              </span>
-            </div>
+          <dl className="mt-5 grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
+            <DetailRow label="Barrio" value={report.barrio || "-"} />
+            <DetailRow
+              label="Usuario creador"
+              value={typeof report.user === "object" ? (report.user?.nombre || report.user?.email || "-") : "-"}
+            />
+            <DetailRow label="Dirección" value={report.direccion || "-"} />
+            <DetailRow label="Fecha" value={report.createdAtLabel || fmtFecha(report.createdAt)} />
+            <DetailRow label="Descripción" value={report.descripcion || "Sin descripción"} fullWidth />
+          </dl>
 
-            <dl className="mt-5 grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
-              <DetailRow label="Barrio" value={report.barrio || "-"} />
-              <DetailRow
-                label="Usuario creador"
-                value={typeof report.user === "object" ? (report.user?.nombre || report.user?.email || "-") : "-"}
-              />
-              <DetailRow label="Direccion" value={report.direccion || "-"} />
-              <DetailRow label="Fecha" value={report.createdAtLabel || fmtFecha(report.createdAt)} />
-              <DetailRow label="Descripcion" value={report.descripcion || "Sin descripcion"} fullWidth />
-            </dl>
-
-            <div className="mt-6 flex flex-wrap gap-2">
-              <button
-                type="button"
-                onClick={() => openMap(report)}
-                className="inline-flex items-center gap-2 rounded-2xl border border-gray-200 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:-translate-y-0.5 hover:bg-gray-50"
-              >
-                <FiMapPin className="h-4 w-4" />
-                Ver en mapa
-              </button>
-            </div>
+          <div className="mt-6 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => openMap(report)}
+              className="inline-flex items-center gap-2 rounded-2xl border border-gray-200 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:-translate-y-0.5 hover:bg-gray-50"
+            >
+              <FiMapPin className="h-4 w-4" />
+              Ver en mapa
+            </button>
           </div>
         </div>
+      </div>
     </Modal>
   );
 }

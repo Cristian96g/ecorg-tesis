@@ -144,15 +144,17 @@ function buildInfoWindowContent(point, position) {
   `;
 }
 
-function MapState({ title, description, tone = "neutral" }) {
+function MapState({ title, description, tone = "neutral", children = null }) {
   const tones = {
     neutral: "border-[#dce8ce] bg-[#fbfdf8] text-slate-600",
     error: "border-[#f0d7dc] bg-[#fff8f8] text-rose-700",
   };
 
   return (
-    <div className={`flex h-full min-h-[460px] items-center justify-center px-6 text-center sm:min-h-[560px] ${tones[tone] || tones.neutral}`}>
-      <div className="max-w-md">
+    <div
+      className={`flex h-full min-h-[460px] flex-col justify-center px-6 text-center sm:min-h-[560px] ${tones[tone] || tones.neutral}`}
+    >
+      <div className="mx-auto max-w-md">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm">
           {tone === "error" ? (
             <FiAlertCircle className="h-6 w-6 text-rose-500" />
@@ -163,6 +165,32 @@ function MapState({ title, description, tone = "neutral" }) {
         <p className="mt-4 text-lg font-semibold text-[#203014]">{title}</p>
         <p className="mt-2 text-sm leading-6">{description}</p>
       </div>
+      {children}
+    </div>
+  );
+}
+
+function PointFallbackList({ points = [] }) {
+  if (!points.length) return null;
+
+  return (
+    <div className="mx-auto mt-6 grid w-full max-w-3xl gap-3 text-left">
+      {points.slice(0, 6).map((point) => (
+        <article
+          key={point._id || `${point.title}-${point.address}`}
+          className="rounded-2xl border border-[#e7efdb] bg-white px-4 py-4"
+        >
+          <p className="text-sm font-semibold text-[#203014]">
+            {point.title || point.name || "Punto verde"}
+          </p>
+          <p className="mt-1 text-sm text-slate-600">
+            {point.address || point.direccion || "Sin dirección"}
+          </p>
+          <p className="mt-1 text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
+            {point.barrio || "Sin barrio"}
+          </p>
+        </article>
+      ))}
     </div>
   );
 }
@@ -254,7 +282,9 @@ export default function MapGoogle({ points = [], activeType = "" }) {
         tone="error"
         title="No pudimos cargar Google Maps"
         description={error.message || "Revisá la API key o la conexión e intentá nuevamente."}
-      />
+      >
+        <PointFallbackList points={validPoints} />
+      </MapState>
     );
   }
 

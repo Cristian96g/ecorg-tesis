@@ -253,7 +253,7 @@ export default function AdminUsers() {
                       </span>
                     </div>
                     <div className="mt-3 space-y-1 text-sm text-slate-600">
-                      <p>{user.telefono || "Sin telÃ©fono"}</p>
+                      <p>{user.telefono || "Sin teléfono"}</p>
                       <p>{user.barrio || "Sin barrio"}</p>
                       <p>Alta: {formatDate(user.createdAt)}</p>
                     </div>
@@ -276,9 +276,9 @@ export default function AdminUsers() {
                             tone: "danger",
                             disabled: isSelf || isLastAdmin || removingId === user._id,
                             title: isSelf
-                              ? "No podÃ©s eliminar tu propia cuenta desde este panel."
+                              ? "No podés eliminar tu propia cuenta desde este panel."
                               : isLastAdmin
-                                ? "No podÃ©s eliminar el Ãºltimo administrador."
+                                ? "No podés eliminar el último administrador."
                                 : undefined,
                             onClick: () => setToDelete(user),
                           },
@@ -293,7 +293,7 @@ export default function AdminUsers() {
               <EmptyState
                 icon={FiUsers}
                 title="No hay usuarios para mostrar"
-                description="AjustÃ¡ la bÃºsqueda o el filtro por rol para encontrar cuentas registradas."
+                description="Ajustá la búsqueda o el filtro por rol para encontrar cuentas registradas."
               />
             )}
           </div>

@@ -279,6 +279,15 @@ export default function Calendar() {
           <LoadingState
             title="No pudimos cargar el calendario"
             description={error}
+            action={(
+              <button
+                type="button"
+                onClick={() => window.location.reload()}
+                className="rounded-2xl border border-[#d7e5c5] bg-white px-4 py-2.5 text-sm font-semibold text-[#3c6724] transition hover:bg-[#f6faf1]"
+              >
+                Volver a intentar
+              </button>
+            )}
           />
         ) : filteredItems.length === 0 ? (
           <div className="rounded-[30px] border border-dashed border-[#d7e5c5] bg-[#fbfdf8] px-6 py-12 text-center">

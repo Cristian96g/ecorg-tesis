@@ -1,5 +1,9 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { fadeUpVariants } from "./motion";
+import {
+  fadeUpVariants,
+  heroContainerVariants,
+  heroItemVariants,
+} from "./motion";
 
 const MotionSection = motion.section;
 const MotionSpan = motion.span;
@@ -22,37 +26,28 @@ export default function SectionHero({
       initial={shouldReduceMotion ? false : "hidden"}
       whileInView={shouldReduceMotion ? undefined : "visible"}
       viewport={{ once: true, amount: 0.2 }}
-      variants={fadeUpVariants}
-      className={`overflow-hidden rounded-3xl border border-[#d8e7c5] bg-[linear-gradient(135deg,#f7fbf1_0%,#eef7e2_45%,#f9fcf3_100%)] px-5 py-7 shadow-[0_24px_60px_rgba(73,110,33,0.10)] sm:px-8 sm:py-10 ${className}`.trim()}
+      variants={shouldReduceMotion ? undefined : heroContainerVariants}
+      className={`overflow-hidden rounded-3xl border border-[#d8e7c5] bg-[linear-gradient(135deg,#f7fbf1_0%,#eef7e2_45%,#f9fcf3_100%)] px-5 py-7 shadow-[0_24px_60px_rgba(73,110,33,0.10)] sm:px-8 sm:py-9 ${className}`.trim()}
     >
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
         <div className="max-w-3xl">
           {eyebrow ? (
             <MotionSpan
-              initial={shouldReduceMotion ? false : { opacity: 0, y: 8 }}
-              whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.3, delay: 0.03 }}
+              variants={shouldReduceMotion ? undefined : heroItemVariants}
               className="inline-flex rounded-full border border-[#cfe1b7] bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#4f7a2f]"
             >
               {eyebrow}
             </MotionSpan>
           ) : null}
           <MotionH1
-            initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
-            whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.38, delay: 0.06 }}
-            className="mt-4 text-3xl font-semibold tracking-tight text-[#203014] sm:text-4xl"
+            variants={shouldReduceMotion ? undefined : heroItemVariants}
+            className="mt-4 max-w-3xl text-3xl font-semibold tracking-tight text-[#203014] sm:text-4xl"
           >
             {title}
           </MotionH1>
           {description ? (
             <MotionP
-              initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
-              whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.38, delay: 0.1 }}
+              variants={shouldReduceMotion ? undefined : heroItemVariants}
               className="mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base"
             >
               {description}
@@ -62,10 +57,7 @@ export default function SectionHero({
 
         {actions ? (
           <MotionDiv
-            initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
-            whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.34, delay: 0.12 }}
+            variants={shouldReduceMotion ? undefined : heroItemVariants}
             className="w-full lg:w-auto lg:max-w-sm"
           >
             {actions}
@@ -75,10 +67,7 @@ export default function SectionHero({
 
       {children ? (
         <MotionDiv
-          initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
-          whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.36, delay: 0.14 }}
+          variants={shouldReduceMotion ? undefined : fadeUpVariants}
           className="mt-6"
         >
           {children}

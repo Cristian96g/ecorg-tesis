@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+﻿import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
@@ -28,6 +28,7 @@ import Logo from "../assets/ecorg-logo.png";
 
 const MotionButton = motion.button;
 const MotionDiv = motion.div;
+const MotionImg = motion.img;
 
 function navItemClasses(isActive) {
   return [
@@ -270,9 +271,15 @@ export default function Header() {
               onClick={closeMobile}
               aria-label="Ir al inicio de EcoRG"
             >
-              <img
+              <MotionImg
                 src={Logo}
                 alt="EcoRG"
+                whileHover={shouldReduceMotion ? undefined : { scale: 1.02, y: -1 }}
+                transition={
+                  shouldReduceMotion
+                    ? undefined
+                    : { type: "spring", stiffness: 320, damping: 22 }
+                }
                 className="h-12 w-auto sm:h-14"
                 draggable="false"
               />
@@ -288,13 +295,15 @@ export default function Header() {
 
             <div className="hidden items-center gap-2 lg:flex">
               {!user ? (
-                <NavLink
+                <MotionDiv {...(shouldReduceMotion ? {} : buttonMotion)}>
+                  <NavLink
                   to="/login"
                   className="inline-flex items-center gap-2 rounded-2xl bg-[#66a939] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#5a9732] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#66a939]/40"
-                >
-                  <FiLogIn className="h-4 w-4" />
-                  Acceder
-                </NavLink>
+                  >
+                    <FiLogIn className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+                    Acceder
+                  </NavLink>
+                </MotionDiv>
               ) : (
                 <>
                   <div className="relative" ref={notificationsRef}>
@@ -304,7 +313,17 @@ export default function Header() {
                       className="relative inline-flex items-center justify-center rounded-2xl border border-[#dce8ce] bg-white p-2.5 text-slate-600 transition hover:border-[#66a939] hover:bg-[#f7fbf1] hover:text-[#4f7a2f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#66a939]/40"
                       aria-label="Abrir notificaciones"
                     >
-                      <FiBell className="h-5 w-5" />
+                      <motion.span
+                        whileHover={shouldReduceMotion ? undefined : { rotate: -8, scale: 1.05 }}
+                        transition={
+                          shouldReduceMotion
+                            ? undefined
+                            : { type: "spring", stiffness: 340, damping: 22 }
+                        }
+                        className="inline-flex"
+                      >
+                        <FiBell className="h-5 w-5" />
+                      </motion.span>
                       {unreadCount > 0 ? (
                         <span className="absolute -right-1 -top-1 inline-flex min-h-[1.2rem] min-w-[1.2rem] items-center justify-center rounded-full bg-[#66a939] px-1 text-[11px] font-semibold text-white">
                           {unreadCount > 9 ? "9+" : unreadCount}
@@ -544,14 +563,24 @@ export default function Header() {
               aria-controls="mobile-menu"
               onClick={() => setOpen((value) => !value)}
             >
-              {open ? <FiX className="h-5 w-5" /> : <FiMenu className="h-5 w-5" />}
+              <motion.span
+                whileHover={shouldReduceMotion ? undefined : { scale: 1.06, rotate: open ? -8 : 8 }}
+                transition={
+                  shouldReduceMotion
+                    ? undefined
+                    : { type: "spring", stiffness: 340, damping: 22 }
+                }
+                className="inline-flex"
+              >
+                {open ? <FiX className="h-5 w-5" /> : <FiMenu className="h-5 w-5" />}
+              </motion.span>
             </button>
           </div>
 
           <div
             id="mobile-menu"
             className={`overflow-hidden border-t border-[#e7efdb] transition-all duration-300 lg:hidden ${
-              open ? "max-h-[80vh]" : "max-h-0"
+              open ? "max-h-[80vh] overflow-y-auto" : "max-h-0"
             }`}
           >
             <div className="space-y-5 px-4 py-4 sm:px-5">
@@ -620,3 +649,4 @@ export default function Header() {
     </header>
   );
 }
+

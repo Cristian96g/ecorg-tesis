@@ -305,7 +305,7 @@ export default function Points() {
             {!loading && rows.length === 0 && (
               <EmptyState
                 title="No encontramos puntos verdes"
-                description="ProbÃ¡ con otra bÃºsqueda o limpiÃ¡ los filtros para volver a ver todas las ubicaciones."
+                description="Probá con otra búsqueda o limpiá los filtros para volver a ver todas las ubicaciones."
               />
             )}
           </div>
