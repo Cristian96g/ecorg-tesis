@@ -400,8 +400,12 @@ export default function Gamification() {
 
             <div className="mt-5">
               <div className="h-4 overflow-hidden rounded-full bg-[#edf5e1]">
-                <div
+                <motion.div
                   className="h-full rounded-full bg-[linear-gradient(90deg,#66a939_0%,#85c457_100%)] transition-all"
+                  initial={shouldReduceMotion ? false : { width: 0 }}
+                  whileInView={shouldReduceMotion ? undefined : { width: `${progress.percent}%` }}
+                  viewport={{ once: true, amount: 0.6 }}
+                  transition={shouldReduceMotion ? undefined : { duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                   style={{ width: `${progress.percent}%` }}
                 />
               </div>

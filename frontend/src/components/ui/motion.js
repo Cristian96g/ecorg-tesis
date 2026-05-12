@@ -1,9 +1,33 @@
 export const fadeUpVariants = {
-  hidden: { opacity: 0, y: 22 },
+  hidden: { opacity: 0, y: 18 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.56, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.52, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+export const pageVariants = {
+  hidden: { opacity: 0, y: 14 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] },
+  },
+  exit: {
+    opacity: 0,
+    y: 10,
+    transition: { duration: 0.22, ease: [0.4, 0, 1, 1] },
+  },
+};
+
+export const scaleInVariants = {
+  hidden: { opacity: 0, scale: 0.96, y: 12 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
@@ -11,8 +35,8 @@ export const subtleStagger = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.09,
-      delayChildren: 0.06,
+      staggerChildren: 0.08,
+      delayChildren: 0.05,
     },
   },
 };
@@ -31,18 +55,18 @@ export const heroContainerVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.13,
-      delayChildren: 0.08,
+      staggerChildren: 0.12,
+      delayChildren: 0.07,
     },
   },
 };
 
 export const heroItemVariants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 22 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.62, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.58, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
@@ -53,7 +77,7 @@ export const modalBackdropVariants = {
 };
 
 export const modalPanelVariants = {
-  hidden: { opacity: 0, scale: 0.96, y: 14 },
+  hidden: { opacity: 0, scale: 0.96, y: 12 },
   visible: {
     opacity: 1,
     scale: 1,
@@ -64,7 +88,7 @@ export const modalPanelVariants = {
 };
 
 export const dropdownVariants = {
-  hidden: { opacity: 0, y: -8, scale: 0.985 },
+  hidden: { opacity: 0, y: -6, scale: 0.985 },
   visible: {
     opacity: 1,
     y: 0,
@@ -75,23 +99,23 @@ export const dropdownVariants = {
 };
 
 export const hoverLift = {
-  whileHover: { y: -6, scale: 1.012 },
-  whileTap: { scale: 0.992 },
-  transition: { type: "spring", stiffness: 300, damping: 24, mass: 0.82 },
+  whileHover: { y: -4, scale: 1.008 },
+  whileTap: { scale: 0.994 },
+  transition: { type: "spring", stiffness: 260, damping: 26, mass: 0.84 },
 };
 
 export const buttonMotion = {
-  whileHover: { scale: 1.02 },
+  whileHover: { scale: 1.018 },
   whileTap: { scale: 0.97 },
-  transition: { type: "spring", stiffness: 360, damping: 24, mass: 0.82 },
+  transition: { type: "spring", stiffness: 320, damping: 26, mass: 0.86 },
 };
 
 export const cardGlowMotion = {
   whileHover: {
-    y: -6,
-    scale: 1.012,
-    boxShadow: "0 24px 54px rgba(59,89,34,0.14)",
+    y: -4,
+    scale: 1.008,
+    boxShadow: "0 22px 48px rgba(59,89,34,0.12)",
   },
-  whileTap: { scale: 0.992 },
-  transition: { type: "spring", stiffness: 280, damping: 24, mass: 0.84 },
+  whileTap: { scale: 0.994 },
+  transition: { type: "spring", stiffness: 260, damping: 26, mass: 0.86 },
 };

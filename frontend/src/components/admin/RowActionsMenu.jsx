@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { FiMoreHorizontal } from "react-icons/fi";
-import { buttonMotion, dropdownVariants } from "../ui/motion";
+import { buttonMotion, dropdownVariants, fadeUpVariants, subtleStagger } from "../ui/motion";
 
 const MotionButton = motion.button;
 const MotionDiv = motion.div;
+const MotionAction = motion.button;
 
 export default function RowActionsMenu({ items = [], align = "right" }) {
   const [open, setOpen] = useState(false);
@@ -69,8 +70,10 @@ export default function RowActionsMenu({ items = [], align = "right" }) {
             initial={shouldReduceMotion ? false : "hidden"}
             animate={shouldReduceMotion ? undefined : "visible"}
             exit={shouldReduceMotion ? undefined : "exit"}
+            transition={shouldReduceMotion ? undefined : { duration: 0.18 }}
             className={`absolute top-11 z-20 min-w-[190px] rounded-2xl border border-[#dfe9d3] bg-white p-1.5 shadow-[0_18px_45px_rgba(59,89,34,0.16)] ${positionClass}`}
           >
+            <MotionDiv variants={shouldReduceMotion ? undefined : subtleStagger}>
             {visibleItems.map((item) => {
               const Icon = item.icon;
               const toneClass =
@@ -79,8 +82,9 @@ export default function RowActionsMenu({ items = [], align = "right" }) {
                   : "text-slate-700 hover:bg-[#f6faf1] hover:text-[#3c6724]";
 
               return (
-                <button
+                <MotionAction
                   key={item.label}
+                  variants={shouldReduceMotion ? undefined : fadeUpVariants}
                   type="button"
                   disabled={item.disabled}
                   title={item.title}
@@ -93,9 +97,10 @@ export default function RowActionsMenu({ items = [], align = "right" }) {
                 >
                   {Icon ? <Icon className="h-4 w-4 shrink-0" /> : null}
                   <span>{item.label}</span>
-                </button>
+                </MotionAction>
               );
             })}
+            </MotionDiv>
           </MotionDiv>
         ) : null}
       </AnimatePresence>

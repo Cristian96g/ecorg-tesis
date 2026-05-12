@@ -44,3 +44,16 @@ export function StaggerGroup({
     </MotionDiv>
   );
 }
+
+export function StaggerItem({ children, className = "" }) {
+  const shouldReduceMotion = useReducedMotion();
+
+  return (
+    <MotionDiv
+      variants={shouldReduceMotion ? undefined : fadeUpVariants}
+      className={className}
+    >
+      {children}
+    </MotionDiv>
+  );
+}

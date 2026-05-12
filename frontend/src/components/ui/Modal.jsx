@@ -91,7 +91,7 @@ export default function Modal({ open, onClose, title, children, size = "md", loc
           initial={shouldReduceMotion ? false : "hidden"}
           animate={shouldReduceMotion ? undefined : "visible"}
           exit={shouldReduceMotion ? undefined : "exit"}
-          className={`absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-200 ${
+          className={`absolute inset-0 bg-black/40 backdrop-blur-md transition-opacity duration-200 ${
             visible ? "opacity-100" : "opacity-0"
           }`}
         />

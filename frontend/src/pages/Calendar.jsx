@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { FiCalendar, FiClock, FiMapPin, FiSearch } from "react-icons/fi";
 import LoadingState from "../components/ui/LoadingState";
@@ -8,6 +9,8 @@ import {
   scheduleTypes,
 } from "../constants/scheduleData.js";
 import { notifyError } from "../utils/feedback";
+
+const MotionDiv = motion.div;
 
 const weekOrder = [
   "Domingo",
@@ -33,6 +36,12 @@ const typeStyles = {
     accent: "#EEF6FF",
   },
 };
+
+const collectionLegend = [
+  { label: "Reciclables", color: "bg-[#66a939]" },
+  { label: "Residuos secos", color: "bg-amber-400" },
+  { label: "Residuos especiales", color: "bg-[#365c9b]" },
+];
 
 function getNextCollectionLabel(days = []) {
   const today = new Date().getDay();
@@ -139,6 +148,7 @@ function ScheduleCard({ item }) {
 }
 
 export default function Calendar() {
+  const shouldReduceMotion = useReducedMotion();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -315,6 +325,47 @@ export default function Calendar() {
           </div>
         ) : (
           <>
+            <MotionDiv
+              initial={shouldReduceMotion ? false : "hidden"}
+              animate={shouldReduceMotion ? undefined : "visible"}
+              variants={
+                shouldReduceMotion
+                  ? undefined
+                  : {
+                      hidden: {},
+                      visible: {
+                        transition: {
+                          staggerChildren: 0.09,
+                          delayChildren: 0.04,
+                        },
+                      },
+                    }
+              }
+              className="mb-4 inline-flex flex-wrap items-center gap-x-4 gap-y-2 rounded-2xl border border-[#e1ecd2] bg-[#f7fbf1] px-4 py-3 text-sm text-slate-600"
+            >
+              {collectionLegend.map((item) => (
+                <motion.div
+                  key={item.label}
+                  variants={
+                    shouldReduceMotion
+                      ? undefined
+                      : {
+                          hidden: { opacity: 0, y: 8 },
+                          visible: {
+                            opacity: 1,
+                            y: 0,
+                            transition: { duration: 0.48, ease: "easeOut" },
+                          },
+                        }
+                  }
+                  className="inline-flex items-center gap-2"
+                >
+                  <span className={`h-2.5 w-2.5 rounded-full ${item.color}`} aria-hidden="true" />
+                  <span>{item.label}</span>
+                </motion.div>
+              ))}
+            </MotionDiv>
+
             <div className="mb-5 flex items-center justify-between gap-4">
               <p className="text-sm text-slate-600">
                 {filteredItems.length} horario

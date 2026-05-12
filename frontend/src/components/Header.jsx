@@ -23,12 +23,13 @@ import {
 import { NotificationsAPI, getFriendlyApiError } from "../api/api";
 import { useAuth } from "../state/auth";
 import { notifyError, notifySuccess } from "../utils/feedback";
-import { buttonMotion, dropdownVariants } from "./ui/motion";
+import { buttonMotion, dropdownVariants, fadeUpVariants, subtleStagger } from "./ui/motion";
 import Logo from "../assets/ecorg-logo.png";
 
 const MotionButton = motion.button;
 const MotionDiv = motion.div;
 const MotionImg = motion.img;
+const MotionArticle = motion.article;
 
 function navItemClasses(isActive) {
   return [
@@ -314,20 +315,32 @@ export default function Header() {
                       aria-label="Abrir notificaciones"
                     >
                       <motion.span
+                        animate={
+                          shouldReduceMotion || unreadCount === 0
+                            ? undefined
+                            : { rotate: [0, -10, 0], scale: [1, 1.08, 1] }
+                        }
                         whileHover={shouldReduceMotion ? undefined : { rotate: -8, scale: 1.05 }}
                         transition={
                           shouldReduceMotion
                             ? undefined
-                            : { type: "spring", stiffness: 340, damping: 22 }
+                            : unreadCount > 0
+                              ? { duration: 2.6, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }
+                              : { type: "spring", stiffness: 340, damping: 22 }
                         }
                         className="inline-flex"
                       >
                         <FiBell className="h-5 w-5" />
                       </motion.span>
                       {unreadCount > 0 ? (
-                        <span className="absolute -right-1 -top-1 inline-flex min-h-[1.2rem] min-w-[1.2rem] items-center justify-center rounded-full bg-[#66a939] px-1 text-[11px] font-semibold text-white">
+                        <motion.span
+                          initial={shouldReduceMotion ? false : { scale: 0.7, opacity: 0 }}
+                          animate={shouldReduceMotion ? undefined : { scale: 1, opacity: 1 }}
+                          transition={shouldReduceMotion ? undefined : { type: "spring", stiffness: 360, damping: 22 }}
+                          className="absolute -right-1 -top-1 inline-flex min-h-[1.2rem] min-w-[1.2rem] items-center justify-center rounded-full bg-[#66a939] px-1 text-[11px] font-semibold text-white"
+                        >
                           {unreadCount > 9 ? "9+" : unreadCount}
-                        </span>
+                        </motion.span>
                       ) : null}
                     </button>
 
@@ -396,10 +409,16 @@ export default function Header() {
                               </p>
                             </div>
                           ) : (
-                            <div className="space-y-3">
+                            <MotionDiv
+                              variants={shouldReduceMotion ? undefined : subtleStagger}
+                              initial={shouldReduceMotion ? false : "hidden"}
+                              animate={shouldReduceMotion ? undefined : "visible"}
+                              className="space-y-3"
+                            >
                               {notifications.map((item) => (
-                                <article
+                                <MotionArticle
                                   key={item._id}
+                                  variants={shouldReduceMotion ? undefined : fadeUpVariants}
                                   className={`rounded-2xl border px-4 py-4 ${
                                     item.read
                                       ? "border-[#e5edd9] bg-[#fbfdf8]"
@@ -452,9 +471,9 @@ export default function Header() {
                                       </button>
                                     </div>
                                   </div>
-                                </article>
+                                </MotionArticle>
                               ))}
-                            </div>
+                            </MotionDiv>
                           )}
                         </div>
 

@@ -1,8 +1,13 @@
 import React from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { FiArrowUpRight, FiAward, FiBookOpen, FiCalendar, FiMap, FiUser } from "react-icons/fi";
 import { useAuth } from "../state/auth";
+import { buttonMotion } from "./ui/motion";
 import logo from "../assets/ecorg-logo.png";
+
+const MotionNavLink = motion(NavLink);
+const MotionIcon = motion.span;
 
 const footerLinks = [
   { to: "/", label: "Inicio" },
@@ -21,19 +26,38 @@ const utilityLinks = [
 ];
 
 function FooterLink({ to, children }) {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
-    <NavLink
+    <MotionNavLink
       to={to}
+      whileHover={shouldReduceMotion ? undefined : { x: 1.5 }}
+      transition={
+        shouldReduceMotion
+          ? undefined
+          : { type: "spring", stiffness: 340, damping: 24 }
+      }
       className="inline-flex items-center gap-2 text-sm text-white/78 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
     >
       <span>{children}</span>
-      <FiArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-    </NavLink>
+      <MotionIcon
+        whileHover={shouldReduceMotion ? undefined : { x: 1.5, y: -0.5 }}
+        transition={
+          shouldReduceMotion
+            ? undefined
+            : { type: "spring", stiffness: 340, damping: 22 }
+        }
+        className="inline-flex"
+      >
+        <FiArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+      </MotionIcon>
+    </MotionNavLink>
   );
 }
 
 export default function Footer() {
   const { user } = useAuth();
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <footer className="mt-16 bg-[linear-gradient(180deg,#26401d_0%,#17331b_100%)] text-white">
@@ -46,18 +70,20 @@ export default function Footer() {
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
-              <NavLink
+              <MotionNavLink
                 to="/reportes"
+                {...(shouldReduceMotion ? {} : buttonMotion)}
                 className="inline-flex items-center justify-center rounded-2xl bg-[#66a939] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#5a9732] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
               >
                 Reportar ahora
-              </NavLink>
-              <NavLink
+              </MotionNavLink>
+              <MotionNavLink
                 to="/mapa"
+                {...(shouldReduceMotion ? {} : buttonMotion)}
                 className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
               >
                 Explorar mapa
-              </NavLink>
+              </MotionNavLink>
             </div>
           </section>
 
@@ -91,14 +117,30 @@ export default function Footer() {
               {utilityLinks.map((link) => {
                 const Icon = link.icon;
                 return (
-                  <NavLink
+                  <MotionNavLink
                     key={link.to}
                     to={link.to}
+                    whileHover={shouldReduceMotion ? undefined : { x: 1.5 }}
+                    transition={
+                      shouldReduceMotion
+                        ? undefined
+                        : { type: "spring", stiffness: 340, damping: 24 }
+                    }
                     className="inline-flex items-center gap-2 text-sm text-white/78 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
                   >
-                    <Icon className="h-4 w-4" aria-hidden="true" />
+                    <MotionIcon
+                      whileHover={shouldReduceMotion ? undefined : { x: 1.5 }}
+                      transition={
+                        shouldReduceMotion
+                          ? undefined
+                          : { type: "spring", stiffness: 340, damping: 22 }
+                      }
+                      className="inline-flex"
+                    >
+                      <Icon className="h-4 w-4" aria-hidden="true" />
+                    </MotionIcon>
                     <span>{link.label}</span>
-                  </NavLink>
+                  </MotionNavLink>
                 );
               })}
 

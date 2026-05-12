@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,9 +9,13 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import ScrollToTopButton from "./components/ScrollTopTop";
 import LoadingState from "./components/ui/LoadingState";
+import { pageVariants } from "./components/ui/motion";
+
+const MotionDiv = motion.div;
 
 function App() {
   const { pathname } = useLocation();
+  const shouldReduceMotion = useReducedMotion();
   const isAdmin = pathname.startsWith("/admin");
 
   return (
@@ -29,7 +34,17 @@ function App() {
               </div>
             }
           >
-            <AppRoutes />
+            <AnimatePresence mode="wait">
+              <MotionDiv
+                key={pathname}
+                initial={shouldReduceMotion ? false : "hidden"}
+                animate={shouldReduceMotion ? undefined : "visible"}
+                exit={shouldReduceMotion ? undefined : "exit"}
+                variants={shouldReduceMotion ? undefined : pageVariants}
+              >
+                <AppRoutes />
+              </MotionDiv>
+            </AnimatePresence>
           </Suspense>
         </main>
 

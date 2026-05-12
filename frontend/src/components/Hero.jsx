@@ -21,12 +21,11 @@ const MotionH1 = motion.h1;
 const MotionP = motion.p;
 const MotionLink = motion(Link);
 const MotionImg = motion.img;
-const MotionSpan = motion.span;
 
 const floatingStats = [
-  { label: "6 puntos verdes activos", icon: FiMapPin, position: "left-4 top-8 md:-left-8 md:top-10" },
-  { label: "Reportes con ubicación", icon: FiNavigation, position: "right-3 top-28 md:-right-8 md:top-14" },
-  { label: "Acciones con impacto", icon: FiTrendingUp, position: "left-10 bottom-6 md:left-0 md:bottom-2" },
+  { label: "6 puntos verdes activos", icon: FiMapPin, position: "left-3 top-8 md:left-2 md:top-10" },
+  { label: "Reportes con ubicación", icon: FiNavigation, position: "right-3 top-28 md:right-2 md:top-14" },
+  { label: "Acciones con impacto", icon: FiTrendingUp, position: "left-8 bottom-6 md:left-3 md:bottom-2" },
 ];
 
 const miniMapPins = [
@@ -36,17 +35,19 @@ const miniMapPins = [
   { top: "68%", left: "72%" },
 ];
 
+const heroEase = [0.22, 1, 0.36, 1];
+
 function getFloatAnimation(index) {
-  const yOffset = index % 2 === 0 ? -6 : -5;
-  const rotate = index % 2 === 0 ? 1 : -1;
+  const yOffset = index % 2 === 0 ? -3 : -2.5;
+  const rotate = index % 2 === 0 ? 0.35 : -0.35;
 
   return {
     y: [0, yOffset, 0],
     rotate: [0, rotate, 0],
     transition: {
-      duration: 5.4 + index * 0.6,
+      duration: 7.2 + index * 0.9,
       repeat: Number.POSITIVE_INFINITY,
-      ease: "easeInOut",
+      ease: heroEase,
     },
   };
 }
@@ -54,11 +55,11 @@ function getFloatAnimation(index) {
 function getOrbAnimation(duration, scale = 1.08) {
   return {
     scale: [1, scale, 1],
-    opacity: [0.38, 0.56, 0.38],
+    opacity: [0.24, 0.34, 0.24],
     transition: {
       duration,
       repeat: Number.POSITIVE_INFINITY,
-      ease: "easeInOut",
+      ease: heroEase,
     },
   };
 }
@@ -79,34 +80,34 @@ export default function Hero({
           alt="Paisaje natural de fondo"
           initial={shouldReduceMotion ? false : { scale: 1.08, opacity: 0.88 }}
           animate={shouldReduceMotion ? undefined : { scale: 1, opacity: 1 }}
-          transition={shouldReduceMotion ? undefined : { duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+          transition={shouldReduceMotion ? undefined : { duration: 1.1, ease: heroEase }}
           className="h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(12,34,17,0.92)_0%,rgba(18,49,23,0.82)_42%,rgba(61,118,37,0.66)_100%)]" />
 
         <MotionDiv
           aria-hidden="true"
-          animate={shouldReduceMotion ? undefined : getOrbAnimation(7.4, 1.12)}
+          animate={shouldReduceMotion ? undefined : getOrbAnimation(11.2, 1.06)}
           className="absolute -left-12 top-12 h-44 w-44 rounded-full bg-[#8fd45c]/18 blur-3xl"
         />
         <MotionDiv
           aria-hidden="true"
-          animate={shouldReduceMotion ? undefined : getOrbAnimation(8.2, 1.16)}
+          animate={shouldReduceMotion ? undefined : getOrbAnimation(12.8, 1.08)}
           className="absolute right-[16%] top-[18%] h-56 w-56 rounded-full bg-[#66a939]/18 blur-3xl"
         />
         <MotionDiv
           aria-hidden="true"
-          animate={shouldReduceMotion ? undefined : getOrbAnimation(9.4, 1.14)}
+          animate={shouldReduceMotion ? undefined : getOrbAnimation(14, 1.07)}
           className="absolute bottom-0 left-[38%] h-52 w-52 rounded-full bg-[#d7f0b8]/10 blur-3xl"
         />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-24 lg:px-8 lg:py-28">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-20 lg:flex lg:h-[calc(100vh-80px)] lg:items-center lg:px-8 lg:py-6">
         <MotionDiv
           initial={shouldReduceMotion ? false : "hidden"}
           animate={shouldReduceMotion ? undefined : "visible"}
           variants={shouldReduceMotion ? undefined : heroContainerVariants}
-          className="grid items-center gap-10 lg:grid-cols-[1.04fr_0.96fr] lg:gap-12"
+          className="grid w-full items-center gap-10 lg:grid-cols-[1.04fr_0.96fr] lg:gap-10"
         >
           <MotionDiv
             variants={shouldReduceMotion ? undefined : heroContainerVariants}
@@ -114,11 +115,7 @@ export default function Hero({
           >
             <MotionDiv variants={shouldReduceMotion ? undefined : heroItemVariants}>
               <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-white/90 backdrop-blur-sm">
-                <MotionSpan
-                  animate={shouldReduceMotion ? undefined : { scale: [1, 1.12, 1], opacity: [0.82, 1, 0.82] }}
-                  transition={shouldReduceMotion ? undefined : { duration: 2.8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-                  className="h-2.5 w-2.5 rounded-full bg-[#9fe06f]"
-                />
+                <span className="h-2.5 w-2.5 rounded-full bg-[#9fe06f]" />
                 Plataforma ciudadana ambiental
               </span>
             </MotionDiv>
@@ -174,7 +171,7 @@ export default function Hero({
 
           <MotionDiv
             variants={shouldReduceMotion ? undefined : heroItemVariants}
-            className="-translate-y-2 sm:-translate-y-3 lg:-translate-y-4 relative mx-auto w-full max-w-[500px] scale-[0.88] sm:max-w-[510px] sm:scale-[0.9] lg:mx-0 lg:max-w-[520px]"
+            className="relative mx-auto w-full max-w-[410px] scale-[0.8] sm:max-w-[440px] sm:scale-[0.83] lg:mx-0 lg:max-w-[480px] lg:scale-[0.84] xl:max-w-[500px] xl:scale-[0.86]"
           >
             {floatingStats.map(({ label, icon, position }, index) => (
               <MotionDiv
@@ -182,7 +179,7 @@ export default function Hero({
                 variants={shouldReduceMotion ? undefined : heroItemVariants}
                 animate={shouldReduceMotion ? undefined : getFloatAnimation(index)}
                 {...(shouldReduceMotion ? {} : cardGlowMotion)}
-                className={`absolute z-20 hidden items-center gap-2 rounded-2xl border border-white/15 bg-white/12 px-3 py-2 text-xs font-medium text-white/92 shadow-[0_18px_38px_rgba(8,20,10,0.22)] backdrop-blur-md md:inline-flex ${position}`}
+                className={`absolute z-20 hidden max-w-[calc(100%-1rem)] items-center gap-2 rounded-2xl border border-white/15 bg-white/12 px-3 py-2 text-xs font-medium text-white/92 shadow-[0_18px_38px_rgba(8,20,10,0.22)] backdrop-blur-md md:inline-flex ${position}`}
               >
                 <span className="flex h-7 w-7 items-center justify-center rounded-xl bg-[#8ecb61]/22 text-[#dff3ce]">
                   {React.createElement(icon, { className: "h-3.5 w-3.5" })}
@@ -198,7 +195,7 @@ export default function Hero({
                   ? undefined
                   : {
                       opacity: 1,
-                      y: [0, -8, 0],
+                      y: [0, -3, 0],
                       scale: 1,
                     }
               }
@@ -206,17 +203,17 @@ export default function Hero({
                 shouldReduceMotion
                   ? undefined
                   : {
-                      opacity: { duration: 0.72, delay: 0.28, ease: [0.22, 1, 0.36, 1] },
-                      scale: { duration: 0.72, delay: 0.28, ease: [0.22, 1, 0.36, 1] },
-                      y: { duration: 6.2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut", delay: 1.05 },
+                      opacity: { duration: 0.72, delay: 0.28, ease: heroEase },
+                      scale: { duration: 0.72, delay: 0.28, ease: heroEase },
+                      y: { duration: 8.4, repeat: Number.POSITIVE_INFINITY, ease: heroEase, delay: 1.05 },
                     }
               }
               {...(shouldReduceMotion ? {} : cardGlowMotion)}
-              className="relative overflow-hidden rounded-[34px] border border-white/15 bg-white/10 p-4 shadow-[0_28px_70px_rgba(8,20,10,0.26)] backdrop-blur-xl"
+              className="relative mx-auto w-full rounded-[34px] border border-white/15 bg-white/10 p-4 shadow-[0_28px_70px_rgba(8,20,10,0.26)] backdrop-blur-xl"
             >
               <div className="absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_top,rgba(217,245,189,0.18),transparent_72%)]" />
 
-              <div className="relative rounded-[28px] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.16)_0%,rgba(255,255,255,0.08)_100%)] p-4">
+              <div className="relative rounded-[28px] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.16)_0%,rgba(255,255,255,0.08)_100%)] p-3.5 lg:p-4">
                 <div className="flex items-center justify-between rounded-[20px] border border-white/10 bg-[#133019]/60 px-4 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
                   <div>
                     <p className="text-[11px] uppercase tracking-[0.18em] text-white/55">EcoRG</p>
@@ -228,7 +225,7 @@ export default function Hero({
                   </div>
                 </div>
 
-                <div className="mt-4 grid gap-4 lg:grid-cols-[1.02fr_0.98fr]">
+                <div className="mt-3 grid gap-3 lg:grid-cols-[1.02fr_0.98fr]">
                   <div className="rounded-[24px] border border-white/10 bg-[#0f2714]/68 p-4">
                     <div className="flex items-center justify-between">
                       <p className="text-sm font-semibold text-white">Mapa de puntos verdes</p>
@@ -236,7 +233,7 @@ export default function Hero({
                         Rí­o Gallegos
                       </span>
                     </div>
-                    <div className="relative mt-3 h-40 overflow-hidden rounded-[20px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(159,224,111,0.18),transparent_45%),linear-gradient(180deg,rgba(255,255,255,0.06)_0%,rgba(255,255,255,0.02)_100%)]">
+                    <div className="relative mt-3 h-32 overflow-hidden rounded-[20px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(159,224,111,0.18),transparent_45%),linear-gradient(180deg,rgba(255,255,255,0.06)_0%,rgba(255,255,255,0.02)_100%)] lg:h-36">
                       <div className="absolute inset-x-0 top-[30%] h-px bg-white/10" />
                       <div className="absolute left-[34%] top-0 h-full w-px bg-white/10" />
                       <div className="absolute left-[67%] top-0 h-full w-px bg-white/10" />
@@ -247,20 +244,20 @@ export default function Hero({
                         <MotionDiv
                           key={`${pin.left}-${pin.top}`}
                           animate={
-                            shouldReduceMotion
+                            shouldReduceMotion || index > 0
                               ? undefined
                               : {
-                                  scale: [1, 1.08, 1],
-                                  opacity: [0.9, 1, 0.9],
+                                  scale: [1, 1.03, 1],
+                                  opacity: [0.9, 0.98, 0.9],
                                 }
                           }
                           transition={
-                            shouldReduceMotion
+                            shouldReduceMotion || index > 0
                               ? undefined
                               : {
-                                  duration: 2.6 + index * 0.3,
+                                  duration: 6.2 + index * 0.6,
                                   repeat: Number.POSITIVE_INFINITY,
-                                  ease: "easeInOut",
+                                  ease: heroEase,
                                 }
                           }
                           className="absolute"
