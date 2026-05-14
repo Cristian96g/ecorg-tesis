@@ -10,7 +10,6 @@ import {
   FiCheckCircle,
   FiMap,
   FiMapPin,
-  FiTarget,
   FiUsers,
 } from "react-icons/fi";
 import FeatureCard from "../components/FeatureCard";
@@ -39,70 +38,95 @@ const featuredSections = [
   {
     id: "mapa",
     title: "Mapa de puntos verdes",
-    description:
-      "Encontrá lugares cercanos para reciclar según el material.",
+    description: (
+      <>
+        <span className="md:hidden">Encontra donde reciclar cerca tuyo.</span>
+        <span className="hidden md:inline">
+          Encontra lugares cercanos para reciclar segun el material.
+        </span>
+      </>
+    ),
     icon: FiMap,
     link: "/mapa",
   },
   {
     id: "reportes",
     title: "Reportes comunitarios",
-    description:
-      "Informá problemas en tu barrio y ayudá a solucionarlos",
+    description: (
+      <>
+        <span className="md:hidden">Informa problemas en tu barrio.</span>
+        <span className="hidden md:inline">
+          Informa problemas en tu barrio y ayuda a visibilizar lo que necesita atencion.
+        </span>
+      </>
+    ),
     icon: FiAlertCircle,
     link: "/reportes",
   },
   {
     id: "calendario",
-    title: "Calendario de recolección",
-    description:
-      "Consultá días y horarios de recolección en tu zona",
+    title: "Calendario de recoleccion",
+    description: (
+      <>
+        <span className="md:hidden">Consulta horarios en tu zona.</span>
+        <span className="hidden md:inline">
+          Consulta dias y horarios de recoleccion para organizar mejor tus residuos.
+        </span>
+      </>
+    ),
     icon: FiCalendar,
     link: "/calendario",
   },
   {
     id: "educacion",
-    title: "Educación ambiental",
-    description:
-      "Aprendé a reciclar mejor con contenido claro y simple",
+    title: "Educacion ambiental",
+    description: (
+      <>
+        <span className="md:hidden">Aprende a reciclar mejor.</span>
+        <span className="hidden md:inline">
+          Aprende con contenidos claros para mejorar habitos y reciclar mejor.
+        </span>
+      </>
+    ),
     icon: FiBookOpen,
     link: "/educacion",
   },
 ];
 
-const howItWorks = [
+const rewardJourney = [
   {
-    step: "01",
-    icon: FiMapPin,
-    title: "Buscá puntos verdes",
-    description: "Encontrá dónde reciclar cerca tuyo.",
-  },
-  {
-    step: "02",
-    icon: FiAlertCircle,
-    title: "Reportá problemas",
-    description: "Informá situaciones ambientales en tu barrio.",
-  },
-  {
-    step: "03",
+    title: "Ganas puntos",
+    description:
+      "Participa en acciones ecologicas, envia reportes responsables y completa desafios ambientales.",
     icon: FiAward,
-    title: "Participá",
-    description: "Sumate a acciones y ayudá a mejorar la ciudad.",
+  },
+  {
+    title: "Desbloqueas beneficios",
+    description:
+      "Accede a descuentos, recompensas y promociones sustentables dentro del ecosistema EcoRG.",
+    icon: FiCheckCircle,
+  },
+  {
+    title: "Apoyas comercios locales",
+    description:
+      "EcoRG conecta participacion ciudadana con comercios comprometidos con un impacto mas consciente.",
+    icon: FiUsers,
   },
 ];
 
-const levels = [
-  "Eco principiante",
-  "Vecino consciente",
-  "Reciclador activo",
-  "Guardián ambiental",
-  "Eco héroe",
-];
-
-const rankingPreview = [
-  { name: "María G.", points: 180, badge: "Vecino consciente" },
-  { name: "Juan P.", points: 140, badge: "Vecino consciente" },
-  { name: "Carla M.", points: 95, badge: "Eco principiante" },
+const rewardsPreview = [
+  {
+    title: "15% OFF en cafe de especialidad",
+    partner: "Cafe del Centro",
+    points: 250,
+    benefit: "Beneficio activo",
+  },
+  {
+    title: "Descuento en cuadernos reciclados",
+    partner: "Libreria Horizonte",
+    points: 320,
+    benefit: "Comercio adherido",
+  },
 ];
 
 function formatMetric(value) {
@@ -124,16 +148,20 @@ function ImpactCard({ icon: Icon, label, value, helper, tone = "green", loading 
       viewport={{ once: true, amount: 0.18 }}
       variants={shouldReduceMotion ? undefined : fadeUpVariants}
       {...(shouldReduceMotion ? {} : hoverLift)}
-      className="flex h-full flex-col rounded-[28px] border border-[#dce8ce] bg-white p-6 shadow-[0_16px_40px_rgba(59,89,34,0.08)]"
+      className="flex h-full flex-col rounded-[22px] border border-[#dce8ce] bg-white p-3.5 shadow-[0_14px_34px_rgba(59,89,34,0.08)] md:rounded-[28px] md:p-6 md:shadow-[0_16px_40px_rgba(59,89,34,0.08)]"
     >
-      <div className={`flex h-14 w-14 items-center justify-center rounded-2xl ${tones[tone] || tones.green}`}>
-        {Icon ? <Icon className="h-6 w-6" /> : null}
+      <div
+        className={`flex h-12 w-12 items-center justify-center rounded-[18px] ${tones[tone] || tones.green} md:h-14 md:w-14 md:rounded-2xl`}
+      >
+        {Icon ? <Icon className="h-5 w-5 md:h-6 md:w-6" /> : null}
       </div>
-      <p className="mt-5 text-sm font-medium text-slate-500">{label}</p>
-      <p className="mt-2 text-4xl font-semibold tracking-tight text-[#203014]">
+      <p className="mt-3 text-sm font-medium text-slate-500">{label}</p>
+      <p className="mt-1 text-[1.85rem] font-semibold tracking-tight text-[#203014] md:mt-2 md:text-4xl">
         {loading ? "..." : <AnimatedNumber value={Number(value || 0)} />}
       </p>
-      <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">{helper}</p>
+      <p className="mt-1.5 line-clamp-2 text-sm leading-5 text-slate-600 md:mt-3 md:line-clamp-3 md:leading-6">
+        {helper}
+      </p>
     </MotionArticle>
   );
 }
@@ -149,14 +177,18 @@ function QuickAction({ to, icon: Icon, title, description }) {
       viewport={{ once: true, amount: 0.18 }}
       variants={shouldReduceMotion ? undefined : fadeUpVariants}
       {...(shouldReduceMotion ? {} : hoverLift)}
-      className="group flex h-full w-[82vw] min-w-[280px] max-w-[320px] snap-start flex-col rounded-[24px] border border-[#dce8ce] bg-white p-5 shadow-[0_16px_40px_rgba(59,89,34,0.08)] transition hover:-translate-y-0.5 hover:border-[#c7dcb0] hover:shadow-[0_18px_44px_rgba(59,89,34,0.12)] md:w-auto md:min-w-0 md:max-w-none md:p-6"
+      className="group flex h-full w-[78vw] min-w-[248px] max-w-[286px] snap-start flex-col rounded-[22px] border border-[#dce8ce] bg-white p-4 shadow-[0_14px_34px_rgba(59,89,34,0.08)] transition hover:border-[#c7dcb0] hover:shadow-[0_18px_44px_rgba(59,89,34,0.12)] md:w-auto md:min-w-0 md:max-w-none md:rounded-[24px] md:p-6 md:shadow-[0_16px_40px_rgba(59,89,34,0.08)]"
     >
-      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#f1f7e7] text-[#66a939]">
-        {Icon ? <Icon className="h-6 w-6" /> : null}
+      <div className="flex h-12 w-12 items-center justify-center rounded-[18px] bg-[#f1f7e7] text-[#66a939] md:h-14 md:w-14 md:rounded-2xl">
+        {Icon ? <Icon className="h-5 w-5 md:h-6 md:w-6" /> : null}
       </div>
-      <h3 className="mt-5 min-h-[56px] text-xl font-semibold text-[#29401a]">{title}</h3>
-      <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">{description}</p>
-      <span className="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-semibold text-[#5a9732]">
+      <h3 className="mt-4 text-lg font-semibold text-[#29401a] md:mt-5 md:min-h-[56px] md:text-xl">
+        {title}
+      </h3>
+      <p className="mt-2 line-clamp-2 text-sm leading-5 text-slate-600 md:mt-3 md:line-clamp-3 md:leading-6">
+        {description}
+      </p>
+      <span className="mt-auto inline-flex items-center gap-2 pt-4 text-sm font-semibold text-[#5a9732] md:pt-5">
         Ir ahora
         <FiArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
       </span>
@@ -222,21 +254,42 @@ function Home() {
       {
         label: "Reportes visibles",
         value: formatMetric(impact.reports),
-        helper: "Casos comunitarios ya publicados y disponibles para consulta ciudadana.",
+        helper: (
+          <>
+            <span className="md:hidden">Casos publicados para consulta.</span>
+            <span className="hidden md:inline">
+              Casos comunitarios ya publicados y disponibles para consulta ciudadana.
+            </span>
+          </>
+        ),
         icon: FiAlertCircle,
         tone: "green",
       },
       {
         label: "Puntos verdes activos",
         value: formatMetric(impact.points),
-        helper: "Espacios de referencia para reciclar mejor dentro de la ciudad.",
+        helper: (
+          <>
+            <span className="md:hidden">Lugares activos para reciclar.</span>
+            <span className="hidden md:inline">
+              Espacios de referencia para reciclar mejor dentro de la ciudad.
+            </span>
+          </>
+        ),
         icon: FiMapPin,
         tone: "blue",
       },
       {
         label: "Acciones con impacto",
         value: formatMetric(impact.actions),
-        helper: "Interacciones ambientales visibles que fortalecen la participación local.",
+        helper: (
+          <>
+            <span className="md:hidden">Acciones que mejoran la ciudad.</span>
+            <span className="hidden md:inline">
+              Interacciones ambientales visibles que fortalecen la participacion local.
+            </span>
+          </>
+        ),
         icon: FiUsers,
         tone: "amber",
       },
@@ -245,25 +298,50 @@ function Home() {
   );
 
   return (
-    <div className="bg-white">
+    <div className="bg-[#f6f8f2]">
       <Hero
-        title="Hacé tu aporte para una Río Gallegos más limpia"
-        subtitle="Encontrá puntos verdes, reportá problemas y participá en acciones reales en tu ciudad"
+        title={
+          <>
+            <span className="md:hidden">Recicla y mejora Rio Gallegos</span>
+            <span className="hidden md:inline">Hace tu aporte para una Rio Gallegos mas limpia</span>
+          </>
+        }
+        subtitle={
+          <>
+            <span className="md:hidden">Puntos verdes, reportes y acciones en un solo lugar.</span>
+            <span className="hidden md:inline">
+              Encontra puntos verdes, reporta problemas y participa en acciones reales en tu ciudad
+            </span>
+          </>
+        }
       />
 
-      <section className="text-gray-900">
-        <Reveal className="mx-auto max-w-screen-xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+      <section className="bg-white text-gray-900">
+        <Reveal className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-14 lg:px-8 lg:py-20">
           <SectionHero
-            eyebrow="Impacto de la comunidad"
-            title="Cada acción suma para mejorar la ciudad"
-            description="Lo que hacés en EcoRG ayuda a visibilizar problemas, ubicar puntos verdes y fortalecer la participación ciudadana."
+            eyebrow="Funciones principales"
+            title={
+              <>
+                <span className="md:hidden">Todo lo esencial en un mismo lugar.</span>
+                <span className="hidden md:inline">Lo esencial de EcoRG para usar la plataforma rapido</span>
+              </>
+            }
+            description={
+              <>
+                <span className="md:hidden">Mapa, reportes, calendario y educacion sin vueltas.</span>
+                <span className="hidden md:inline">
+                  Mapa, reportes, calendario y educacion ambiental para resolver acciones concretas sin pasar por una home explicativa de mas.
+                </span>
+              </>
+            }
+            className="border-[#dfe9d3] bg-[linear-gradient(135deg,#ffffff_0%,#f8fbf4_100%)] shadow-[0_22px_54px_rgba(73,110,33,0.08)]"
           />
 
-          <StaggerGroup className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible md:pb-0 xl:grid-cols-4">
-            {featuredSections.map((section) => (
+          <StaggerGroup className="mt-7 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 md:mt-10 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible md:pb-0 xl:grid-cols-4">
+            {featuredSections.map((section, index) => (
               <StaggerItem
                 key={section.id}
-                className="w-[82vw] min-w-[280px] max-w-[320px] snap-start md:w-auto md:min-w-0 md:max-w-none"
+                className={`w-[74vw] min-w-[232px] max-w-[268px] snap-start md:w-auto md:min-w-0 md:max-w-none ${index === 3 ? "hidden sm:block" : ""}`}
               >
                 <FeatureCard
                   icon={section.icon}
@@ -277,19 +355,32 @@ function Home() {
         </Reveal>
       </section>
 
-      <section className="bg-[#fbfdf8] py-14 sm:py-16 lg:py-20">
+      <section className="bg-[radial-gradient(circle_at_top_right,rgba(143,196,106,0.12),transparent_32%),linear-gradient(180deg,#eef5e7_0%,#f6f8f2_100%)] py-8 sm:py-14 lg:py-20">
         <Reveal className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
           <SectionHero
-            eyebrow="Impacto de la comunidad"
-            title="Cada acción registrada ayuda a construir una ciudad más ordenada y consciente"
-            description="Estas métricas muestran cómo EcoRG puede visibilizar participación ciudadana, acceso al reciclaje y seguimiento ambiental en un mismo sistema."
+            eyebrow="Impacto ciudadano"
+            title={
+              <>
+                <span className="md:hidden">Impacto visible en un vistazo.</span>
+                <span className="hidden md:inline">El impacto ciudadano se ve rapido en datos claros</span>
+              </>
+            }
+            description={
+              <>
+                <span className="md:hidden">Reportes, puntos verdes y acciones en un vistazo.</span>
+                <span className="hidden md:inline">
+                  Un resumen corto para entender como EcoRG ordena reportes, reciclaje y participacion ciudadana sin explicaciones de mas.
+                </span>
+              </>
+            }
+            className="border-[#d6e4c9] bg-[linear-gradient(135deg,rgba(255,255,255,0.92)_0%,rgba(247,251,241,0.88)_100%)] shadow-[0_24px_56px_rgba(73,110,33,0.08)]"
           />
 
-          <StaggerGroup className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0">
+          <StaggerGroup className="mt-7 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 md:mt-10 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0">
             {impactCards.map((card) => (
               <StaggerItem
                 key={card.label}
-                className="w-[82vw] min-w-[280px] max-w-[320px] snap-start md:w-auto md:min-w-0 md:max-w-none"
+                className="w-[74vw] min-w-[232px] max-w-[268px] snap-start md:w-auto md:min-w-0 md:max-w-none"
               >
                 <ImpactCard {...card} loading={loadingImpact} />
               </StaggerItem>
@@ -298,330 +389,193 @@ function Home() {
         </Reveal>
       </section>
 
-      <section className="py-14 sm:py-16 lg:py-20">
+      <section className="bg-[linear-gradient(180deg,#ffffff_0%,#eef5e7_100%)] py-8 sm:py-14 lg:py-20">
         <Reveal className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-          <MotionDiv
-            initial={shouldReduceMotion ? false : "hidden"}
-            whileInView={shouldReduceMotion ? undefined : "visible"}
-            viewport={{ once: true, amount: 0.25 }}
-            variants={shouldReduceMotion ? undefined : heroContainerVariants}
-            className="mx-auto max-w-3xl text-center"
-          >
-            <MotionSpan
-              variants={shouldReduceMotion ? undefined : heroItemVariants}
-              className="inline-flex rounded-full border border-[#d5e6c1] bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[#4f7a2f]"
-            >
-              Cómo funciona
-            </MotionSpan>
-            <MotionH2
-              variants={shouldReduceMotion ? undefined : heroItemVariants}
-              className="mt-4 text-3xl font-semibold tracking-tight text-[#203014] sm:text-4xl"
-            >
-              Un recorrido simple para usar EcoRG en tu día a día
-            </MotionH2>
-          </MotionDiv>
+          <SectionHero
+            eyebrow="EcoPoints y beneficios"
+            title="Tu impacto tambien tiene recompensa"
+            description="Suma EcoPoints reciclando, reportando problemas ambientales y participando en acciones ecologicas. Luego podes canjearlos por beneficios en comercios adheridos."
+            className="border-[#d4e2c7] bg-[linear-gradient(135deg,rgba(255,255,255,0.92)_0%,rgba(244,248,238,0.94)_100%)] shadow-[0_24px_58px_rgba(73,110,33,0.08)]"
+            actions={
+              <div className="flex w-full flex-col gap-2.5 sm:flex-row lg:w-auto">
+                <MotionLink
+                  to="/registrarse"
+                  {...(shouldReduceMotion ? {} : buttonMotion)}
+                  className="inline-flex min-h-[46px] items-center justify-center rounded-2xl bg-[#66a939] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#5a9732]"
+                >
+                  Registrarme y sumar puntos
+                </MotionLink>
+                <MotionLink
+                  to="/gamificacion"
+                  {...(shouldReduceMotion ? {} : buttonMotion)}
+                  className="inline-flex min-h-[46px] items-center justify-center rounded-2xl border border-[#d7e5c5] bg-white px-5 py-3 text-sm font-semibold text-[#35561a] transition hover:bg-[#f7fbf1]"
+                >
+                  Ver beneficios
+                </MotionLink>
+              </div>
+            }
+          />
 
-          <div className="relative mt-10">
-            <MotionDiv
-              aria-hidden="true"
-              initial={shouldReduceMotion ? false : { opacity: 0, scaleX: 0.92 }}
-              whileInView={shouldReduceMotion ? undefined : { opacity: 1, scaleX: 1 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={
-                shouldReduceMotion
-                  ? undefined
-                  : { duration: 0.56, delay: 0.08, ease: [0.22, 1, 0.36, 1] }
-              }
-              className="absolute left-[16%] right-[16%] top-[4.65rem] hidden h-px origin-left bg-[linear-gradient(90deg,rgba(102,169,57,0.12)_0%,rgba(102,169,57,0.34)_50%,rgba(102,169,57,0.12)_100%)] md:block"
-            />
-
-            <StaggerGroup className="relative z-10 grid gap-4 md:grid-cols-3 md:gap-6">
-              {howItWorks.map((item) => {
-                const StepIcon = item.icon;
+          <div className="mt-7 grid gap-3 md:mt-8 md:gap-4 lg:grid-cols-[1.05fr_0.95fr]">
+            <StaggerGroup className="grid gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-1">
+              {rewardJourney.map((item) => {
+                const Icon = item.icon;
 
                 return (
-                  <StaggerItem key={item.step}>
+                  <StaggerItem key={item.title}>
                     <MotionArticle
-                      variants={shouldReduceMotion ? undefined : fadeUpVariants}
-                      {...(shouldReduceMotion ? {} : cardGlowMotion)}
-                      className="flex h-full min-w-0 flex-col rounded-[28px] border border-[#dce8ce] bg-[linear-gradient(180deg,#ffffff_0%,#fbfdf8_100%)] p-5 shadow-[0_16px_40px_rgba(59,89,34,0.08)] md:p-6"
+                      {...(shouldReduceMotion ? {} : hoverLift)}
+                      className="flex h-full flex-col rounded-[22px] border border-[#dce8ce] bg-white p-3.5 shadow-[0_14px_34px_rgba(59,89,34,0.08)] sm:rounded-[28px] sm:p-5"
                     >
-                      <div className="flex items-center justify-between gap-3">
-                        <MotionDiv
-                          variants={shouldReduceMotion ? undefined : fadeUpVariants}
-                          className="inline-flex items-center gap-3 rounded-2xl bg-[#f2f8ea] px-3 py-2 ring-1 ring-[#dce8ce]"
-                        >
-                          <MotionSpan
-                            initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.9 }}
-                            whileInView={shouldReduceMotion ? undefined : { opacity: 1, scale: 1 }}
-                            viewport={{ once: true, amount: 0.5 }}
-                            whileHover={shouldReduceMotion ? undefined : { scale: 1.05 }}
-                            transition={
-                              shouldReduceMotion
-                                ? undefined
-                                : { duration: 0.5, ease: [0.22, 1, 0.36, 1] }
-                            }
-                            className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[#66a939] text-sm font-semibold text-white shadow-[0_10px_24px_rgba(102,169,57,0.22)]"
-                          >
-                            {item.step}
-                          </MotionSpan>
-                          <div className="leading-tight">
-                            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#5f8f35]">
-                              Paso
-                            </p>
-                            <p className="text-sm font-semibold text-[#29401a]">
-                              Recorrido EcoRG
-                            </p>
-                          </div>
-                        </MotionDiv>
-
-                        <MotionDiv
-                          initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.9 }}
-                          whileInView={shouldReduceMotion ? undefined : { opacity: 1, scale: 1 }}
-                          viewport={{ once: true, amount: 0.5 }}
-                          whileHover={shouldReduceMotion ? undefined : { scale: 1.04, rotate: -2 }}
-                          transition={
-                            shouldReduceMotion
-                              ? undefined
-                              : { type: "spring", stiffness: 280, damping: 22 }
-                          }
-                          className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#eef6e4] text-[#66a939] ring-1 ring-[#dce8ce]"
-                        >
-                          <StepIcon className="h-5 w-5" />
-                        </MotionDiv>
+                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#eef6e4] text-[#66a939]">
+                        <Icon className="h-5 w-5" />
                       </div>
-
-                      <h3 className="mt-5 text-xl font-semibold leading-7 text-[#29401a]">
-                        {item.title}
-                      </h3>
-                      <p className="mt-3 max-w-[28ch] text-sm leading-6 text-slate-600">
-                        {item.description}
-                      </p>
+                      <h3 className="mt-3 text-base font-semibold text-[#203014] sm:mt-4 sm:text-lg">{item.title}</h3>
+                      <p className="mt-1.5 text-sm leading-5 text-slate-600 sm:mt-2 sm:leading-6">{item.description}</p>
                     </MotionArticle>
                   </StaggerItem>
                 );
               })}
             </StaggerGroup>
+
+            <StaggerGroup className="grid gap-3 md:gap-4">
+              <MotionDiv
+                variants={shouldReduceMotion ? undefined : fadeUpVariants}
+                {...(shouldReduceMotion ? {} : cardGlowMotion)}
+                className="rounded-[24px] border border-[#dce8ce] bg-[#2d3d33] p-4 text-white shadow-[0_18px_44px_rgba(45,61,51,0.18)] sm:rounded-[28px] sm:p-5"
+              >
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="rounded-full bg-white/12 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-white/88">
+                    Beneficios adheridos
+                  </span>
+                  <span className="rounded-full bg-[#66a939] px-3 py-1 text-xs font-semibold text-white">
+                    Impacto con retorno real
+                  </span>
+                </div>
+
+                <div className="mt-4 grid gap-3 sm:mt-5 sm:grid-cols-2 sm:gap-4">
+                  {rewardsPreview.map((reward) => (
+                    <article
+                      key={reward.title}
+                      className="rounded-[20px] border border-white/10 bg-white/8 p-3.5 backdrop-blur-sm sm:rounded-[22px] sm:p-4"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="inline-flex items-center rounded-full bg-white/12 px-2.5 py-1 text-xs font-semibold text-white/90">
+                          {reward.points} EcoPoints
+                        </span>
+                        <span className="inline-flex rounded-full bg-[#eef6e4] px-2.5 py-1 text-xs font-semibold text-[#35561a]">
+                          {reward.benefit}
+                        </span>
+                      </div>
+                      <h3 className="mt-3 text-[15px] font-semibold text-white sm:mt-4 sm:text-base">{reward.title}</h3>
+                      <p className="mt-1.5 text-sm text-white/72 sm:mt-2">{reward.partner}</p>
+                    </article>
+                  ))}
+                </div>
+
+                <div className="mt-4 rounded-[20px] border border-white/10 bg-white/8 p-3.5 backdrop-blur-sm sm:mt-5 sm:rounded-[22px] sm:p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/70">
+                    Enfoque EcoRG
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-white/78">
+                    Los EcoPoints no buscan empujar consumo por consumo: acompanan participacion ambiental, incentivan habitos sostenibles y fortalecen una red local de comercios comprometidos.
+                  </p>
+                </div>
+              </MotionDiv>
+            </StaggerGroup>
           </div>
         </Reveal>
       </section>
 
-      <section className="bg-[#f5faee] py-14 sm:py-16 lg:py-20">
+      <section className="hidden bg-white py-10 sm:py-14 md:block lg:py-20">
         <Reveal className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
           <SectionHero
-            eyebrow="Gamificación"
-            title="Sumá puntos ayudando a tu ciudad"
-            description="Cada acción validada suma a tu progreso. Participá, ganá logros y seguí tu impacto dentro de EcoRG."
-            actions={(
-              <MotionLink
-                to="/gamificacion"
-                {...buttonMotion}
-                className="inline-flex w-full min-h-[46px] items-center justify-center rounded-2xl bg-[#66a939] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#5a9732] lg:w-auto"
-              >
-                Ver mi progreso
-              </MotionLink>
-            )}
-          >
-            <MotionDiv
-              variants={shouldReduceMotion ? undefined : heroContainerVariants}
-              className="flex flex-wrap gap-2"
-            >
-              {levels.map((level) => (
-                <MotionSpan
-                  key={level}
-                  variants={shouldReduceMotion ? undefined : heroItemVariants}
-                  className="rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-[#4f7a2f] ring-1 ring-[#d5e6c1]"
-                >
-                  {level}
-                </MotionSpan>
-              ))}
-            </MotionDiv>
-          </SectionHero>
+            eyebrow="Empeza ahora"
+            title="Acciones concretas para empezar hoy"
+            description="Accede rapido a las acciones principales de EcoRG sin pasar por pantallas intermedias."
+            className="border-[#dfe9d3] bg-[linear-gradient(135deg,#ffffff_0%,#f7fbf1_100%)] shadow-[0_22px_54px_rgba(73,110,33,0.08)]"
+          />
 
-          <StaggerGroup className="mt-10 grid gap-6 lg:grid-cols-[1fr_0.95fr]">
-            <MotionDiv
-              variants={shouldReduceMotion ? undefined : fadeUpVariants}
-              {...(shouldReduceMotion ? {} : cardGlowMotion)}
-              className="rounded-[30px] border border-[#dce8ce] bg-white p-6 shadow-[0_16px_40px_rgba(59,89,34,0.08)]"
-            >
-              <h3 className="text-2xl font-semibold text-[#203014]">Cómo ganar puntos</h3>
-              <StaggerGroup className="mt-6 grid gap-4 md:grid-cols-2">
-                <MotionArticle
-                  variants={shouldReduceMotion ? undefined : fadeUpVariants}
-                  {...(shouldReduceMotion ? {} : hoverLift)}
-                  className="flex h-full flex-col rounded-[24px] border border-[#e2ecd4] bg-[#fbfdf8] p-5"
-                >
-                  <FiCheckCircle className="h-6 w-6 text-[#66a939]" />
-                  <h4 className="mt-4 text-lg font-semibold text-[#29401a]">Reportes aprobados</h4>
-                  <p className="mt-2 line-clamp-4 text-sm leading-6 text-slate-600">
-                    Cuando un administrador valida un reporte, tu participación queda reconocida dentro del sistema.
-                  </p>
-                </MotionArticle>
-                <MotionArticle
-                  variants={shouldReduceMotion ? undefined : fadeUpVariants}
-                  {...(shouldReduceMotion ? {} : hoverLift)}
-                  className="flex h-full flex-col rounded-[24px] border border-[#e2ecd4] bg-[#fbfdf8] p-5"
-                >
-                  <FiAward className="h-6 w-6 text-[#66a939]" />
-                  <h4 className="mt-4 text-lg font-semibold text-[#29401a]">Logros y niveles</h4>
-                  <p className="mt-2 line-clamp-4 text-sm leading-6 text-slate-600">
-                    Tu progreso crece con acciones reales, sostenidas y verificadas, no con interacción vacía.
-                  </p>
-                </MotionArticle>
-              </StaggerGroup>
-            </MotionDiv>
-
-            <MotionDiv
-              variants={shouldReduceMotion ? undefined : fadeUpVariants}
-              {...(shouldReduceMotion ? {} : cardGlowMotion)}
-              className="rounded-[30px] border border-[#dce8ce] bg-white p-6 shadow-[0_16px_40px_rgba(59,89,34,0.08)]"
-            >
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#eef6e4] text-[#66a939]">
-                  <FiTarget className="h-6 w-6" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#4f7a2f]">
-                    Motivación
-                  </p>
-                 <h3 className="mt-1 text-xl font-semibold text-[#203014]">
-  Participar tiene recompensa
-</h3>
-                </div>
-              </div>
-              <p className="mt-5 text-sm leading-7 text-slate-600">
-                La gamificación de EcoRG no busca competir por competir, sino visibilizar aportes concretos que mejoran el ambiente urbano y fortalecen la participación ciudadana.
-              </p>
-            </MotionDiv>
-          </StaggerGroup>
-        </Reveal>
-      </section>
-
-      <section className="py-14 sm:py-16 lg:py-20">
-        <Reveal className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-     <SectionHero
-  eyebrow="Acción rápida"
-  title="Empezá ahora"
-  description="Accedé rápido a las acciones principales de EcoRG."
-/>
-
-          <StaggerGroup className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0">
+          <StaggerGroup className="mt-8 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 sm:mt-10 sm:gap-4 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0">
             <StaggerItem>
-            <QuickAction
-              to="/reportes"
-              icon={FiAlertCircle}
-              title="Reportar un problema"
-              description="Informá un mini basural o una situación ambiental con ubicación e imagen."
-            />
+              <QuickAction
+                to="/reportes"
+                icon={FiAlertCircle}
+                title="Reportar un problema"
+                description="Informa un mini basural o una situacion ambiental con ubicacion e imagen."
+              />
             </StaggerItem>
             <StaggerItem>
-            <QuickAction
-              to="/mapa"
-              icon={FiMap}
-              title="Ver mapa"
-              description="Buscá puntos verdes cercanos y resolvé rápido dónde llevar materiales reciclables."
-            />
+              <QuickAction
+                to="/mapa"
+                icon={FiMap}
+                title="Ver mapa"
+                description="Busca puntos verdes cercanos y resolve rapido donde llevar materiales reciclables."
+              />
             </StaggerItem>
             <StaggerItem>
-            <QuickAction
-              to="/educacion"
-              icon={FiBookOpen}
-              title="Ir a educación"
-              description="Accedé a contenidos claros para mejorar hábitos y entender mejor qué hacer con tus residuos."
-            />
+              <QuickAction
+                to="/educacion"
+                icon={FiBookOpen}
+                title="Ir a educacion"
+                description="Accede a contenidos claros para mejorar habitos y entender mejor que hacer con tus residuos."
+              />
             </StaggerItem>
           </StaggerGroup>
         </Reveal>
       </section>
 
-      <section className="bg-[#fbfdf8] py-14 sm:py-16 lg:py-20">
-        <Reveal className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
-        <SectionHero
-  eyebrow="Comunidad"
-  title="Personas que ya están participando"
-  description="Usuarios que están ayudando a mejorar la ciudad."
-/>
-
-          <StaggerGroup className="mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:pb-0">
-            {rankingPreview.map((user, index) => (
-              <MotionArticle
-                key={user.name}
-                variants={shouldReduceMotion ? undefined : fadeUpVariants}
-                {...(shouldReduceMotion ? {} : cardGlowMotion)}
-                className="flex h-full w-[82vw] min-w-[280px] max-w-[320px] snap-start flex-col rounded-[28px] border border-[#dce8ce] bg-white p-6 shadow-[0_16px_40px_rgba(59,89,34,0.08)] md:w-auto md:min-w-0 md:max-w-none"
-              >
-                <div className="flex items-center justify-between">
-                  <MotionSpan
-                    variants={shouldReduceMotion ? undefined : fadeUpVariants}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[#66a939] text-sm font-semibold text-white"
-                  >
-                    #{index + 1}
-                  </MotionSpan>
-                  <MotionSpan
-                    variants={shouldReduceMotion ? undefined : fadeUpVariants}
-                    className="rounded-full bg-[#eef6e4] px-3 py-1 text-xs font-semibold text-[#4f7a2f]"
-                  >
-                    {user.badge}
-                  </MotionSpan>
-                </div>
-                <h3 className="mt-5 text-xl font-semibold text-[#29401a]">{user.name}</h3>
-                <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">
-                  Participación destacada dentro del ecosistema ciudadano de EcoRG.
-                </p>
-                <p className="mt-auto pt-5 text-3xl font-semibold tracking-tight text-[#203014]">
-                  <AnimatedNumber value={user.points} /> pts
-                </p>
-              </MotionArticle>
-            ))}
-          </StaggerGroup>
-        </Reveal>
-      </section>
-
-      <section className="py-14 sm:py-16 lg:py-20">
+      <section className="bg-[linear-gradient(180deg,#f6f8f2_0%,#eef5e7_100%)] py-8 sm:py-14 lg:py-20">
         <Reveal className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <MotionDiv
             initial={shouldReduceMotion ? false : "hidden"}
             whileInView={shouldReduceMotion ? undefined : "visible"}
             viewport={{ once: true, amount: 0.2 }}
             variants={shouldReduceMotion ? undefined : heroContainerVariants}
-            className="overflow-hidden rounded-[34px] border border-[#d8e7c5] bg-[linear-gradient(135deg,#f7fbf1_0%,#eef7e2_45%,#f9fcf3_100%)] px-6 py-8 text-center shadow-[0_24px_60px_rgba(73,110,33,0.10)] sm:px-10 sm:py-10"
+            className="overflow-hidden rounded-[24px] border border-[#3f5446] bg-[linear-gradient(135deg,#2d3d33_0%,#314536_55%,#466235_100%)] px-4 py-5 text-center shadow-[0_18px_40px_rgba(45,61,51,0.16)] sm:rounded-[34px] sm:px-10 sm:py-10 sm:shadow-[0_24px_56px_rgba(45,61,51,0.16)]"
           >
             <MotionSpan
               variants={shouldReduceMotion ? undefined : heroItemVariants}
-              className="inline-flex rounded-full border border-[#cfe1b7] bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-[#4f7a2f]"
+              className="inline-flex rounded-full border border-white/14 bg-white/8 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white/90"
             >
-              Participá ahora
+              Participa ahora
             </MotionSpan>
             <MotionH2
               variants={shouldReduceMotion ? undefined : heroItemVariants}
-              className="mt-4 text-3xl font-semibold tracking-tight text-[#203014] sm:text-4xl"
+              className="mt-2.5 text-[1.7rem] font-semibold tracking-tight text-white sm:mt-4 sm:text-4xl"
             >
-              Tu aporte puede transformar problemas cotidianos en mejoras visibles para la ciudad
+              <span className="md:hidden">Tu aporte puede mejorar la ciudad.</span>
+              <span className="hidden md:inline">
+                Tu aporte puede transformar problemas cotidianos en mejoras visibles para la ciudad
+              </span>
             </MotionH2>
             <MotionP
               variants={shouldReduceMotion ? undefined : heroItemVariants}
-              className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600"
+              className="mx-auto mt-2.5 max-w-xl text-sm leading-5.5 text-white/88 sm:mt-4 sm:max-w-2xl sm:text-base sm:leading-7"
             >
-              Sumate a EcoRG para reportar, reciclar, aprender y participar en una red ciudadana que convierte acciones concretas en impacto ambiental real.
+              <span className="md:hidden">Reporta, recicla y participa desde un solo lugar.</span>
+              <span className="hidden md:inline">
+                Sumate a EcoRG para reportar, reciclar, aprender y participar en una red ciudadana que convierte acciones concretas en impacto ambiental real.
+              </span>
             </MotionP>
 
             <MotionDiv
               variants={shouldReduceMotion ? undefined : heroItemVariants}
-              className="mt-8 flex flex-col justify-center gap-3 sm:flex-row"
+              className="mt-5 flex flex-col justify-center gap-2.5 sm:mt-8 sm:flex-row sm:gap-3"
             >
               <MotionLink
                 to="/reportes"
                 {...(shouldReduceMotion ? {} : buttonMotion)}
-                className="inline-flex min-h-[46px] items-center justify-center rounded-2xl bg-[#66a939] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#5a9732]"
+                className="inline-flex min-h-[46px] items-center justify-center rounded-2xl bg-[#66a939] px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(45,61,51,0.14)] transition hover:bg-[#5a9732]"
               >
                 Empezar a participar
               </MotionLink>
               <MotionLink
                 to="/gamificacion"
                 {...(shouldReduceMotion ? {} : buttonMotion)}
-                className="inline-flex min-h-[46px] items-center justify-center rounded-2xl border border-[#cfe1b7] bg-white px-5 py-3 text-sm font-semibold text-[#4c7d26] transition hover:border-[#66a939] hover:text-[#33561a]"
+                className="inline-flex min-h-[46px] items-center justify-center rounded-2xl border border-white/18 bg-transparent px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/8 hover:border-white/26"
               >
-                Ver gamificación
+                Ver gamificacion
               </MotionLink>
             </MotionDiv>
           </MotionDiv>

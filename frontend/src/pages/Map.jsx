@@ -1,12 +1,12 @@
 ﻿import { useEffect, useMemo, useState } from "react";
-import { FiBookOpen, FiFilter, FiMapPin, FiRotateCcw, FiSearch } from "react-icons/fi";
+import { FiBookOpen, FiFilter, FiInfo, FiMapPin, FiRotateCcw, FiSearch, FiX } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { PointsAPI, getFriendlyApiError } from "../api/api";
 import MapGoogle from "../components/MapGoogle";
 import LoadingState from "../components/ui/LoadingState";
 import SectionHero from "../components/ui/SectionHero";
 import { notifyError } from "../utils/feedback";
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Reveal } from "../components/ui/Reveal";
 import { buttonMotion, cardGlowMotion, fadeUpVariants } from "../components/ui/motion";
 
@@ -157,7 +157,7 @@ function FilterPanel({
   );
 }
 
-function Legend() {
+function Legend({ className = "" }) {
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -165,7 +165,7 @@ function Legend() {
       initial={shouldReduceMotion ? false : "hidden"}
       animate={shouldReduceMotion ? undefined : "visible"}
       variants={shouldReduceMotion ? undefined : fadeUpVariants}
-      className="w-full max-w-[220px] rounded-[22px] border border-white/70 bg-white/92 p-3 shadow-[0_18px_36px_rgba(31,49,18,0.14)] backdrop-blur sm:max-w-[280px] sm:p-4"
+      className={`w-full max-w-[220px] rounded-[22px] border border-white/70 bg-white/92 p-3 shadow-[0_18px_36px_rgba(31,49,18,0.14)] backdrop-blur sm:max-w-[280px] sm:p-4 ${className}`.trim()}
     >
       <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#4f7a2f]">
         Leyenda
@@ -186,6 +186,7 @@ function Legend() {
 }
 
 export default function Map() {
+  const shouldReduceMotion = useReducedMotion();
   const [points, setPoints] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -194,6 +195,7 @@ export default function Map() {
   const [estado, setEstado] = useState("");
   const [q, setQ] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [legendOpen, setLegendOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -354,8 +356,39 @@ export default function Map() {
 
               {!loading && !error ? (
                 <>
-                  <div className="pointer-events-none absolute bottom-3 left-3 z-20 w-[calc(100%-1.5rem)] sm:bottom-4 sm:left-auto sm:right-4 sm:w-auto">
+                  <div className="pointer-events-none absolute bottom-4 right-4 z-20 hidden sm:block">
                     <Legend />
+                  </div>
+
+                  <div className="absolute bottom-3 left-3 z-20 sm:hidden">
+                    <AnimatePresence>
+                      {legendOpen ? (
+                        <MotionDiv
+                          initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
+                          animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+                          exit={shouldReduceMotion ? undefined : { opacity: 0, y: 8 }}
+                          transition={
+                            shouldReduceMotion
+                              ? undefined
+                              : { duration: 0.22, ease: [0.22, 1, 0.36, 1] }
+                          }
+                          className="mb-3 w-[min(16rem,calc(100vw-2rem))]"
+                        >
+                          <Legend className="max-w-none rounded-[20px] border-[#dce8ce] bg-white/96 p-3 shadow-[0_16px_34px_rgba(31,49,18,0.16)]" />
+                        </MotionDiv>
+                      ) : null}
+                    </AnimatePresence>
+
+                    <MotionButton
+                      type="button"
+                      onClick={() => setLegendOpen((current) => !current)}
+                      aria-expanded={legendOpen}
+                      aria-label={legendOpen ? "Ocultar leyenda" : "Mostrar leyenda"}
+                      {...(shouldReduceMotion ? {} : buttonMotion)}
+                      className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/70 bg-white/90 text-[#35561a] shadow-[0_12px_28px_rgba(31,49,18,0.16)] backdrop-blur-md transition hover:bg-white"
+                    >
+                      {legendOpen ? <FiX className="h-4.5 w-4.5" /> : <FiInfo className="h-4.5 w-4.5" />}
+                    </MotionButton>
                   </div>
 
                   {filteredPoints.length === 0 ? (

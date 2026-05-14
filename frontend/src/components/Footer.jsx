@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { FiArrowUpRight, FiAward, FiBookOpen, FiCalendar, FiMap, FiUser } from "react-icons/fi";
 import { useAuth } from "../state/auth";
-import { buttonMotion } from "./ui/motion";
+import { buttonMotion, iconNudgeMotion } from "./ui/motion";
 import logo from "../assets/ecorg-logo.png";
 
 const MotionNavLink = motion(NavLink);
@@ -41,12 +41,7 @@ function FooterLink({ to, children }) {
     >
       <span>{children}</span>
       <MotionIcon
-        whileHover={shouldReduceMotion ? undefined : { x: 1.5, y: -0.5 }}
-        transition={
-          shouldReduceMotion
-            ? undefined
-            : { type: "spring", stiffness: 340, damping: 22 }
-        }
+        {...(shouldReduceMotion ? {} : iconNudgeMotion)}
         className="inline-flex"
       >
         <FiArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -60,7 +55,7 @@ export default function Footer() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <footer className="mt-16 bg-[linear-gradient(180deg,#26401d_0%,#17331b_100%)] text-white">
+    <footer className="bg-[linear-gradient(180deg,#26401d_0%,#17331b_100%)] text-white">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr_0.85fr]">
           <section>
@@ -129,12 +124,7 @@ export default function Footer() {
                     className="inline-flex items-center gap-2 text-sm text-white/78 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30"
                   >
                     <MotionIcon
-                      whileHover={shouldReduceMotion ? undefined : { x: 1.5 }}
-                      transition={
-                        shouldReduceMotion
-                          ? undefined
-                          : { type: "spring", stiffness: 340, damping: 22 }
-                      }
+                      {...(shouldReduceMotion ? {} : iconNudgeMotion)}
                       className="inline-flex"
                     >
                       <Icon className="h-4 w-4" aria-hidden="true" />

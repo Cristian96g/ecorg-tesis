@@ -31,12 +31,30 @@ const userSchema = new mongoose.Schema(
     resetPasswordExpires: { type: Date, select: false },
     points: { type: Number, default: 0, min: 0 },
     level: { type: String, default: "Eco principiante" },
+    rewardPointsSpent: { type: Number, default: 0, min: 0 },
     badges: [
       {
         key: { type: String, required: true, trim: true },
         name: { type: String, required: true, trim: true },
         description: { type: String, required: true, trim: true },
         earnedAt: { type: Date, default: Date.now },
+      },
+    ],
+    rewardRedemptions: [
+      {
+        rewardId: { type: String, required: true, trim: true },
+        title: { type: String, required: true, trim: true },
+        partner: { type: String, required: true, trim: true },
+        category: { type: String, required: true, trim: true },
+        benefitLabel: { type: String, required: true, trim: true },
+        pointsSpent: { type: Number, required: true, min: 0 },
+        status: {
+          type: String,
+          enum: ["emitido", "usado", "vencido"],
+          default: "emitido",
+        },
+        code: { type: String, required: true, trim: true },
+        redeemedAt: { type: Date, default: Date.now },
       },
     ],
   },

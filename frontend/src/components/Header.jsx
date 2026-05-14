@@ -30,6 +30,7 @@ const MotionButton = motion.button;
 const MotionDiv = motion.div;
 const MotionImg = motion.img;
 const MotionArticle = motion.article;
+const MotionNav = motion.nav;
 
 function navItemClasses(isActive) {
   return [
@@ -79,6 +80,7 @@ function getNotificationTypeLabel(type) {
 export default function Header() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const [isScrolled, setIsScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -133,6 +135,17 @@ export default function Header() {
       setNotificationsLoading(false);
     }
   }, [user]);
+
+  useEffect(() => {
+    function handleScroll() {
+      setIsScrolled(window.scrollY > 12);
+    }
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     if (!user) {
@@ -261,9 +274,26 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 px-3 pt-3 sm:px-4 lg:px-6">
       <div className="mx-auto max-w-7xl">
-        <nav
+        <MotionNav
           aria-label="Navegación principal"
-          className="rounded-[28px] border border-[#dce8ce]/90 bg-white/88 shadow-[0_18px_40px_rgba(59,89,34,0.08)] backdrop-blur-xl"
+          animate={
+            shouldReduceMotion
+              ? undefined
+              : {
+                  y: isScrolled ? -1 : 0,
+                  scale: isScrolled ? 0.998 : 1,
+                }
+          }
+          transition={
+            shouldReduceMotion
+              ? undefined
+              : { type: "spring", stiffness: 280, damping: 30, mass: 0.9 }
+          }
+          className={`rounded-[28px] border backdrop-blur-xl transition-[background-color,border-color,box-shadow] duration-300 ${
+            isScrolled
+              ? "border-[#d4e3c7] bg-white/94 shadow-[0_20px_48px_rgba(59,89,34,0.12)]"
+              : "border-[#dce8ce]/90 bg-white/88 shadow-[0_18px_40px_rgba(59,89,34,0.08)]"
+          }`}
         >
           <div className="flex items-center justify-between gap-4 px-4 py-3 sm:px-5 lg:px-6">
             <NavLink
@@ -298,8 +328,8 @@ export default function Header() {
               {!user ? (
                 <MotionDiv {...(shouldReduceMotion ? {} : buttonMotion)}>
                   <NavLink
-                  to="/login"
-                  className="inline-flex items-center gap-2 rounded-2xl bg-[#66a939] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#5a9732] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#66a939]/40"
+                    to="/login"
+                    className="inline-flex items-center gap-2 rounded-2xl bg-[#66a939] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#5a9732] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#66a939]/40"
                   >
                     <FiLogIn className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
                     Acceder
@@ -663,7 +693,7 @@ export default function Header() {
               </div>
             </div>
           </div>
-        </nav>
+        </MotionNav>
       </div>
     </header>
   );

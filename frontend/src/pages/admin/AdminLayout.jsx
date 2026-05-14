@@ -3,6 +3,7 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
   FiAlertCircle,
   FiAward,
+  FiGift,
   FiGrid,
   FiLogOut,
   FiMapPin,
@@ -86,6 +87,9 @@ export default function AdminLayout() {
             onClick={handleNavClick}
           >
             <FiAward /> Acciones Eco
+          </NavLink>
+          <NavLink to="/admin/beneficios" className={link} onClick={handleNavClick}>
+            <FiGift /> Beneficios
           </NavLink>
           <NavLink to="/admin/usuarios" className={link} onClick={handleNavClick}>
             <FiUsers /> Usuarios

@@ -4,9 +4,13 @@ import {
   FiActivity,
   FiAward,
   FiBookOpen,
+  FiCheck,
   FiCheckCircle,
   FiClock,
+  FiGift,
   FiLock,
+  FiMapPin,
+  FiShoppingBag,
   FiStar,
 } from "react-icons/fi";
 import { Link } from "react-router-dom";
@@ -17,7 +21,7 @@ import { Reveal, StaggerGroup } from "../components/ui/Reveal";
 import { buttonMotion, cardGlowMotion, hoverLift } from "../components/ui/motion";
 import SectionHero from "../components/ui/SectionHero";
 import { useAuth } from "../state/auth";
-import { notifyError } from "../utils/feedback";
+import { notifyError, notifySuccess } from "../utils/feedback";
 
 const MotionArticle = motion.article;
 const MotionButton = motion.button;
@@ -86,10 +90,20 @@ const BADGE_CATALOG = [
 
 const TABS = [
   { key: "resumen", label: "Resumen" },
+  { key: "beneficios", label: "Beneficios" },
   { key: "logros", label: "Logros" },
   { key: "historial", label: "Historial" },
   { key: "como", label: "Cómo sumar puntos" },
 ];
+
+const CATEGORY_ICONS = {
+  "Gastronomía local": FiShoppingBag,
+  "Educación y cultura": FiBookOpen,
+  Bienestar: FiAward,
+  "Consumo responsable": FiShoppingBag,
+  Ambiente: FiMapPin,
+  "Movilidad sostenible": FiActivity,
+};
 
 function formatDate(value) {
   if (!value) return "Sin fecha";
@@ -265,19 +279,111 @@ function EmptyState({ title, description }) {
   );
 }
 
+function RewardCard({ reward, redeeming, onRedeem }) {
+  const shouldReduceMotion = useReducedMotion();
+  const Icon = CATEGORY_ICONS[reward.category] || FiGift;
+
+  return (
+    <MotionArticle
+      {...(shouldReduceMotion ? {} : cardGlowMotion)}
+      className={`rounded-[24px] border p-5 ${
+        reward.unlocked ? "border-[#dce8ce] bg-white" : "border-[#e3ecd8] bg-[#fbfdf8]"
+      }`}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#eef6e4] text-[#66a939]">
+          <Icon className="h-5 w-5" />
+        </div>
+        <span
+          className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
+            reward.unlocked ? "bg-[#eef6e4] text-[#4f7a2f]" : "bg-slate-100 text-slate-500"
+          }`}
+        >
+          {reward.pointsRequired} pts
+        </span>
+      </div>
+
+      <div className="mt-4">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#4f7a2f]">
+          {reward.partner}
+        </p>
+        <h3 className="mt-2 text-lg font-semibold text-[#203014]">{reward.title}</h3>
+        <p className="mt-2 text-sm leading-6 text-slate-600">{reward.description}</p>
+      </div>
+
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        <span className="rounded-full bg-[#f5faee] px-2.5 py-1 text-xs font-semibold text-[#4f7a2f]">
+          {reward.benefitLabel}
+        </span>
+        <span className="rounded-full bg-[#f3f6ef] px-2.5 py-1 text-xs font-semibold text-slate-600">
+          {reward.category}
+        </span>
+        <span className="rounded-full bg-[#f8faf5] px-2.5 py-1 text-xs font-semibold text-slate-500">
+          {reward.impactLabel}
+        </span>
+      </div>
+
+      <div className="mt-4">
+        <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+          <span>Progreso hacia el beneficio</span>
+          <span>{reward.progressPercent}%</span>
+        </div>
+        <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#edf5e1]">
+          <motion.div
+            className="h-full rounded-full bg-[linear-gradient(90deg,#66a939_0%,#8fc46a_100%)]"
+            initial={shouldReduceMotion ? false : { width: 0 }}
+            whileInView={shouldReduceMotion ? undefined : { width: `${reward.progressPercent}%` }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={shouldReduceMotion ? undefined : { duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            style={{ width: `${reward.progressPercent}%` }}
+          />
+        </div>
+        <p className="mt-2 text-sm text-slate-600">
+          {reward.unlocked
+            ? "Ya podés canjear este beneficio con tus EcoPoints disponibles."
+            : `Te faltan ${reward.remainingPoints} puntos para habilitar este beneficio.`}
+        </p>
+      </div>
+
+      <div className="mt-5 flex items-center justify-between gap-3">
+        <div className="text-xs font-medium uppercase tracking-[0.12em] text-slate-500">
+          Beneficio ciudadano
+        </div>
+        <MotionButton
+          {...buttonMotion}
+          type="button"
+          disabled={!reward.unlocked || redeeming}
+          onClick={() => onRedeem(reward)}
+          className={`inline-flex min-h-[42px] items-center justify-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-60 ${
+            reward.unlocked
+              ? "bg-[#66a939] text-white hover:bg-[#5a9732]"
+              : "bg-slate-100 text-slate-500"
+          }`}
+        >
+          {redeeming ? <FiClock className="h-4 w-4 animate-spin" /> : <FiGift className="h-4 w-4" />}
+          {redeeming ? "Emitiendo..." : reward.unlocked ? "Canjear" : "Bloqueado"}
+        </MotionButton>
+      </div>
+    </MotionArticle>
+  );
+}
+
 export default function Gamification() {
-  const { user, ready } = useAuth();
+  const { user, ready, login } = useAuth();
   const shouldReduceMotion = useReducedMotion();
   const [profile, setProfile] = useState(null);
   const [actions, setActions] = useState([]);
+  const [rewards, setRewards] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [redeemingId, setRedeemingId] = useState("");
   const [activeTab, setActiveTab] = useState("resumen");
 
   useEffect(() => {
     if (!ready || !user) {
       setProfile(user || null);
       setActions([]);
+      setRewards([]);
       setLoading(false);
       setError("");
       return;
@@ -290,15 +396,17 @@ export default function Gamification() {
         setLoading(true);
         setError("");
 
-        const [freshUser, ecoActions] = await Promise.all([
+        const [freshUser, ecoActions, rewardsData] = await Promise.all([
           UsersAPI.getMe(),
           EcoActionsAPI.listMine(),
+          UsersAPI.getRewardsCatalog(),
         ]);
 
         if (cancelled) return;
 
         setProfile(freshUser || user);
         setActions(Array.isArray(ecoActions) ? ecoActions : []);
+        setRewards(Array.isArray(rewardsData?.items) ? rewardsData.items : []);
       } catch (loadError) {
         if (cancelled) return;
 
@@ -308,6 +416,7 @@ export default function Gamification() {
         );
         setProfile(user);
         setActions([]);
+        setRewards([]);
         setError(message);
         notifyError(message);
       } finally {
@@ -337,6 +446,43 @@ export default function Gamification() {
     [earnedBadges]
   );
   const featuredBadges = useMemo(() => BADGE_CATALOG.slice(0, 3), []);
+  const rewardSummary = safeProfile?.rewardSummary || {
+    totalPoints: points,
+    spentPoints: 0,
+    availablePoints: points,
+    unlockedCount: 0,
+    redeemedCount: 0,
+    nextReward: null,
+  };
+  const recentRedemptions = useMemo(
+    () => (Array.isArray(safeProfile?.rewardRedemptions) ? safeProfile.rewardRedemptions.slice(0, 3) : []),
+    [safeProfile?.rewardRedemptions]
+  );
+
+  async function handleRedeemReward(reward) {
+    try {
+      setRedeemingId(reward.id);
+      const result = await UsersAPI.redeemReward(reward.id);
+      if (result?.user) {
+        setProfile(result.user);
+        login(result.user);
+      }
+      if (Array.isArray(rewards)) {
+        const nextCatalog = await UsersAPI.getRewardsCatalog();
+        setRewards(Array.isArray(nextCatalog?.items) ? nextCatalog.items : []);
+      }
+      notifySuccess(result?.message || "Beneficio emitido correctamente.");
+    } catch (redeemError) {
+      notifyError(
+        getFriendlyApiError(
+          redeemError,
+          "No pudimos emitir este beneficio en este momento."
+        )
+      );
+    } finally {
+      setRedeemingId("");
+    }
+  }
 
   if (!ready) {
     return (
@@ -390,6 +536,10 @@ export default function Gamification() {
                 <p className="mt-2 text-sm text-slate-600">
                   Nivel actual: <span className="font-semibold text-[#35561a]">{level}</span>
                 </p>
+                <p className="mt-2 text-sm text-slate-600">
+                  EcoPoints disponibles para beneficios:{" "}
+                  <span className="font-semibold text-[#35561a]">{rewardSummary.availablePoints}</span>
+                </p>
               </div>
               <div className="min-w-0 break-words rounded-2xl bg-[#f5faee] px-4 py-3 text-sm text-slate-600">
                 {progress.nextLevel
@@ -434,9 +584,9 @@ export default function Gamification() {
               helper="Insignias obtenidas automáticamente."
             />
             <MiniStat
-              label="Meta actual"
-              value={progress.nextLevel ? progress.nextLevel.label : "Completada"}
-              helper="Próximo nivel o tope alcanzado."
+              label="Beneficios"
+              value={rewardSummary.unlockedCount}
+              helper="Canjes disponibles hoy con tus EcoPoints."
             />
           </StaggerGroup>
         </div>
@@ -510,6 +660,118 @@ export default function Gamification() {
                   ))}
                 </div>
               </div>
+
+              <div className="min-w-0 rounded-[28px] border border-[#dce8ce] bg-[#fbfdf8] p-5 xl:col-span-2">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#4f7a2f]">
+                      Beneficios ciudadanos
+                    </p>
+                    <h2 className="mt-2 text-xl font-semibold text-[#203014]">
+                      Tu impacto positivo también abre oportunidades reales
+                    </h2>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab("beneficios")}
+                    className="rounded-2xl bg-white px-4 py-2 text-sm font-semibold text-[#4f7a2f] ring-1 ring-[#d8e7c5] transition hover:bg-[#f7fbf1]"
+                  >
+                    Ver beneficios
+                  </button>
+                </div>
+
+                <div className="mt-5 grid gap-4 md:grid-cols-3">
+                  <MiniStat
+                    label="Disponibles"
+                    value={rewardSummary.unlockedCount}
+                    helper="Beneficios que ya podés emitir."
+                  />
+                  <MiniStat
+                    label="Canjes"
+                    value={rewardSummary.redeemedCount}
+                    helper="Historial de beneficios emitidos."
+                  />
+                  <MiniStat
+                    label="Saldo actual"
+                    value={rewardSummary.availablePoints}
+                    helper="EcoPoints listos para usar."
+                  />
+                </div>
+
+                {rewardSummary.nextReward ? (
+                  <div className="mt-5 rounded-2xl border border-[#dce8ce] bg-white px-4 py-4">
+                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#4f7a2f]">
+                      Próximo beneficio recomendado
+                    </p>
+                    <h3 className="mt-2 text-lg font-semibold text-[#203014]">
+                      {rewardSummary.nextReward.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-slate-600">
+                      {rewardSummary.nextReward.partner} · Te faltan {rewardSummary.nextReward.remainingPoints} puntos.
+                    </p>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          )}
+
+          {activeTab === "beneficios" && (
+            <div id="gamification-panel-beneficios" role="tabpanel" aria-labelledby="gamification-tab-beneficios">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#4f7a2f]">
+                    Comercios adheridos
+                  </p>
+                  <h2 className="mt-2 text-2xl font-semibold text-[#203014]">
+                    Beneficios con impacto local
+                  </h2>
+                  <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+                    Tus EcoPoints no se convierten en compras impulsivas: se transforman en incentivos ciudadanos para fortalecer hábitos sustentables, consumo local responsable y participación comunitaria.
+                  </p>
+                </div>
+                <div className="rounded-2xl bg-[#f5faee] px-4 py-3 text-sm text-slate-600">
+                  <span className="font-semibold text-[#35561a]">{rewardSummary.availablePoints} puntos disponibles</span>
+                </div>
+              </div>
+
+              <div className="mt-6 grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
+                {rewards.map((reward) => (
+                  <RewardCard
+                    key={reward.id}
+                    reward={reward}
+                    redeeming={redeemingId === reward.id}
+                    onRedeem={handleRedeemReward}
+                  />
+                ))}
+              </div>
+
+              {recentRedemptions.length ? (
+                <div className="mt-8 rounded-[28px] border border-[#dce8ce] bg-[#fbfdf8] p-5">
+                  <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#4f7a2f]">
+                    Historial reciente de beneficios
+                  </p>
+                  <div className="mt-5 grid gap-4 md:grid-cols-3">
+                    {recentRedemptions.map((reward) => (
+                      <article key={`${reward.rewardId}-${reward.code}`} className="rounded-2xl border border-[#dce8ce] bg-white p-4">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="rounded-full bg-[#eef6e4] px-2.5 py-1 text-xs font-semibold text-[#4f7a2f]">
+                            {reward.pointsSpent} pts
+                          </span>
+                          <span className="rounded-full bg-[#f6f8f2] px-2.5 py-1 text-xs font-semibold text-slate-500">
+                            {reward.status}
+                          </span>
+                        </div>
+                        <h3 className="mt-3 text-base font-semibold text-[#203014]">{reward.title}</h3>
+                        <p className="mt-1 text-sm text-slate-600">{reward.partner}</p>
+                        <p className="mt-3 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#4f7a2f]">
+                          <FiCheck className="h-4 w-4" />
+                          Código {reward.code}
+                        </p>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
             </div>
           )}
 

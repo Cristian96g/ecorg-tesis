@@ -23,6 +23,7 @@ const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
 const AdminPoints = lazy(() => import("./pages/admin/Points"));
 const AdminReports = lazy(() => import("./pages/admin/Reports"));
 const AdminEcoActions = lazy(() => import("./pages/admin/EcoActions"));
+const AdminRewards = lazy(() => import("./pages/admin/Rewards"));
 const AdminUsers = lazy(() => import("./pages/admin/Users"));
 const AdminSettings = lazy(() => import("./pages/admin/Settings"));
 const AdminBarrios = lazy(() => import("./pages/admin/Barrios"));
@@ -156,6 +157,7 @@ export default function AppRoutes() {
           <Route path="barrios" element={<AdminBarrios />} />
           <Route path="reportes" element={<AdminReports />} />
           <Route path="gamificacion" element={<AdminEcoActions />} />
+          <Route path="beneficios" element={<AdminRewards />} />
           <Route path="usuarios" element={<AdminUsers />} />
           <Route path="ajustes" element={<AdminSettings />} />
         </Route>

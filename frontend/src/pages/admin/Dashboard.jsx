@@ -4,6 +4,7 @@ import {
   FiAlertCircle,
   FiCheckCircle,
   FiClock,
+  FiGift,
   FiGrid,
   FiHome,
   FiLayers,
@@ -223,6 +224,8 @@ export default function AdminDashboard() {
     users: 0,
     points: 0,
     barrios: 0,
+    rewards: 0,
+    activeRewards: 0,
     totalReports: 0,
     openReports: 0,
     inReviewReports: 0,
@@ -236,17 +239,20 @@ export default function AdminDashboard() {
       setLoading(true);
       setError("");
 
-      const [usersRaw, reportsRaw, pointsRaw, barriosRaw] = await Promise.all([
+      const [usersRaw, reportsRaw, pointsRaw, barriosRaw, rewardsRaw] = await Promise.all([
         UsersAPI.list({}),
         ReportsAPI.list({}),
         PointsAPI.list({}),
         BarriosAPI.list({}),
+        UsersAPI.listAdminRewards(),
       ]);
 
       const users = Array.isArray(usersRaw) ? usersRaw : usersRaw?.items ?? [];
       const reports = Array.isArray(reportsRaw) ? reportsRaw : reportsRaw?.items ?? [];
       const points = Array.isArray(pointsRaw) ? pointsRaw : pointsRaw?.items ?? [];
       const barrios = Array.isArray(barriosRaw) ? barriosRaw : barriosRaw?.items ?? [];
+      const rewards = Array.isArray(rewardsRaw?.items) ? rewardsRaw.items : [];
+      const rewardsSummary = rewardsRaw?.summary || {};
 
       const sortedReports = sortByDateDesc(reports);
       const sortedPoints = sortByDateDesc(points);
@@ -255,6 +261,10 @@ export default function AdminDashboard() {
         users: users.length,
         points: points.length,
         barrios: barrios.length,
+        rewards: rewardsSummary.total ?? rewards.length,
+        activeRewards:
+          rewardsSummary.active ??
+          rewards.filter((item) => item.status === "activo").length,
         totalReports: reports.length,
         openReports: reports.filter((item) => item.estado === "abierto").length,
         inReviewReports: reports.filter((item) => item.estado === "en_revision").length,
@@ -388,6 +398,65 @@ export default function AdminDashboard() {
         />
       </StaggerGroup>
 
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[0.9fr_1.1fr]">
+        <Reveal>
+          <Card>
+            <CardHeader
+              title="Programa de beneficios"
+              subtitle="Resumen del sistema de incentivos ciudadanos."
+            />
+            <CardBody>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <StatCard
+                  icon={<FiGift className="h-5 w-5" />}
+                  label="Beneficios"
+                  value={fmtNum(stats.rewards)}
+                  helper="Catálogo total de beneficios adheridos."
+                  tone="green"
+                  loading={loading}
+                />
+                <StatCard
+                  icon={<FiCheckCircle className="h-5 w-5" />}
+                  label="Activos"
+                  value={fmtNum(stats.activeRewards)}
+                  helper="Disponibles hoy para canje."
+                  tone="amber"
+                  loading={loading}
+                />
+              </div>
+            </CardBody>
+          </Card>
+        </Reveal>
+
+        <Reveal>
+          <Card>
+            <CardHeader
+              title="Comercios adheridos"
+              subtitle="Acceso rápido al módulo de beneficios."
+            />
+            <CardBody className="flex h-full flex-col justify-between gap-4">
+              <div className="rounded-[24px] border border-[#e7efdb] bg-[#fbfdf8] p-5">
+                <p className="text-sm leading-6 text-slate-600">
+                  Centralizá beneficios por EcoPoints, estado del catálogo y notas institucionales para mostrar cómo EcoRG integra participación ambiental con incentivos locales reales.
+                </p>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <span className="inline-flex items-center gap-2 rounded-full bg-[#eef6e4] px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#4f7a2f]">
+                  <FiGift className="h-4 w-4" />
+                  Beneficios ciudadanos
+                </span>
+                <Link
+                  to="/admin/beneficios"
+                  className="inline-flex items-center justify-center rounded-2xl bg-[#66a939] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#5a9732]"
+                >
+                  Abrir módulo
+                </Link>
+              </div>
+            </CardBody>
+          </Card>
+        </Reveal>
+      </div>
+
       <Reveal>
         <Card>
           <CardHeader
@@ -395,7 +464,7 @@ export default function AdminDashboard() {
             subtitle="Atajos reales a las secciones mÃ¡s importantes del panel."
           />
           <CardBody>
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
               <QuickAction
                 to="/admin/puntos"
                 icon={FiMapPin}
@@ -419,6 +488,12 @@ export default function AdminDashboard() {
                 icon={FiUsers}
                 title="Ver usuarios"
                 description="AdministrÃ¡ roles, altas y estado general de las cuentas registradas."
+              />
+              <QuickAction
+                to="/admin/beneficios"
+                icon={FiGift}
+                title="Gestionar beneficios"
+                description="Revisá comercios adheridos, beneficios por EcoPoints y su narrativa institucional."
               />
             </div>
           </CardBody>

@@ -8,6 +8,7 @@ export function Reveal({
   className = "",
   delay = 0,
   amount = 0.18,
+  variants = fadeUpVariants,
 }) {
   const shouldReduceMotion = useReducedMotion();
 
@@ -16,7 +17,7 @@ export function Reveal({
       initial={shouldReduceMotion ? false : "hidden"}
       whileInView={shouldReduceMotion ? undefined : "visible"}
       viewport={{ once: true, amount }}
-      variants={fadeUpVariants}
+      variants={shouldReduceMotion ? undefined : variants}
       transition={shouldReduceMotion ? undefined : { delay }}
       className={className}
     >

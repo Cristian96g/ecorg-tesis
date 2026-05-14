@@ -23,6 +23,15 @@ function buildForm(user) {
     avatarUrl: user?.avatarUrl ?? "",
     role: user?.role ?? "user",
     badges: Array.isArray(user?.badges) ? user.badges : [],
+    rewardRedemptions: Array.isArray(user?.rewardRedemptions) ? user.rewardRedemptions : [],
+    rewardSummary: user?.rewardSummary || {
+      totalPoints: Number(user?.points || 0),
+      spentPoints: 0,
+      availablePoints: Number(user?.points || 0),
+      unlockedCount: 0,
+      redeemedCount: 0,
+      nextReward: null,
+    },
   };
 }
 
@@ -209,6 +218,15 @@ export default function Profile() {
     );
   }
 
+  const rewardSummary = form.rewardSummary || {
+    totalPoints: Number(user?.points || 0),
+    spentPoints: 0,
+    availablePoints: Number(user?.points || 0),
+    unlockedCount: 0,
+    redeemedCount: 0,
+    nextReward: null,
+  };
+
   return (
     <div className="mx-auto max-w-5xl px-6 py-10 md:px-8">
       <SectionHero
@@ -315,6 +333,27 @@ export default function Profile() {
             </p>
           </div>
 
+          <div className="mt-6 rounded-2xl border border-[#dce8ce] bg-white p-4">
+            <h3 className="text-sm font-semibold text-[#29401a]">EcoPoints y beneficios</h3>
+            <div className="mt-4 grid gap-3">
+              <div className="rounded-2xl border border-[#e7efdb] bg-[#fbfdf8] px-4 py-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#4f7a2f]">Puntos acumulados</p>
+                <p className="mt-2 text-2xl font-semibold text-[#203014]">{rewardSummary.totalPoints}</p>
+              </div>
+              <div className="rounded-2xl border border-[#e7efdb] bg-[#fbfdf8] px-4 py-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#4f7a2f]">Disponibles para canje</p>
+                <p className="mt-2 text-2xl font-semibold text-[#203014]">{rewardSummary.availablePoints}</p>
+              </div>
+              <div className="rounded-2xl border border-[#e7efdb] bg-[#fbfdf8] px-4 py-3">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#4f7a2f]">Canjes emitidos</p>
+                <p className="mt-2 text-2xl font-semibold text-[#203014]">{rewardSummary.redeemedCount}</p>
+              </div>
+            </div>
+            <p className="mt-4 text-sm leading-6 text-slate-600">
+              Tu impacto positivo también habilita beneficios reales en comercios adheridos, con un enfoque comunitario y ambiental.
+            </p>
+          </div>
+
           <div className="mt-6 rounded-2xl border border-[#e7efdb] bg-[#fbfdf8] p-4">
             <h3 className="text-sm font-semibold text-[#29401a]">Preferencias</h3>
             <p className="mt-2 text-sm leading-6 text-slate-600">
@@ -384,6 +423,77 @@ export default function Profile() {
               </Field>
             </div>
           </form>
+
+          <div className="mt-8 border-t border-[#edf3e6] pt-6">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-[#203014]">Beneficios y progreso</h3>
+                <p className="mt-1 text-sm leading-6 text-slate-600">
+                  Seguí tu saldo disponible, los beneficios habilitados y el historial de canjes emitidos.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-5 grid gap-4 md:grid-cols-3">
+              <SummaryCard
+                label="Beneficios habilitados"
+                value={rewardSummary.unlockedCount}
+                helper="Opciones disponibles con tu saldo actual."
+              />
+              <SummaryCard
+                label="Puntos ya utilizados"
+                value={rewardSummary.spentPoints}
+                helper="EcoPoints convertidos en beneficios reales."
+              />
+              <SummaryCard
+                label="Próximo objetivo"
+                value={rewardSummary.nextReward?.remainingPoints ?? 0}
+                helper={
+                  rewardSummary.nextReward
+                    ? `Faltan puntos para ${rewardSummary.nextReward.title}.`
+                    : "Ya no tenés beneficios pendientes por desbloquear."
+                }
+              />
+            </div>
+
+            <div className="mt-6 rounded-[24px] border border-[#e7efdb] bg-[#fbfdf8] p-5">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#4f7a2f]">
+                  Historial de canjes
+                </p>
+                <h4 className="mt-2 text-xl font-semibold text-[#203014]">Recompensas emitidas</h4>
+              </div>
+
+              {form.rewardRedemptions.length ? (
+                <div className="mt-5 space-y-3">
+                  {form.rewardRedemptions.slice(0, 4).map((reward) => (
+                    <article key={`${reward.rewardId}-${reward.code}`} className="rounded-2xl border border-[#dce8ce] bg-white px-4 py-4">
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                        <div>
+                          <h5 className="text-base font-semibold text-[#203014]">{reward.title}</h5>
+                          <p className="mt-1 text-sm text-slate-600">{reward.partner} · {reward.category}</p>
+                          <p className="mt-3 text-xs font-semibold uppercase tracking-[0.12em] text-[#4f7a2f]">
+                            Código {reward.code}
+                          </p>
+                        </div>
+                        <div className="text-sm text-slate-600 sm:text-right">
+                          <p className="font-semibold text-[#35561a]">{reward.pointsSpent} puntos</p>
+                          <p className="mt-1">{new Date(reward.redeemedAt).toLocaleDateString("es-AR")}</p>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              ) : (
+                <div className="mt-5 rounded-2xl border border-dashed border-[#d7e5c5] bg-white px-4 py-8 text-center">
+                  <p className="text-base font-semibold text-[#203014]">Todavía no canjeaste beneficios</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                    Cuando uses EcoPoints en la sección de gamificación, tus beneficios emitidos van a aparecer acá.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
         </section>
       </div>
     </div>
@@ -408,4 +518,14 @@ function inputClasses(error, disabled) {
       ? "border-[#d98a9b] focus:border-[#c04b62] focus:ring-2 focus:ring-[#c04b62]/20"
       : "border-[#d9e7ca] focus:border-[#66a939] focus:ring-2 focus:ring-[#66a939]/20"
   }`;
+}
+
+function SummaryCard({ label, value, helper }) {
+  return (
+    <article className="rounded-2xl border border-[#dce8ce] bg-white px-4 py-4">
+      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#4f7a2f]">{label}</p>
+      <p className="mt-2 text-2xl font-semibold text-[#203014]">{value}</p>
+      <p className="mt-2 text-sm leading-6 text-slate-600">{helper}</p>
+    </article>
+  );
 }

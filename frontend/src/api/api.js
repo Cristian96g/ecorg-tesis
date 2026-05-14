@@ -200,6 +200,26 @@ export const UsersAPI = {
     return data;
   },
 
+  getRewardsCatalog: async () => {
+    const { data } = await api.get("/users/me/rewards");
+    return data;
+  },
+
+  redeemReward: async (rewardId) => {
+    const { data } = await api.post(`/users/me/rewards/${rewardId}/redeem`);
+    return data;
+  },
+
+  listAdminRewards: async () => {
+    const { data } = await api.get("/users/admin/rewards");
+    return data;
+  },
+
+  updateAdminReward: async (rewardId, payload) => {
+    const { data } = await api.put(`/users/admin/rewards/${rewardId}`, payload);
+    return data;
+  },
+
   updateMe: async (profile, file) => {
     if (file) {
       const fd = new FormData();

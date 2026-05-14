@@ -1,5 +1,12 @@
 import bcrypt from "bcryptjs";
 import User from "../models/userModel.js";
+import {
+  getAdminRewardCatalog,
+  getRewardSummary,
+  redeemRewardForUser,
+  serializeRewardCatalogForUser,
+  updateRewardCatalogItem,
+} from "../services/rewardsService.js";
 import { createUserBase } from "../services/userService.js";
 
 function normalizeSpaces(value = "") {
@@ -18,10 +25,20 @@ async function countAdmins() {
   return User.countDocuments({ role: "admin" });
 }
 
+function serializeUserResponse(userDoc) {
+  const user = userDoc?.toObject ? userDoc.toObject() : userDoc;
+  if (!user) return user;
+
+  return {
+    ...user,
+    rewardSummary: getRewardSummary(user),
+  };
+}
+
 /** Perfil propio */
 export async function me(req, res) {
   const user = await User.findById(req.user.id).select("-password");
-  res.json(user);
+  res.json(serializeUserResponse(user));
 }
 
 export async function updateMe(req, res) {
@@ -31,7 +48,77 @@ export async function updateMe(req, res) {
 
   const user = await User.findByIdAndUpdate(req.user.id, patch, { new: true })
     .select("-password");
-  res.json(user);
+  res.json(serializeUserResponse(user));
+}
+
+export async function listMyRewards(req, res) {
+  const user = await User.findById(req.user.id).select("-password");
+  if (!user) {
+    return res.status(404).json({ error: "Usuario no encontrado" });
+  }
+
+  return res.json({
+    summary: getRewardSummary(user),
+    items: serializeRewardCatalogForUser(user),
+  });
+}
+
+export async function redeemMyReward(req, res) {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    const { rewardId } = req.params;
+    const { reward, redemption, summary } = redeemRewardForUser(user, rewardId);
+    await user.save();
+
+    return res.json({
+      ok: true,
+      reward,
+      redemption,
+      summary,
+      user: serializeUserResponse(user),
+      message: "Beneficio emitido correctamente. Ya podés usarlo en el comercio adherido.",
+    });
+  } catch (err) {
+    console.error("REDEEM_REWARD_ERROR:", err);
+    const status = err.status || 500;
+    const errorMessage =
+      status === 500 ? "No se pudo emitir el beneficio en este momento" : err.message;
+    return res.status(status).json({ error: errorMessage });
+  }
+}
+
+export async function listAdminRewards(req, res) {
+  const items = getAdminRewardCatalog();
+  const summary = {
+    total: items.length,
+    active: items.filter((item) => item.status === "activo").length,
+    paused: items.filter((item) => item.status === "pausado").length,
+    featured: items.filter((item) => item.featured).length,
+  };
+
+  return res.json({ summary, items });
+}
+
+export async function updateAdminReward(req, res) {
+  try {
+    const { rewardId } = req.params;
+    const updated = updateRewardCatalogItem(rewardId, req.body || {});
+    return res.json({
+      ok: true,
+      item: updated,
+      message: "Beneficio actualizado correctamente.",
+    });
+  } catch (err) {
+    console.error("UPDATE_ADMIN_REWARD_ERROR:", err);
+    const status = err.status || 500;
+    return res.status(status).json({
+      error: status === 500 ? "No se pudo actualizar el beneficio" : err.message,
+    });
+  }
 }
 
 /** Admin: listar */
