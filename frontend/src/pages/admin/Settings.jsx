@@ -10,15 +10,15 @@ export default function AdminAjustes() {
   return (
     <div className="space-y-6">
       <AdminSectionHero
-        title="Ajustes"
-        description="Configuración general del sistema. Esta pantalla queda preparada para futuras opciones administrativas reales."
+        title="Ajustes institucionales"
+        description="Resumen de criterios operativos y de seguridad con los que hoy funciona el panel administrativo de EcoRG."
       />
 
       <div className="grid gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader
             title="Configuración general"
-            subtitle="Espacio reservado para branding institucional, parámetros globales y mantenimiento futuro."
+            subtitle="Lineamientos del sistema para identidad visual, operación y continuidad administrativa."
           />
           <CardBody>
             <div className="flex items-start gap-4 rounded-3xl border border-dashed border-[#d7e5c5] bg-[#fbfdf8] p-5">
@@ -27,11 +27,10 @@ export default function AdminAjustes() {
               </div>
               <div>
                 <h3 className="text-base font-semibold text-[#24341a]">
-                  Módulo informativo
+                  Gestión centralizada
                 </h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">
-                  En esta versión no hay configuraciones operativas para editar desde el panel.
-                  Se mantiene la estructura lista para sumar opciones reales en una etapa futura.
+                  Los criterios globales de EcoRG se administran de forma centralizada para preservar consistencia institucional, trazabilidad operativa y una experiencia unificada en toda la plataforma.
                 </p>
               </div>
             </div>
@@ -41,7 +40,7 @@ export default function AdminAjustes() {
         <Card>
           <CardHeader
             title="Seguridad y permisos"
-            subtitle="Referencia visual sobre cómo se gestionan hoy los accesos administrativos."
+            subtitle="Marco actual de acceso administrativo y control de acciones sensibles."
           />
           <CardBody>
             <div className="flex items-start gap-4 rounded-3xl border border-dashed border-[#d7e5c5] bg-[#fbfdf8] p-5">
@@ -50,11 +49,10 @@ export default function AdminAjustes() {
               </div>
               <div>
                 <h3 className="text-base font-semibold text-[#24341a]">
-                  Gestión centralizada
+                  Control por roles
                 </h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">
-                  Los permisos sensibles ya se controlan desde roles y rutas protegidas.
-                  Este bloque deja documentado ese criterio sin prometer acciones que todavía no existen.
+                  Los accesos sensibles se resguardan mediante roles, rutas protegidas y validaciones de backend, asegurando que la operatoria administrativa responda a criterios claros de gobernanza y seguridad.
                 </p>
               </div>
             </div>

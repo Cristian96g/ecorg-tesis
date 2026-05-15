@@ -40,9 +40,9 @@ const featuredSections = [
     title: "Mapa de puntos verdes",
     description: (
       <>
-        <span className="md:hidden">Encontra donde reciclar cerca tuyo.</span>
+        <span className="md:hidden">Encontrá dónde reciclar cerca tuyo.</span>
         <span className="hidden md:inline">
-          Encontra lugares cercanos para reciclar segun el material.
+          Encontrá lugares cercanos para reciclar según el material.
         </span>
       </>
     ),
@@ -54,9 +54,9 @@ const featuredSections = [
     title: "Reportes comunitarios",
     description: (
       <>
-        <span className="md:hidden">Informa problemas en tu barrio.</span>
+        <span className="md:hidden">Informá problemas en tu barrio.</span>
         <span className="hidden md:inline">
-          Informa problemas en tu barrio y ayuda a visibilizar lo que necesita atencion.
+          Informá problemas en tu barrio y ayudá a visibilizar lo que necesita atención.
         </span>
       </>
     ),
@@ -65,12 +65,12 @@ const featuredSections = [
   },
   {
     id: "calendario",
-    title: "Calendario de recoleccion",
+    title: "Calendario de recolección",
     description: (
       <>
-        <span className="md:hidden">Consulta horarios en tu zona.</span>
+        <span className="md:hidden">Consultá horarios en tu zona.</span>
         <span className="hidden md:inline">
-          Consulta dias y horarios de recoleccion para organizar mejor tus residuos.
+          Consultá días y horarios de recolección para organizar mejor tus residuos.
         </span>
       </>
     ),
@@ -79,12 +79,12 @@ const featuredSections = [
   },
   {
     id: "educacion",
-    title: "Educacion ambiental",
+    title: "Educación ambiental",
     description: (
       <>
-        <span className="md:hidden">Aprende a reciclar mejor.</span>
+        <span className="md:hidden">Aprendé a reciclar mejor.</span>
         <span className="hidden md:inline">
-          Aprende con contenidos claros para mejorar habitos y reciclar mejor.
+          Aprendé con contenidos claros para mejorar hábitos y reciclar mejor.
         </span>
       </>
     ),
@@ -95,35 +95,35 @@ const featuredSections = [
 
 const rewardJourney = [
   {
-    title: "Ganas puntos",
+    title: "Ganás puntos",
     description:
-      "Participa en acciones ecologicas, envia reportes responsables y completa desafios ambientales.",
+      "Participá en acciones ecológicas, enviá reportes responsables y completá desafíos ambientales.",
     icon: FiAward,
   },
   {
-    title: "Desbloqueas beneficios",
+    title: "Desbloqueás beneficios",
     description:
-      "Accede a descuentos, recompensas y promociones sustentables dentro del ecosistema EcoRG.",
+      "Accedé a descuentos, recompensas y promociones sustentables dentro del ecosistema EcoRG.",
     icon: FiCheckCircle,
   },
   {
-    title: "Apoyas comercios locales",
+    title: "Apoyás comercios locales",
     description:
-      "EcoRG conecta participacion ciudadana con comercios comprometidos con un impacto mas consciente.",
+      "EcoRG conecta participación ciudadana con comercios comprometidos con un impacto más consciente.",
     icon: FiUsers,
   },
 ];
 
 const rewardsPreview = [
   {
-    title: "15% OFF en cafe de especialidad",
-    partner: "Cafe del Centro",
+    title: "15% OFF en café de especialidad",
+    partner: "Café del Centro",
     points: 250,
     benefit: "Beneficio activo",
   },
   {
     title: "Descuento en cuadernos reciclados",
-    partner: "Libreria Horizonte",
+    partner: "Librería Horizonte",
     points: 320,
     benefit: "Comercio adherido",
   },
@@ -286,7 +286,7 @@ function Home() {
           <>
             <span className="md:hidden">Acciones que mejoran la ciudad.</span>
             <span className="hidden md:inline">
-              Interacciones ambientales visibles que fortalecen la participacion local.
+              Interacciones ambientales visibles que fortalecen la participación local.
             </span>
           </>
         ),
@@ -302,15 +302,15 @@ function Home() {
       <Hero
         title={
           <>
-            <span className="md:hidden">Recicla y mejora Rio Gallegos</span>
-            <span className="hidden md:inline">Hace tu aporte para una Rio Gallegos mas limpia</span>
+            <span className="md:hidden">Reciclá y mejorá Río Gallegos</span>
+            <span className="hidden md:inline">Hacé tu aporte para una Río Gallegos más limpia</span>
           </>
         }
         subtitle={
           <>
             <span className="md:hidden">Puntos verdes, reportes y acciones en un solo lugar.</span>
             <span className="hidden md:inline">
-              Encontra puntos verdes, reporta problemas y participa en acciones reales en tu ciudad
+              Encontrá puntos verdes, reportá problemas y participá en acciones reales en tu ciudad.
             </span>
           </>
         }
@@ -323,14 +323,14 @@ function Home() {
             title={
               <>
                 <span className="md:hidden">Todo lo esencial en un mismo lugar.</span>
-                <span className="hidden md:inline">Lo esencial de EcoRG para usar la plataforma rapido</span>
+                <span className="hidden md:inline">Lo esencial de EcoRG para usar la plataforma rápido</span>
               </>
             }
             description={
               <>
-                <span className="md:hidden">Mapa, reportes, calendario y educacion sin vueltas.</span>
+                <span className="md:hidden">Mapa, reportes, calendario y educación sin vueltas.</span>
                 <span className="hidden md:inline">
-                  Mapa, reportes, calendario y educacion ambiental para resolver acciones concretas sin pasar por una home explicativa de mas.
+                  Mapa, reportes, calendario y educación ambiental para resolver acciones concretas sin pasar por una home explicativa de más.
                 </span>
               </>
             }
@@ -362,14 +362,14 @@ function Home() {
             title={
               <>
                 <span className="md:hidden">Impacto visible en un vistazo.</span>
-                <span className="hidden md:inline">El impacto ciudadano se ve rapido en datos claros</span>
+                <span className="hidden md:inline">El impacto ciudadano se ve rápido en datos claros</span>
               </>
             }
             description={
               <>
                 <span className="md:hidden">Reportes, puntos verdes y acciones en un vistazo.</span>
                 <span className="hidden md:inline">
-                  Un resumen corto para entender como EcoRG ordena reportes, reciclaje y participacion ciudadana sin explicaciones de mas.
+                  Un resumen corto para entender cómo EcoRG ordena reportes, reciclaje y participación ciudadana sin explicaciones de más.
                 </span>
               </>
             }
@@ -393,8 +393,8 @@ function Home() {
         <Reveal className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
           <SectionHero
             eyebrow="EcoPoints y beneficios"
-            title="Tu impacto tambien tiene recompensa"
-            description="Suma EcoPoints reciclando, reportando problemas ambientales y participando en acciones ecologicas. Luego podes canjearlos por beneficios en comercios adheridos."
+            title="Tu impacto también tiene recompensa"
+            description="Sumá EcoPoints reciclando, reportando problemas ambientales y participando en acciones ecológicas. Luego podés canjearlos por beneficios en comercios adheridos."
             className="border-[#d4e2c7] bg-[linear-gradient(135deg,rgba(255,255,255,0.92)_0%,rgba(244,248,238,0.94)_100%)] shadow-[0_24px_58px_rgba(73,110,33,0.08)]"
             actions={
               <div className="flex w-full flex-col gap-2.5 sm:flex-row lg:w-auto">
@@ -478,7 +478,7 @@ function Home() {
                     Enfoque EcoRG
                   </p>
                   <p className="mt-2 text-sm leading-6 text-white/78">
-                    Los EcoPoints no buscan empujar consumo por consumo: acompanan participacion ambiental, incentivan habitos sostenibles y fortalecen una red local de comercios comprometidos.
+                    Los EcoPoints no buscan empujar consumo por consumo: acompañan la participación ambiental, incentivan hábitos sostenibles y fortalecen una red local de comercios comprometidos.
                   </p>
                 </div>
               </MotionDiv>
@@ -490,9 +490,9 @@ function Home() {
       <section className="hidden bg-white py-10 sm:py-14 md:block lg:py-20">
         <Reveal className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
           <SectionHero
-            eyebrow="Empeza ahora"
+            eyebrow="Empezá ahora"
             title="Acciones concretas para empezar hoy"
-            description="Accede rapido a las acciones principales de EcoRG sin pasar por pantallas intermedias."
+            description="Accedé rápido a las acciones principales de EcoRG sin pasar por pantallas intermedias."
             className="border-[#dfe9d3] bg-[linear-gradient(135deg,#ffffff_0%,#f7fbf1_100%)] shadow-[0_22px_54px_rgba(73,110,33,0.08)]"
           />
 
@@ -502,7 +502,7 @@ function Home() {
                 to="/reportes"
                 icon={FiAlertCircle}
                 title="Reportar un problema"
-                description="Informa un mini basural o una situacion ambiental con ubicacion e imagen."
+                description="Informá un mini basural o una situación ambiental con ubicación e imagen."
               />
             </StaggerItem>
             <StaggerItem>
@@ -510,15 +510,15 @@ function Home() {
                 to="/mapa"
                 icon={FiMap}
                 title="Ver mapa"
-                description="Busca puntos verdes cercanos y resolve rapido donde llevar materiales reciclables."
+                description="Buscá puntos verdes cercanos y resolvé rápido dónde llevar materiales reciclables."
               />
             </StaggerItem>
             <StaggerItem>
               <QuickAction
                 to="/educacion"
                 icon={FiBookOpen}
-                title="Ir a educacion"
-                description="Accede a contenidos claros para mejorar habitos y entender mejor que hacer con tus residuos."
+                title="Ir a educación"
+                description="Accedé a contenidos claros para mejorar hábitos y entender mejor qué hacer con tus residuos."
               />
             </StaggerItem>
           </StaggerGroup>
@@ -538,7 +538,7 @@ function Home() {
               variants={shouldReduceMotion ? undefined : heroItemVariants}
               className="inline-flex rounded-full border border-white/14 bg-white/8 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white/90"
             >
-              Participa ahora
+              Participá ahora
             </MotionSpan>
             <MotionH2
               variants={shouldReduceMotion ? undefined : heroItemVariants}
@@ -546,14 +546,14 @@ function Home() {
             >
               <span className="md:hidden">Tu aporte puede mejorar la ciudad.</span>
               <span className="hidden md:inline">
-                Tu aporte puede transformar problemas cotidianos en mejoras visibles para la ciudad
+                Tu aporte puede transformar problemas cotidianos en mejoras visibles para la ciudad.
               </span>
             </MotionH2>
             <MotionP
               variants={shouldReduceMotion ? undefined : heroItemVariants}
               className="mx-auto mt-2.5 max-w-xl text-sm leading-5.5 text-white/88 sm:mt-4 sm:max-w-2xl sm:text-base sm:leading-7"
             >
-              <span className="md:hidden">Reporta, recicla y participa desde un solo lugar.</span>
+              <span className="md:hidden">Reportá, reciclá y participá desde un solo lugar.</span>
               <span className="hidden md:inline">
                 Sumate a EcoRG para reportar, reciclar, aprender y participar en una red ciudadana que convierte acciones concretas en impacto ambiental real.
               </span>
@@ -575,7 +575,7 @@ function Home() {
                 {...(shouldReduceMotion ? {} : buttonMotion)}
                 className="inline-flex min-h-[46px] items-center justify-center rounded-2xl border border-white/18 bg-transparent px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/8 hover:border-white/26"
               >
-                Ver gamificacion
+                Ver gamificación
               </MotionLink>
             </MotionDiv>
           </MotionDiv>

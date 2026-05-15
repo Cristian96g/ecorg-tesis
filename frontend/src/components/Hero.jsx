@@ -22,7 +22,7 @@ const MotionLink = motion(Link);
 
 const floatingStats = [
   { label: "6 puntos verdes activos", icon: FiMapPin, position: "left-3 top-8 md:left-2 md:top-10" },
-  { label: "Reportes con ubicacion", icon: FiNavigation, position: "right-3 top-28 md:right-2 md:top-14" },
+  { label: "Reportes con ubicación", icon: FiNavigation, position: "right-3 top-28 md:right-2 md:top-14" },
   { label: "Acciones con impacto", icon: FiTrendingUp, position: "left-8 bottom-6 md:left-3 md:bottom-2" },
 ];
 
@@ -125,7 +125,7 @@ function MobileHeroPreview({ shouldReduceMotion }) {
           <div className="flex items-center justify-between rounded-[18px] border border-white/10 bg-[#133019]/60 px-3 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
             <div>
               <p className="text-[11px] uppercase tracking-[0.18em] text-white/55">EcoRG</p>
-              <p className="mt-1 text-sm font-semibold text-white">Vista rapida</p>
+              <p className="mt-1 text-sm font-semibold text-white">Vista rápida</p>
             </div>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-[#7cc34a]/18 px-2.5 py-1 text-[11px] font-semibold text-[#def4c7]">
               <FiCheckCircle className="h-3.5 w-3.5" />
@@ -156,7 +156,7 @@ function MobileHeroPreview({ shouldReduceMotion }) {
                   </span>
                 </div>
                 <p className="mt-2 text-[11px] leading-[1.35] text-white/78">
-                  Con ubicacion precisa e imagen para seguimiento rapido.
+                  Con ubicación precisa e imagen para seguimiento rápido.
                 </p>
               </div>
 
@@ -245,7 +245,7 @@ function DesktopHeroMockup({ shouldReduceMotion }) {
               <div className="flex items-center justify-between">
                 <p className="text-sm font-semibold text-white">Mapa de puntos verdes</p>
                 <span className="rounded-full bg-white/10 px-2.5 py-1 text-[11px] text-white/72">
-                  Rio Gallegos
+                  Río Gallegos
                 </span>
               </div>
               <ProductMapPreview shouldReduceMotion={shouldReduceMotion} />
@@ -263,7 +263,7 @@ function DesktopHeroMockup({ shouldReduceMotion }) {
                   </span>
                 </div>
                 <div className="mt-3 rounded-[16px] border border-white/8 bg-white/6 px-3 py-2 text-[11px] leading-[1.35] text-white/78 sm:rounded-[18px] sm:py-2.5 sm:text-xs sm:leading-5">
-                  Con ubicacion precisa e imagen para que el equipo pueda revisarlo rapido.
+                  Con ubicación precisa e imagen para que el equipo pueda revisarlo rápido.
                 </div>
               </div>
 
@@ -271,7 +271,7 @@ function DesktopHeroMockup({ shouldReduceMotion }) {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-semibold text-white">Impacto ciudadano</p>
-                    <p className="mt-1 text-xs text-white/66">Puntos y participacion</p>
+                    <p className="mt-1 text-xs text-white/66">Puntos y participación</p>
                   </div>
                   <div className="rounded-2xl bg-white/8 px-3 py-2 text-right">
                     <p className="text-lg font-semibold text-white">+120</p>
@@ -316,7 +316,7 @@ function DesktopHeroMockup({ shouldReduceMotion }) {
 }
 
 export default function Hero({
-  title = "Reporta, recicla y mejora Rio Gallegos desde un solo lugar",
+  title = "Reportá, reciclá y mejorá Río Gallegos desde un solo lugar",
   subtitle = "EcoRG te ayuda a encontrar puntos verdes, informar problemas ambientales y seguir tu impacto en la ciudad.",
   primaryCta = { text: "Ver puntos verdes", to: "/mapa" },
   secondaryCta = { text: "Reportar problema", to: "/reportes" },

@@ -133,7 +133,7 @@ function StatusBadge({ estado }) {
 
   const labels = {
     abierto: "Abierto",
-    en_revision: "En revisiÃ³n",
+    en_revision: "En revisión",
     resuelto: "Resuelto",
   };
 
@@ -199,7 +199,7 @@ function ErrorState({ message, onRetry }) {
           </div>
           <div>
             <h3 className="text-base font-semibold text-[#7f2337]">
-              No pudimos cargar la informaciÃ³n del dashboard
+              No pudimos cargar la información del dashboard
             </h3>
             <p className="mt-2 text-sm leading-6 text-[#8a3445]">{message}</p>
           </div>
@@ -277,7 +277,7 @@ export default function AdminDashboard() {
       setError(
         getFriendlyApiError(
           loadError,
-          "No pudimos cargar las mÃ©tricas del panel en este momento."
+          "No pudimos cargar las métricas del panel en este momento."
         )
       );
     } finally {
@@ -315,7 +315,7 @@ export default function AdminDashboard() {
             </MotionDiv>
             <MotionDiv variants={shouldReduceMotion ? undefined : heroItemVariants}>
               <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
-                ConsultÃ¡ mÃ©tricas reales de usuarios, puntos verdes, barrios y reportes para mostrar el estado actual de la plataforma.
+                Consultá métricas reales de usuarios, puntos verdes, barrios y reportes para mostrar el estado actual de la plataforma.
               </p>
             </MotionDiv>
           </MotionDiv>
@@ -329,7 +329,7 @@ export default function AdminDashboard() {
             className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#d7e5c5] bg-white px-4 py-3 text-sm font-semibold text-[#35561a] transition hover:border-[#66a939] hover:bg-[#f7fbf1] disabled:cursor-not-allowed disabled:opacity-70"
           >
             <FiRefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
-            Actualizar mÃ©tricas
+            Actualizar métricas
           </MotionButton>
         </div>
       </MotionSection>
@@ -357,7 +357,7 @@ export default function AdminDashboard() {
           icon={<FiHome className="h-5 w-5" />}
           label="Barrios"
           value={fmtNum(stats.barrios)}
-          helper="CatÃ¡logo maestro disponible para la app"
+          helper="Catálogo maestro disponible para la app"
           tone="slate"
           loading={loading}
         />
@@ -376,13 +376,13 @@ export default function AdminDashboard() {
           icon={<FiAlertCircle className="h-5 w-5" />}
           label="Reportes abiertos"
           value={fmtNum(stats.openReports)}
-          helper="Pendientes de gestiÃ³n"
+          helper="Pendientes de gestión"
           tone="rose"
           loading={loading}
         />
         <StatCard
           icon={<FiClock className="h-5 w-5" />}
-          label="En revisiÃ³n"
+          label="En revisión"
           value={fmtNum(stats.inReviewReports)}
           helper="Casos evaluados por el equipo"
           tone="amber"
@@ -460,8 +460,8 @@ export default function AdminDashboard() {
       <Reveal>
         <Card>
           <CardHeader
-            title="Accesos rÃ¡pidos"
-            subtitle="Atajos reales a las secciones mÃ¡s importantes del panel."
+            title="Accesos rápidos"
+            subtitle="Atajos reales a las secciones más importantes del panel."
           />
           <CardBody>
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
@@ -469,25 +469,25 @@ export default function AdminDashboard() {
                 to="/admin/puntos"
                 icon={FiMapPin}
                 title="Gestionar puntos verdes"
-                description="CreÃ¡, editÃ¡ y revisÃ¡ ubicaciones que despuÃ©s se muestran en el mapa pÃºblico."
+                description="Creá, editá y revisá ubicaciones que después se muestran en el mapa público."
               />
               <QuickAction
                 to="/admin/reportes"
                 icon={FiAlertCircle}
                 title="Revisar reportes"
-                description="ModerÃ¡ reportes comunitarios y actualizÃ¡ su estado operativo."
+                description="Moderá reportes comunitarios y actualizá su estado operativo."
               />
               <QuickAction
                 to="/admin/barrios"
                 icon={FiHome}
                 title="Gestionar barrios"
-                description="MantenÃ© el catÃ¡logo maestro que usan puntos, reportes y futuros cronogramas."
+                description="Mantené el catálogo maestro que usan puntos, reportes y futuros cronogramas."
               />
               <QuickAction
                 to="/admin/usuarios"
                 icon={FiUsers}
                 title="Ver usuarios"
-                description="AdministrÃ¡ roles, altas y estado general de las cuentas registradas."
+                description="Administrá roles, altas y estado general de las cuentas registradas."
               />
               <QuickAction
                 to="/admin/beneficios"
@@ -504,14 +504,14 @@ export default function AdminDashboard() {
         <Reveal>
           <Card>
             <CardHeader
-              title="Ãšltimos reportes"
-              subtitle="Actividad reciente del mÃ³dulo comunitario."
+              title="Últimos reportes"
+              subtitle="Actividad reciente del módulo comunitario."
               action={(
                 <Link
                   to="/admin/reportes"
                   className="text-sm font-medium text-[#5d8a38] transition hover:text-[#3c6724]"
                 >
-                  Ver todos â†’
+                  Ver todos →
                 </Link>
               )}
             />
@@ -520,8 +520,8 @@ export default function AdminDashboard() {
                 <LoadingBlock />
               ) : recentReports.length === 0 ? (
                 <EmptyState
-                  title="TodavÃ­a no hay reportes recientes"
-                  description="Cuando la comunidad envÃ­e nuevos casos, vas a poder revisarlos rÃ¡pido desde este resumen."
+                  title="Todavía no hay reportes recientes"
+                  description="Cuando la comunidad envíe nuevos casos, vas a poder revisarlos rápido desde este resumen."
                   action={(
                     <Link
                       to="/admin/reportes"
@@ -547,7 +547,7 @@ export default function AdminDashboard() {
                             {report.titulo || report.title || report.code || report._id}
                           </p>
                           <p className="mt-1 text-sm text-slate-500">
-                            {report.barrio || "Sin barrio"} Â· {fmtDate(report.createdAt)}
+                            {report.barrio || "Sin barrio"} · {fmtDate(report.createdAt)}
                           </p>
                         </div>
                         <StatusBadge estado={report.estado} />
@@ -563,14 +563,14 @@ export default function AdminDashboard() {
         <Reveal>
           <Card>
             <CardHeader
-              title="Ãšltimos puntos verdes"
+              title="Últimos puntos verdes"
               subtitle="Puntos cargados recientemente en el sistema."
               action={(
                 <Link
                   to="/admin/puntos"
                   className="text-sm font-medium text-[#5d8a38] transition hover:text-[#3c6724]"
                 >
-                  Ver todos â†’
+                  Ver todos →
                 </Link>
               )}
             />
@@ -579,8 +579,8 @@ export default function AdminDashboard() {
                 <LoadingBlock />
               ) : recentPoints.length === 0 ? (
                 <EmptyState
-                  title="TodavÃ­a no hay puntos verdes cargados"
-                  description="Cuando se creen nuevas ubicaciones, las vas a ver acÃ¡ como referencia rÃ¡pida."
+                  title="Todavía no hay puntos verdes cargados"
+                  description="Cuando se creen nuevas ubicaciones, las vas a ver acá como referencia rápida."
                   action={(
                     <Link
                       to="/admin/puntos"
@@ -604,7 +604,7 @@ export default function AdminDashboard() {
                         {point.title || point.name || "Punto verde"}
                       </p>
                       <p className="mt-1 text-sm text-slate-500">
-                        {point.barrio || "Sin barrio"} Â· {point.address || "Sin direcciÃ³n"}
+                        {point.barrio || "Sin barrio"} · {point.address || "Sin dirección"}
                       </p>
                       <div className="mt-3">
                         <span

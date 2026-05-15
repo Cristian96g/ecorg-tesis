@@ -19,12 +19,12 @@ const MotionDiv = motion.div;
 const MotionButton = motion.button;
 
 const loginSchema = z.object({
-  email: z.string().min(1, "El email es obligatorio").email("Formato de email invalido"),
+  email: z.string().min(1, "El email es obligatorio").email("Formato de email inválido"),
   password: z.string().min(1, "La contraseña es obligatoria"),
 });
 
 const forgotSchema = z.object({
-  email: z.string().min(1, "El email es obligatorio").email("IngresÃ¡ un email valido"),
+  email: z.string().min(1, "El email es obligatorio").email("Ingresá un email válido"),
 });
 
 export default function LoginForm() {
@@ -72,19 +72,19 @@ export default function LoginForm() {
 
     try {
       const { user } = await AuthAPI.login(data.email, data.password, { remember: rememberMe });
-      notifySuccess("Inicio de sesiÃ³n exitoso");
+      notifySuccess("Inicio de sesión exitoso");
       login(user);
       navigate(next, { replace: true });
     } catch (err) {
       const apiError = err?.response?.data?.error;
-      let friendly = getFriendlyApiError(err, "No pudimos iniciar sesiÃ³n. VerificÃ¡ tus datos.");
+      let friendly = getFriendlyApiError(err, "No pudimos iniciar sesión. Verificá tus datos.");
 
       if (apiError === "USER_NOT_FOUND") {
-        friendly = "El usuario no estÃ¡ registrado. NecesitÃ¡s crear tu cuenta.";
+        friendly = "El usuario no está registrado. Necesitás crear tu cuenta.";
       } else if (apiError === "WRONG_PASSWORD") {
-        friendly = "La contraseÃ±a es incorrecta. ProbÃ¡ nuevamente.";
+        friendly = "La contraseña es incorrecta. Probá nuevamente.";
       } else if (apiError === "MISSING_FIELDS") {
-        friendly = "CompletÃ¡ email y contraseÃ±a.";
+        friendly = "Completá email y contraseña.";
       }
 
       if (import.meta.env.DEV) {
@@ -103,7 +103,7 @@ export default function LoginForm() {
     try {
       const response = await AuthAPI.forgotPassword(email);
       const successMessage =
-        response?.message || "Si el correo existe, recibirÃ¡s instrucciones para restablecer tu contraseÃ±a.";
+        response?.message || "Si el correo existe, recibirás instrucciones para restablecer tu contraseña.";
 
       setForgotSuccess(successMessage);
       setDevResetUrl(canShowResetLink ? response?.resetUrl || "" : "");
@@ -112,7 +112,7 @@ export default function LoginForm() {
     } catch (err) {
       const friendly = getFriendlyApiError(
         err,
-        "No pudimos procesar la solicitud de recuperaciÃ³n. IntentÃ¡ nuevamente."
+        "No pudimos procesar la solicitud de recuperación. Intentá nuevamente."
       );
       notifyError(friendly);
     }
@@ -169,7 +169,7 @@ export default function LoginForm() {
                   type="button"
                   onClick={() => setShow(!show)}
                   className="absolute right-2 top-1/2 -translate-y-1/2 text-[#2d3d33]/60 hover:text-[#2d3d33]"
-                  aria-label={show ? "Ocultar contraseÃ±a" : "Mostrar contraseÃ±a"}
+                  aria-label={show ? "Ocultar contraseña" : "Mostrar contraseña"}
                 >
                   {show ? eyeOff : eye}
                 </MotionButton>

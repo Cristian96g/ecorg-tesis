@@ -68,7 +68,7 @@ export default function AuthPage({ mode = "login" }) {
             className="rounded-[26px] border border-[#dce8ce] bg-white/90 p-5 shadow-sm"
           >
             <h2 className="text-sm font-semibold uppercase tracking-[0.14em] text-[#4f7a2f]">
-              Que podes hacer
+              Qué podés hacer
             </h2>
             <p className="mt-3 text-sm leading-6 text-slate-600">
               Crear reportes, consultar el mapa de puntos verdes y mantener tu perfil actualizado.
@@ -141,7 +141,7 @@ export default function AuthPage({ mode = "login" }) {
             <p className="mt-6 text-center text-sm text-[#2d3d33]/70">
               {tab === "login" ? (
                 <>
-                  ¿No tenes cuenta?{" "}
+                  ¿No tenés cuenta?{" "}
                   <button
                     className="font-semibold text-[#4f7a2f] hover:underline"
                     onClick={() => setTab("register")}
@@ -151,12 +151,12 @@ export default function AuthPage({ mode = "login" }) {
                 </>
               ) : (
                 <>
-                  ¿Ya tenes cuenta?{" "}
+                  ¿Ya tenés cuenta?{" "}
                   <button
                     className="font-semibold text-[#4f7a2f] hover:underline"
                     onClick={() => setTab("login")}
                   >
-                    Inicia sesión
+                    Iniciá sesión
                   </button>
                 </>
               )}

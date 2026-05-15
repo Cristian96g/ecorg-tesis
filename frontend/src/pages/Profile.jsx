@@ -329,7 +329,7 @@ export default function Profile() {
               {Array.isArray(form?.badges) ? form.badges.length : Array.isArray(user?.badges) ? user.badges.length : 0}
             </p>
             <p className="mt-2 text-sm leading-6 text-slate-600">
-              Tus insignias se obtienen automaticamente cuando acciones reales son validadas en EcoRG.
+              Tus insignias se obtienen automáticamente cuando acciones reales son validadas en EcoRG.
             </p>
           </div>
 
@@ -355,9 +355,9 @@ export default function Profile() {
           </div>
 
           <div className="mt-6 rounded-2xl border border-[#e7efdb] bg-[#fbfdf8] p-4">
-            <h3 className="text-sm font-semibold text-[#29401a]">Preferencias</h3>
+            <h3 className="text-sm font-semibold text-[#29401a]">Comunicaciones de cuenta</h3>
             <p className="mt-2 text-sm leading-6 text-slate-600">
-              La personalización de notificaciones y preferencias todavía no está disponible en esta versión de EcoRG.
+              Tu perfil concentra la información de contacto que EcoRG utiliza para contextualizar reportes, beneficios y actividad dentro de la plataforma.
             </p>
           </div>
         </aside>
@@ -486,7 +486,7 @@ export default function Profile() {
                 </div>
               ) : (
                 <div className="mt-5 rounded-2xl border border-dashed border-[#d7e5c5] bg-white px-4 py-8 text-center">
-                  <p className="text-base font-semibold text-[#203014]">Todavía no canjeaste beneficios</p>
+                  <p className="text-base font-semibold text-[#203014]">Aún no canjeaste beneficios</p>
                   <p className="mt-2 text-sm leading-6 text-slate-600">
                     Cuando uses EcoPoints en la sección de gamificación, tus beneficios emitidos van a aparecer acá.
                   </p>
